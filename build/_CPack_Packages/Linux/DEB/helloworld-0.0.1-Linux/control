@@ -1,0 +1,8 @@
+Architecture: amd64
+Description: helloworld built using CMake
+Maintainer: avsm@mail.ru
+Package: helloworld
+Priority: optional
+Section: devel
+Version: 0.0.1
+Installed-Size: 25

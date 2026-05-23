@@ -1,0 +1,22 @@
+Start testing: May 24 00:21 MSK
+----------------------------------------------------------
+1/1 Testing: test_version
+1/1 Test: test_version
+Command: "/home/user/otus-cpp/build/test_version"
+Directory: /home/user/otus-cpp/build
+"test_version" start time: May 24 00:21 MSK
+Output:
+----------------------------------------------------------
+Running 1 test case...
+
+[1;32;49m*** No errors detected
+[0;39;49m
+<end of output>
+Test time =   0.01 sec
+----------------------------------------------------------
+Test Passed.
+"test_version" end time: May 24 00:21 MSK
+"test_version" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: May 24 00:21 MSK

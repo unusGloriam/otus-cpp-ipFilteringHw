@@ -1,0 +1,7 @@
+{
+	"InstallScripts" : 
+	[
+		"/home/user/otus-cpp/build/cmake_install.cmake"
+	],
+	"Parallel" : false
+}
