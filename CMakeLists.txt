@@ -5,14 +5,14 @@ set(PROJECT_VESRION 0.0.${PATCH_VERSION})
 
 project(ip_filter VERSION ${PROJECT_VESRION})
 
-# find_package(GTest REQUIRED)
+find_package(GTest REQUIRED)
 
 option(WITH_BOOST_TEST "Whether to build Boost test" ON)
 
 configure_file(version.h.in version.h)
 
 add_executable(ip_filter_cli ip_filter.cpp)
-add_library(ip_filter lib.cpp)
+add_library(ip_filter lib.cpp ip_filter_utils.cpp)
 
 set_target_properties(ip_filter_cli ip_filter PROPERTIES
     CXX_STANDARD 14
@@ -86,3 +86,22 @@ if(WITH_BOOST_TEST)
     enable_testing()
     add_test(test_version test_version)
 endif()
+
+#
+# Тесты
+#
+
+# Рекурсивно ищем все используемые в тестах .cpp файлы
+file(GLOB TEST_SRC_FILES "${CMAKE_SOURCE_DIR}/tests/*.cpp")
+
+add_executable(unit_tests "${TEST_SRC_FILES}")
+target_include_directories(unit_tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+target_link_libraries(unit_tests
+        PRIVATE
+        ip_filter
+        GTest::GTest
+        GTest::Main)
+
+# Включаем тестирование
+enable_testing()
+add_test(NAME Tests COMMAND unit_tests)
