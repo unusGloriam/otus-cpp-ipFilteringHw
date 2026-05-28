@@ -10,33 +10,18 @@ find_package(GTest REQUIRED)
 option(WITH_BOOST_TEST "Whether to build Boost test" ON)
 
 add_executable(ip_filter_cli ip_filter.cpp)
-add_library(ip_filter ip_filter_utils.cpp)
 
-set_target_properties(ip_filter_cli ip_filter PROPERTIES
+set_target_properties(ip_filter_cli PROPERTIES
     CXX_STANDARD 14
     CXX_STANDARD_REQUIRED ON
-)
-
-target_include_directories(ip_filter
-    PRIVATE "${CMAKE_BINARY_DIR}"
-)
-
-target_link_libraries(ip_filter_cli PRIVATE
-    ip_filter
 )
 
 if (MSVC)
     target_compile_options(ip_filter_cli PRIVATE
         /W4
     )
-    target_compile_options(ip_filter PRIVATE
-        /W4
-    )
 else ()
     target_compile_options(ip_filter_cli PRIVATE
-        -Wall -Wextra -pedantic -Werror
-    )
-    target_compile_options(ip_filter PRIVATE
         -Wall -Wextra -pedantic -Werror
     )
 endif()
@@ -66,7 +51,6 @@ add_executable(unit_tests "${TEST_SRC_FILES}")
 target_include_directories(unit_tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 target_link_libraries(unit_tests
         PRIVATE
-        ip_filter
         GTest::GTest
         GTest::Main)
 

@@ -56,7 +56,7 @@ int main(int, char const **) {
         }
 
         // TODO filter by first byte and output
-        auto filtered_ip_pool = filter(ip_pool, 1);
+        auto filtered_ip_pool = filter(ip_pool, std::false_type{}, 1);
         for (const auto &ip_address: filtered_ip_pool) {
             std::cout << ip_address.at(0) << '.' << ip_address.at(1) << '.' << ip_address.at(2) << '.' << ip_address.
                     at(3) << '\n';
@@ -68,7 +68,7 @@ int main(int, char const **) {
         // 1.29.168.152
         // 1.1.234.8
 
-        filtered_ip_pool = filter(ip_pool, 46, 70);
+        filtered_ip_pool = filter(ip_pool, std::false_type{}, 46, 70);
         for (const auto &ip_address: filtered_ip_pool) {
             std::cout << ip_address.at(0) << '.' << ip_address.at(1) << '.' << ip_address.at(2) << '.' << ip_address.
                     at(3) << '\n';
@@ -79,7 +79,7 @@ int main(int, char const **) {
         // 46.70.113.73
         // 46.70.29.76
 
-        filtered_ip_pool = filter_any(ip_pool, 46);
+        filtered_ip_pool = filter(ip_pool, std::true_type{}, 46);
         for (const auto &ip_address: filtered_ip_pool) {
             std::cout << ip_address.at(0) << '.' << ip_address.at(1) << '.' << ip_address.at(2) << '.' << ip_address.
                     at(3) << '\n';

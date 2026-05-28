@@ -14,7 +14,8 @@ IPpool make_pool() {
         {"46", "70", "1", "1"},
         {"46", "70", "46", "0"},
         {"5", "6", "7", "8"},
-        {"255", "0", "0", "255"}
+        {"255", "0", "0", "255"},
+        {"4", "0", "0", "255"}
     };
 }
 
@@ -23,7 +24,7 @@ IPpool make_pool() {
 TEST(FilterByFirstByte, ReturnsOnlyMatchingAddresses) {
     const auto ip_pool = make_pool();
 
-    const auto filtered = filter(ip_pool, 1);
+    const auto filtered = filter(ip_pool, std::false_type{}, 1);
 
     const IPpool expected = {
         {"1", "2", "3", "4"},
@@ -35,7 +36,7 @@ TEST(FilterByFirstByte, ReturnsOnlyMatchingAddresses) {
 TEST(FilterByFirstByte, ReturnsEmptyWhenNoMatches) {
     const auto ip_pool = make_pool();
 
-    const auto filtered = filter(ip_pool, 42);
+    const auto filtered = filter(ip_pool, std::false_type{}, 42);
 
     EXPECT_TRUE(filtered.empty());
 }
@@ -43,7 +44,7 @@ TEST(FilterByFirstByte, ReturnsEmptyWhenNoMatches) {
 TEST(FilterByFirstByte, ReturnsEmptyForEmptyInput) {
     const IPpool ip_pool;
 
-    const auto filtered = filter(ip_pool, 1);
+    const auto filtered = filter(ip_pool, std::false_type{}, 1);
 
     EXPECT_TRUE(filtered.empty());
 }
@@ -51,7 +52,7 @@ TEST(FilterByFirstByte, ReturnsEmptyForEmptyInput) {
 TEST(FilterByFirstSecondByte, ReturnsOnlyMatchingAddresses) {
     const auto ip_pool = make_pool();
 
-    const auto filtered = filter(ip_pool, 46, 70);
+    const auto filtered = filter(ip_pool, std::false_type{}, 46, 70);
 
     const IPpool expected = {
         {"46", "70", "1", "1"},
@@ -63,7 +64,7 @@ TEST(FilterByFirstSecondByte, ReturnsOnlyMatchingAddresses) {
 TEST(FilterByFirstSecondByte, ReturnsEmptyWhenNoMatches) {
     const auto ip_pool = make_pool();
 
-    const auto filtered = filter(ip_pool, 46, 71);
+    const auto filtered = filter(ip_pool, std::false_type{}, 46, 71);
 
     EXPECT_TRUE(filtered.empty());
 }
@@ -71,7 +72,7 @@ TEST(FilterByFirstSecondByte, ReturnsEmptyWhenNoMatches) {
 TEST(FilterByFirstSecondByte, ReturnsEmptyForEmptyInput) {
     const IPpool ip_pool;
 
-    const auto filtered = filter(ip_pool, 46, 70);
+    const auto filtered = filter(ip_pool, std::false_type{}, 46, 70);
 
     EXPECT_TRUE(filtered.empty());
 }
@@ -79,11 +80,12 @@ TEST(FilterByFirstSecondByte, ReturnsEmptyForEmptyInput) {
 TEST(FilterAny, FindsByteInAnyPosition) {
     const auto ip_pool = make_pool();
 
-    const auto filtered = filter_any(ip_pool, 46);
+    const auto filtered = filter(ip_pool, std::true_type{}, 4);
 
     const IPpool expected = {
-        {"46", "70", "1", "1"},
-        {"46", "70", "46", "0"}
+        {"1", "2", "3", "4"},
+        {"1", "99", "3", "4"},
+        {"4", "0", "0", "255"}
     };
     EXPECT_EQ(filtered, expected);
 }
@@ -91,10 +93,11 @@ TEST(FilterAny, FindsByteInAnyPosition) {
 TEST(FilterAny, FindsBoundaryByte255) {
     const auto ip_pool = make_pool();
 
-    const auto filtered = filter_any(ip_pool, 255);
+    const auto filtered = filter(ip_pool, std::true_type{}, 255);
 
     const IPpool expected = {
-        {"255", "0", "0", "255"}
+        {"255", "0", "0", "255"},
+        {"4", "0", "0", "255"}
     };
     EXPECT_EQ(filtered, expected);
 }
@@ -102,7 +105,7 @@ TEST(FilterAny, FindsBoundaryByte255) {
 TEST(FilterAny, ReturnsEmptyWhenNoMatches) {
     const auto ip_pool = make_pool();
 
-    const auto filtered = filter_any(ip_pool, 200);
+    const auto filtered = filter(ip_pool, std::true_type{}, 200);
 
     EXPECT_TRUE(filtered.empty());
 }
@@ -110,7 +113,7 @@ TEST(FilterAny, ReturnsEmptyWhenNoMatches) {
 TEST(FilterAny, ReturnsEmptyForEmptyInput) {
     const IPpool ip_pool;
 
-    const auto filtered = filter_any(ip_pool, 46);
+    const auto filtered = filter(ip_pool, std::true_type{}, 46);
 
     EXPECT_TRUE(filtered.empty());
 }
