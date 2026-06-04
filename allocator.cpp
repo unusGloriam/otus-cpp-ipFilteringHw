@@ -4,6 +4,7 @@
 #include <map>
 #include <iostream>
 #include "custom_allocator.h"
+#include "custom_container.h"
 
 int factorial(int n) {
     if (n == 0) return 1;
@@ -27,6 +28,8 @@ int main() {
     for (const auto& pair : m2) {
         std::cout << "m2[" << pair.first << "] = " << pair.second << std::endl;
     }
+    // 6. создание экземпляра своего контейнера для хранения значений типа int
+    custom_container<int> container;
 
     return 0;
 }
