@@ -2,6 +2,7 @@
 #define ALLOCATOR_H
 
 #include <map>
+#include <iostream>
 #include "custom_allocator.h"
 
 int factorial(int n) {
@@ -21,6 +22,10 @@ int main() {
     // 4. заполнение 10 элементами, где ключ - это число от 0 до 9, а значение - факториал ключа
     for (int i = 0; i < 10; ++i) {
         m2[i] = factorial(i);
+    }
+    // 5. вывод на экран всех значений (ключ и значение разделены пробелом), хранящихся в контейнере
+    for (const auto& pair : m2) {
+        std::cout << "m2[" << pair.first << "] = " << pair.second << std::endl;
     }
 
     return 0;
