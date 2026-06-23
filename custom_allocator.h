@@ -5,7 +5,7 @@
 #ifndef ALLOCATOR_CUSTOM_ALLOCATOR_H
 #define ALLOCATOR_CUSTOM_ALLOCATOR_H
 
-#include <array>
+#include <new>
 
 template<typename T, std::size_t N>
 struct fixed_allocator {
@@ -17,6 +17,13 @@ struct fixed_allocator {
     struct rebind {
         using other = fixed_allocator<U, N>;
     };
+
+    fixed_allocator() : m_storage(static_cast<char *>(::operator new(N * sizeof(T)))) {
+    }
+
+    ~fixed_allocator() {
+        ::operator delete(m_storage);
+    }
 
     void deallocate(pointer, size_type) {
     }
@@ -30,13 +37,13 @@ struct fixed_allocator {
             throw std::bad_alloc();
         }
 
-        pointer allocated = std::addressof(m_storage[m_allocated_offset]);
+        auto allocated = reinterpret_cast<pointer>(m_storage + m_allocated_offset * sizeof(T));
         m_allocated_offset += n;
         return allocated;
     }
 
 private:
-    std::array<T, N> m_storage;
+    char *m_storage;
     size_type m_allocated_offset = 0;
 };
 
