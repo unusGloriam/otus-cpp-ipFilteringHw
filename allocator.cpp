@@ -29,8 +29,17 @@ int main() {
         std::cout << "m2[" << pair.first << "] = " << pair.second << std::endl;
     }
     // 6. создание экземпляра своего контейнера для хранения значений типа int
-    custom_container<int> container;
-
+    custom_list<int> container;
+    // 7. заполнение 10 элементами от 0 до 9
+    for (int i = 0; i < 10; ++i) container.push_back(i);
+    // 8. создание экземпляра своего контейнера для хранения значений типа int с новым аллокатором, ограниченным 10 элементами
+    custom_list<int, fixed_allocator<int, 10>> container2;
+    // 9. заполнение 10 элементами от 0 до 9
+    for (int i = 0; i < 10; ++i) container2.push_back(i);
+    // 10. вывод на экран всех значений, хранящихся в контейнере
+    for (const auto& value : container2) {
+        std::cout << value << std::endl;
+    }
     return 0;
 }
 
