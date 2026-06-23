@@ -5,6 +5,8 @@ set(PROJECT_VESRION 0.0.${PATCH_VERSION})
 
 project(allocator VERSION ${PROJECT_VESRION})
 
+add_subdirectory(timus)
+
 find_package(GTest REQUIRED)
 
 add_executable(allocator allocator.cpp)

@@ -1,0 +1,1 @@
+add_executable(1409 1409.cpp)
