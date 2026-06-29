@@ -3,30 +3,30 @@ cmake_minimum_required(VERSION 3.12)
 set(PATCH_VERSION "1" CACHE INTERNAL "Patch version")
 set(PROJECT_VESRION 0.0.${PATCH_VERSION})
 
-project(allocator VERSION ${PROJECT_VESRION})
+project(templates VERSION ${PROJECT_VESRION})
 
 add_subdirectory(timus)
 
 find_package(GTest REQUIRED)
 
-add_executable(allocator allocator.cpp)
+add_executable(templates templates.cpp)
 
-set_target_properties(allocator PROPERTIES
+set_target_properties(templates PROPERTIES
     CXX_STANDARD 14
     CXX_STANDARD_REQUIRED ON
 )
 
 if (MSVC)
-    target_compile_options(allocator PRIVATE
+    target_compile_options(templates PRIVATE
         /W4
     )
 else ()
-    target_compile_options(allocator PRIVATE
+    target_compile_options(templates PRIVATE
         -Wall -Wextra -pedantic -Werror
     )
 endif()
 
-install(TARGETS allocator RUNTIME DESTINATION bin)
+install(TARGETS templates RUNTIME DESTINATION bin)
 
 set(CPACK_GENERATOR DEB)
 set(CPACK_PACKAGE_VERSION_MAJOR "${PROJECT_VERSION_MAJOR}")
