@@ -53,6 +53,7 @@ jobs:
 
   documentation:
     needs: test
+    if: github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     concurrency:
       group: pages
@@ -67,7 +68,6 @@ jobs:
       - run: doxygen Doxyfile
       - run: touch docs/html/.nojekyll
       - name: Publish documentation
-        if: github.ref == 'refs/heads/master'
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
