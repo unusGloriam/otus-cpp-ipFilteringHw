@@ -1,0 +1,11 @@
+PROJECT_NAME           = "print_ip"
+PROJECT_BRIEF          = "Conditional IP address printer"
+OUTPUT_DIRECTORY       = docs
+INPUT                  = .
+RECURSIVE              = YES
+EXCLUDE                = cmake-build-debug .git .github .idea docs
+EXTRACT_ALL            = YES
+HAVE_DOT               = YES
+GENERATE_HTML          = YES
+GENERATE_LATEX         = NO
+QUIET                  = YES
