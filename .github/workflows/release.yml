@@ -58,28 +58,19 @@ jobs:
       group: pages
       cancel-in-progress: false
     permissions:
-      contents: read
-      pages: write
-      id-token: write
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
+      contents: write
     steps:
       - uses: actions/checkout@v2
         with:
           submodules: true
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
       - run: sudo apt-get update && sudo apt-get install doxygen graphviz -y
       - run: doxygen Doxyfile
       - run: touch docs/html/.nojekyll
-      - name: Upload documentation
-        uses: actions/upload-pages-artifact@v3
+      - name: Publish documentation
+        if: github.ref == 'refs/heads/master'
+        uses: peaceiris/actions-gh-pages@v3
         with:
-          name: doxygen-pages
-          path: docs/html
-      - name: Deploy documentation
-        id: deployment
-        uses: actions/deploy-pages@v4
-        with:
-          artifact_name: doxygen-pages
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_branch: gh-pages
+          publish_dir: ./docs/html
+          force_orphan: true
