@@ -54,14 +54,26 @@ jobs:
   documentation:
     needs: test
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     steps:
       - uses: actions/checkout@v2
         with:
           submodules: true
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
       - run: sudo apt-get update && sudo apt-get install doxygen graphviz -y
       - run: doxygen Doxyfile
-      - name: Publish documentation
-        uses: peaceiris/actions-gh-pages@v3
+      - run: touch docs/html/.nojekyll
+      - name: Upload documentation
+        uses: actions/upload-pages-artifact@v3
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./docs/html
+          path: docs/html
+      - name: Deploy documentation
+        id: deployment
+        uses: actions/deploy-pages@v4
