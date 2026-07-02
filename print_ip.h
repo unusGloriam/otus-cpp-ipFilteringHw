@@ -23,4 +23,9 @@ std::enable_if_t<std::is_integral<T>::value> print_ip(const T &value) {
     std::cout << '\n';
 }
 
+template <typename T>
+std::enable_if_t<std::is_same<T, std::string>::value> print_ip(const T &value) {
+    std::cout << value << '\n';
+}
+
 #endif //TEMPLATES_PRINT_IP_H
