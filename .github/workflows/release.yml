@@ -47,8 +47,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./templates-0.0.${{ github.run_number }}-Linux.deb
-          asset_name: templates-0.0.${{ github.run_number }}-Linux.deb
+          asset_path: ./print_ip-0.0.${{ github.run_number }}-Linux.deb
+          asset_name: print_ip-0.0.${{ github.run_number }}-Linux.deb
           asset_content_type: application/vnd.debian.binary-package
 
   documentation:
