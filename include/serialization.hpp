@@ -12,12 +12,12 @@ namespace editor {
      */
     class DocumentSerializer {
     public:
-        [[nodiscard]] Document ImportFromFile(const std::filesystem::path &path) const;
+        static Document ImportFromFile(const std::filesystem::path &path);
 
-        void ExportToFile(const Document &document, const std::filesystem::path &path) const;
+        static void ExportToFile(const Document &document, const std::filesystem::path &path);
 
-        [[nodiscard]] Document Import(std::istream &input, std::string name = {}) const;
+        static Document Import(std::istream &input, std::string name = {});
 
-        void Export(const Document &document, std::ostream &output) const;
+        static void Export(const Document &document, std::ostream &output);
     };
 } // namespace editor

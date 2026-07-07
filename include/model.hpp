@@ -26,9 +26,9 @@ namespace editor {
      * @brief RGB color used by primitive styles.
      */
     struct Color {
-        unsigned char red = 0;
-        unsigned char green = 0;
-        unsigned char blue = 0;
+        std::byte red;
+        std::byte green;
+        std::byte blue;
     };
 
     /**
@@ -145,9 +145,9 @@ namespace editor {
      */
     class PrimitiveFactory {
     public:
-        [[nodiscard]] std::unique_ptr<GraphicPrimitive> CreateLine(
+        [[nodiscard]] static std::unique_ptr<GraphicPrimitive> CreateLine(
             Point start,
             Point end,
-            PrimitiveStyle style = {}) const;
+            PrimitiveStyle style = {});
     };
 } // namespace editor

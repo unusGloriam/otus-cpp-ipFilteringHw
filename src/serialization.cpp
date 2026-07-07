@@ -18,9 +18,9 @@ namespace editor {
             }
 
             return Color{
-                .red = static_cast<unsigned char>(red),
-                .green = static_cast<unsigned char>(green),
-                .blue = static_cast<unsigned char>(blue),
+                .red = static_cast<std::byte>(red),
+                .green = static_cast<std::byte>(green),
+                .blue = static_cast<std::byte>(blue),
             };
         }
 
@@ -31,14 +31,14 @@ namespace editor {
             }
 
             void Visit(const LinePrimitive &line) override {
-                const auto style = line.GetStyle();
-                const auto start = line.GetStart();
-                const auto end = line.GetEnd();
+                const auto [stroke_color, stroke_width] = line.GetStyle();
+                const auto [x_0, y_0] = line.GetStart();
+                const auto [x_1, y_1] = line.GetEnd();
 
-                output_ << "line " << start.x << ' ' << start.y << ' ' << end.x << ' ' << end.y << ' '
-                        << style.stroke_width << ' ' << static_cast<int>(style.stroke_color.red) << ' '
-                        << static_cast<int>(style.stroke_color.green) << ' '
-                        << static_cast<int>(style.stroke_color.blue) << '\n';
+                output_ << "line " << x_0 << ' ' << y_0 << ' ' << x_1 << ' ' << y_1 << ' '
+                        << stroke_width << ' ' << std::to_integer<int>(stroke_color.red) << ' '
+                        << std::to_integer<int>(stroke_color.green) << ' '
+                        << std::to_integer<int>(stroke_color.blue) << '\n';
             }
 
         private:
@@ -46,7 +46,7 @@ namespace editor {
         };
     } // namespace
 
-    Document DocumentSerializer::ImportFromFile(const std::filesystem::path &path) const {
+    Document DocumentSerializer::ImportFromFile(const std::filesystem::path &path) {
         std::ifstream input(path);
         if (!input.is_open()) {
             throw std::runtime_error("cannot open input file");
@@ -57,7 +57,7 @@ namespace editor {
 
     void DocumentSerializer::ExportToFile(
         const Document &document,
-        const std::filesystem::path &path) const {
+        const std::filesystem::path &path) {
         std::ofstream output(path);
         if (!output.is_open()) {
             throw std::runtime_error("cannot open output file");
@@ -66,9 +66,8 @@ namespace editor {
         Export(document, output);
     }
 
-    Document DocumentSerializer::Import(std::istream &input, std::string name) const {
+    Document DocumentSerializer::Import(std::istream &input, std::string name) {
         Document document(std::move(name));
-        PrimitiveFactory factory;
         std::string line;
 
         while (std::getline(input, line)) {
@@ -101,7 +100,7 @@ namespace editor {
                 }
 
                 style.stroke_color = ReadColor(red, green, blue);
-                document.AddPrimitive(factory.CreateLine(start, end, style));
+                document.AddPrimitive(PrimitiveFactory::CreateLine(start, end, style));
                 continue;
             }
 
@@ -115,12 +114,12 @@ namespace editor {
         return document;
     }
 
-    void DocumentSerializer::Export(const Document &document, std::ostream &output) const {
+    void DocumentSerializer::Export(const Document &document, std::ostream &output) {
         output << "document " << document.GetName() << '\n';
 
         ExportVisitor visitor(output);
-        for (const auto &record: document.GetPrimitives()) {
-            record.primitive->Accept(visitor);
+        for (const auto &[id, primitive]: document.GetPrimitives()) {
+            primitive->Accept(visitor);
         }
     }
 } // namespace editor

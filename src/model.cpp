@@ -85,7 +85,7 @@ namespace editor {
     std::unique_ptr<GraphicPrimitive> PrimitiveFactory::CreateLine(
         Point start,
         Point end,
-        PrimitiveStyle style) const {
+        PrimitiveStyle style) {
         return std::make_unique<LinePrimitive>(start, end, style);
     }
 } // namespace editor

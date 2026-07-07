@@ -72,7 +72,10 @@ TEST(Serializer, RoundTripsLineDocument) {
         editor::Point{.x = 2.0, .y = 3.0},
         editor::Point{.x = 5.0, .y = 7.0},
         editor::PrimitiveStyle{
-            .stroke_color = {.red = 10, .green = 20, .blue = 30},
+            .stroke_color = {
+                .red = static_cast<std::byte>(10), .green = static_cast<std::byte>(20),
+                .blue = static_cast<std::byte>(30)
+            },
             .stroke_width = 2.5,
         }));
 
