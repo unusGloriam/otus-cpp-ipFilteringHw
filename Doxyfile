@@ -1,11 +1,13 @@
-PROJECT_NAME           = "print_ip"
-PROJECT_BRIEF          = "Conditional IP address printer"
+PROJECT_NAME           = "editor"
+PROJECT_BRIEF          = "MVC vector editor class layout"
 OUTPUT_DIRECTORY       = docs
-INPUT                  = .
+INPUT                  = include src main.cpp tests
 RECURSIVE              = YES
 EXCLUDE                = cmake-build-debug .git .github .idea docs
 EXTRACT_ALL            = YES
 HAVE_DOT               = YES
+UML_LOOK               = YES
+HIDE_UNDOC_RELATIONS   = NO
 GENERATE_HTML          = YES
 GENERATE_LATEX         = NO
 QUIET                  = YES

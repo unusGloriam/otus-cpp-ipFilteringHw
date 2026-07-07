@@ -1,32 +1,42 @@
-cmake_minimum_required(VERSION 3.12)
+cmake_minimum_required(VERSION 3.20)
 
 set(PATCH_VERSION "1" CACHE INTERNAL "Patch version")
-set(PROJECT_VESRION 0.0.${PATCH_VERSION})
+set(PROJECT_VERSION_VALUE 0.0.${PATCH_VERSION})
 
-project(print_ip VERSION ${PROJECT_VESRION})
-
-add_subdirectory(timus)
+project(editor VERSION ${PROJECT_VERSION_VALUE})
 
 find_package(GTest REQUIRED)
 
-add_executable(print_ip templates.cpp)
-
-set_target_properties(print_ip PROPERTIES
-    CXX_STANDARD 14
-    CXX_STANDARD_REQUIRED ON
+add_library(editor_core
+    src/model.cpp
+    src/serialization.cpp
+    src/view.cpp
+    src/controller.cpp
 )
 
-if (MSVC)
-    target_compile_options(print_ip PRIVATE
-        /W4
-    )
-else ()
-    target_compile_options(print_ip PRIVATE
-        -Wall -Wextra -pedantic -Werror
-    )
-endif()
+target_include_directories(editor_core
+    PUBLIC
+        ${CMAKE_CURRENT_SOURCE_DIR}/include
+)
 
-install(TARGETS print_ip RUNTIME DESTINATION bin)
+target_compile_features(editor_core PUBLIC cxx_std_23)
+
+add_executable(editor main.cpp)
+target_link_libraries(editor PRIVATE editor_core)
+target_compile_features(editor PRIVATE cxx_std_23)
+
+function(enable_project_warnings target_name)
+    if (MSVC)
+        target_compile_options(${target_name} PRIVATE /W4 /WX)
+    else ()
+        target_compile_options(${target_name} PRIVATE -Wall -Wextra -pedantic -Werror)
+    endif()
+endfunction()
+
+enable_project_warnings(editor_core)
+enable_project_warnings(editor)
+
+install(TARGETS editor RUNTIME DESTINATION bin)
 
 set(CPACK_GENERATOR DEB)
 set(CPACK_PACKAGE_VERSION_MAJOR "${PROJECT_VERSION_MAJOR}")
@@ -39,15 +49,17 @@ include(CPack)
 # Тесты
 #
 
-# Рекурсивно ищем все используемые в тестах .cpp файлы
-file(GLOB TEST_SRC_FILES "${CMAKE_SOURCE_DIR}/tests/*.cpp")
-
-add_executable(unit_tests "${TEST_SRC_FILES}")
-target_include_directories(unit_tests PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+add_executable(unit_tests
+    tests/main.cpp
+    tests/editor_architecture_test.cpp
+)
 target_link_libraries(unit_tests
-        PRIVATE
+    PRIVATE
+        editor_core
         GTest::GTest
-        GTest::Main)
+)
+target_compile_features(unit_tests PRIVATE cxx_std_23)
+enable_project_warnings(unit_tests)
 
 # Включаем тестирование
 enable_testing()
