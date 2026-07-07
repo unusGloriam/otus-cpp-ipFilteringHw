@@ -1,32 +1,32 @@
-#include "editor/controller.hpp"
-#include "editor/view.hpp"
+#include "controller.hpp"
+#include "view.hpp"
 
 #include <filesystem>
 
-void OnNewDocument(editor::EditorController& controller) {
+void OnNewDocument(editor::EditorController &controller) {
     controller.NewDocument("demo");
 }
 
 void OnImportDocument(
-    editor::EditorController& controller,
-    const std::filesystem::path& path) {
+    editor::EditorController &controller,
+    const std::filesystem::path &path) {
     controller.ImportDocument(path);
 }
 
 void OnExportDocument(
-    const editor::EditorController& controller,
-    const std::filesystem::path& path) {
+    const editor::EditorController &controller,
+    const std::filesystem::path &path) {
     controller.ExportDocument(path);
 }
 
 editor::PrimitiveId OnCreateLine(
-    editor::EditorController& controller,
+    editor::EditorController &controller,
     editor::Point start,
     editor::Point end) {
     return controller.CreateLine(start, end);
 }
 
-void OnDeletePrimitive(editor::EditorController& controller, editor::PrimitiveId id) {
+void OnDeletePrimitive(editor::EditorController &controller, editor::PrimitiveId id) {
     controller.DeletePrimitive(id);
 }
 

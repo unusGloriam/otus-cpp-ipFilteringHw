@@ -1,7 +1,7 @@
-#include "editor/controller.hpp"
-#include "editor/model.hpp"
-#include "editor/serialization.hpp"
-#include "editor/view.hpp"
+#include "controller.hpp"
+#include "model.hpp"
+#include "serialization.hpp"
+#include "view.hpp"
 
 #include <gtest/gtest.h>
 
@@ -9,27 +9,25 @@
 #include <string>
 
 namespace {
+    class FakeView final : public editor::EditorView {
+    public:
+        void Render(const editor::Document &) override {
+            ++render_count;
+        }
 
-class FakeView final : public editor::EditorView {
-public:
-    void Render(const editor::Document&) override {
-        ++render_count;
-    }
+        void ShowMessage(const std::string &) override {
+            ++message_count;
+        }
 
-    void ShowMessage(const std::string&) override {
-        ++message_count;
-    }
+        void ShowError(const std::string &) override {
+            ++error_count;
+        }
 
-    void ShowError(const std::string&) override {
-        ++error_count;
-    }
-
-    int render_count = 0;
-    int message_count = 0;
-    int error_count = 0;
-};
-
-}  // namespace
+        int render_count = 0;
+        int message_count = 0;
+        int error_count = 0;
+    };
+} // namespace
 
 TEST(EditorArchitecture, HeadersAreSelfContained) {
     SUCCEED();
