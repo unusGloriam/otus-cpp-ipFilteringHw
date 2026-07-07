@@ -7,9 +7,9 @@ namespace editor {
         std::cout << "Document: " << document.GetName() << '\n';
         std::cout << "Primitives: " << document.GetPrimitives().size() << '\n';
 
-        for (const auto &record: document.GetPrimitives()) {
-            std::cout << "  #" << record.id << " type="
-                    << (record.primitive->GetType() == PrimitiveType::Line ? "line" : "unknown")
+        for (const auto &[id, primitive]: document.GetPrimitives()) {
+            std::cout << "  #" << id << " type="
+                    << (primitive->GetType() == PrimitiveType::Line ? "line" : "unknown")
                     << '\n';
         }
     }

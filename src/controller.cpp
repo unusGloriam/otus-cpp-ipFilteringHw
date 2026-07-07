@@ -1,16 +1,13 @@
 #include "controller.hpp"
+#include "serialization.hpp"
 
 #include <exception>
 #include <utility>
 
 namespace editor {
     EditorController::EditorController(
-        EditorView &view,
-        DocumentSerializer serializer,
-        PrimitiveFactory factory)
+        EditorView &view)
         : view_(view),
-          serializer_(std::move(serializer)),
-          factory_(std::move(factory)),
           document_("untitled") {
     }
 
@@ -22,7 +19,7 @@ namespace editor {
 
     void EditorController::ImportDocument(const std::filesystem::path &path) {
         try {
-            document_ = serializer_.ImportFromFile(path);
+            document_ = DocumentSerializer::ImportFromFile(path);
             view_.ShowMessage("Document imported");
             RenderCurrentDocument();
         } catch (const std::exception &exception) {
@@ -32,7 +29,7 @@ namespace editor {
 
     void EditorController::ExportDocument(const std::filesystem::path &path) const {
         try {
-            serializer_.ExportToFile(document_, path);
+            DocumentSerializer::ExportToFile(document_, path);
             view_.ShowMessage("Document exported");
         } catch (const std::exception &exception) {
             view_.ShowError(exception.what());
@@ -41,7 +38,7 @@ namespace editor {
 
     PrimitiveId EditorController::CreateLine(Point start, Point end, PrimitiveStyle style) {
         try {
-            const auto id = document_.AddPrimitive(factory_.CreateLine(start, end, style));
+            const auto id = document_.AddPrimitive(PrimitiveFactory::CreateLine(start, end, style));
             RenderCurrentDocument();
             return id;
         } catch (const std::exception &exception) {
@@ -66,7 +63,7 @@ namespace editor {
         return document_;
     }
 
-    void EditorController::RenderCurrentDocument() {
+    void EditorController::RenderCurrentDocument() const {
         view_.Render(document_);
     }
 } // namespace editor

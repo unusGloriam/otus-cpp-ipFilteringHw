@@ -1,7 +1,6 @@
 #pragma once
 
 #include "model.hpp"
-#include "serialization.hpp"
 #include "view.hpp"
 
 #include <filesystem>
@@ -13,10 +12,7 @@ namespace editor {
      */
     class EditorController {
     public:
-        EditorController(
-            EditorView &view,
-            DocumentSerializer serializer = {},
-            PrimitiveFactory factory = {});
+        explicit EditorController(EditorView &view);
 
         void NewDocument(std::string name = {});
 
@@ -32,10 +28,8 @@ namespace editor {
 
     private:
         EditorView &view_;
-        DocumentSerializer serializer_;
-        PrimitiveFactory factory_;
         Document document_;
 
-        void RenderCurrentDocument();
+        void RenderCurrentDocument() const;
     };
 } // namespace editor

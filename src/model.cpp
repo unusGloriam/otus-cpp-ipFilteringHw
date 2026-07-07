@@ -60,7 +60,7 @@ namespace editor {
         }
 
         const auto id = next_id_++;
-        primitives_.push_back(PrimitiveRecord{.id = id, .primitive = std::move(primitive)});
+        primitives_.emplace_back(id, std::move(primitive));
         return id;
     }
 
