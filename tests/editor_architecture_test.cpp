@@ -51,8 +51,10 @@ TEST(Document, AddsAndRemovesPrimitives) {
 
 TEST(Controller, CreatesAndDeletesLine) {
     using namespace editor;
-    auto view = std::make_unique<FakeView>();
-    EditorController controller(std::move(view));
+    auto view_owner = std::make_unique<FakeView>();
+    // В целях тестирования оставить указатель приемлемо, дабы не переделывать логику вьюхи под тест
+    const auto *view = view_owner.get();
+    EditorController controller(std::move(view_owner));
 
     controller.NewDocument("controller-test");
     const auto id = controller.CreateLine(Point{.x = 0.0, .y = 0.0}, Point{.x = 1.0, .y = 1.0});
