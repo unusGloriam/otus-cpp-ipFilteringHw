@@ -12,7 +12,7 @@ namespace editor {
      */
     class EditorController {
     public:
-        explicit EditorController(EditorView &view);
+        explicit EditorController(std::unique_ptr<EditorView> view);
 
         void NewDocument(std::string name = {});
 
@@ -27,7 +27,7 @@ namespace editor {
         [[nodiscard]] const Document &GetDocument() const;
 
     private:
-        EditorView &view_;
+        std::unique_ptr<EditorView> view_;
         Document document_;
 
         void RenderCurrentDocument() const;

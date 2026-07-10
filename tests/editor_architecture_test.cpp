@@ -51,8 +51,8 @@ TEST(Document, AddsAndRemovesPrimitives) {
 
 TEST(Controller, CreatesAndDeletesLine) {
     using namespace editor;
-    FakeView view;
-    EditorController controller(view);
+    auto view = std::make_unique<FakeView>();
+    EditorController controller(std::move(view));
 
     controller.NewDocument("controller-test");
     const auto id = controller.CreateLine(Point{.x = 0.0, .y = 0.0}, Point{.x = 1.0, .y = 1.0});
@@ -61,7 +61,7 @@ TEST(Controller, CreatesAndDeletesLine) {
     ASSERT_EQ(controller.GetDocument().GetPrimitives().size(), 1LU);
     EXPECT_TRUE(controller.DeletePrimitive(id));
     EXPECT_TRUE(controller.GetDocument().Empty());
-    EXPECT_EQ(view.error_count, 0);
+    EXPECT_EQ(view->error_count, 0);
 }
 
 TEST(Serializer, RoundTripsLineDocument) {

@@ -11,8 +11,8 @@
 namespace editor {
     namespace {
         Color ReadColor(int red, int green, int blue) {
-            constexpr int max_channel = 255;
-            if (red < 0 || red > max_channel || green < 0 || green > max_channel || blue < 0 ||
+            if (constexpr int max_channel = 255;
+                red < 0 || red > max_channel || green < 0 || green > max_channel || blue < 0 ||
                 blue > max_channel) {
                 throw std::runtime_error("invalid color channel");
             }

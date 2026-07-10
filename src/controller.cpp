@@ -2,37 +2,36 @@
 #include "serialization.hpp"
 
 #include <exception>
-#include <utility>
 
 namespace editor {
     EditorController::EditorController(
-        EditorView &view)
-        : view_(view),
+        std::unique_ptr<EditorView> view)
+        : view_(std::move(view)),
           document_("untitled") {
     }
 
     void EditorController::NewDocument(std::string name) {
         document_ = Document(std::move(name));
-        view_.ShowMessage("New document created");
+        if (view_) view_->ShowMessage("New document created");
         RenderCurrentDocument();
     }
 
     void EditorController::ImportDocument(const std::filesystem::path &path) {
         try {
             document_ = DocumentSerializer::ImportFromFile(path);
-            view_.ShowMessage("Document imported");
+            if (view_) view_->ShowMessage("Document imported");
             RenderCurrentDocument();
         } catch (const std::exception &exception) {
-            view_.ShowError(exception.what());
+            if (view_) view_->ShowError(exception.what());
         }
     }
 
     void EditorController::ExportDocument(const std::filesystem::path &path) const {
         try {
             DocumentSerializer::ExportToFile(document_, path);
-            view_.ShowMessage("Document exported");
+            if (view_) view_->ShowMessage("Document exported");
         } catch (const std::exception &exception) {
-            view_.ShowError(exception.what());
+            if (view_) view_->ShowError(exception.what());
         }
     }
 
@@ -42,7 +41,7 @@ namespace editor {
             RenderCurrentDocument();
             return id;
         } catch (const std::exception &exception) {
-            view_.ShowError(exception.what());
+            if (view_) view_->ShowError(exception.what());
             return 0;
         }
     }
@@ -50,10 +49,10 @@ namespace editor {
     bool EditorController::DeletePrimitive(PrimitiveId id) {
         const auto removed = document_.RemovePrimitive(id);
         if (removed) {
-            view_.ShowMessage("Primitive deleted");
+            if (view_) view_->ShowMessage("Primitive deleted");
             RenderCurrentDocument();
         } else {
-            view_.ShowError("Primitive not found");
+            if (view_) view_->ShowError("Primitive not found");
         }
 
         return removed;
@@ -64,6 +63,6 @@ namespace editor {
     }
 
     void EditorController::RenderCurrentDocument() const {
-        view_.Render(document_);
+        if (view_) view_->Render(document_);
     }
 } // namespace editor

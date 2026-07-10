@@ -26,8 +26,8 @@ void OnDeletePrimitive(EditorController &controller, PrimitiveId id) {
 }
 
 int main() {
-    ConsoleView view;
-    EditorController controller(view);
+    auto view = std::make_unique<ConsoleView>();
+    EditorController controller(std::move(view));
 
     const auto demo_file = std::filesystem::temp_directory_path() / "editor_demo.vec";
 
