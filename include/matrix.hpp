@@ -31,16 +31,21 @@ class Matrix {
     template<std::size_t>
     using coordinate_type = size_t;
 
+    template<typename IndexSequence>
+    struct tuple_type;
+
     template<std::size_t... Indexes>
-    static auto tuple_type(std::index_sequence<Indexes...>)
-        -> std::tuple<coordinate_type<Indexes>..., T> {
-        return {};
-    }
+    struct tuple_type<std::index_sequence<Indexes...>> {
+        using type = std::tuple<coordinate_type<Indexes>..., T>;
+    };
+
+    template<typename IndexSequence>
+    using tuple_type_t = tuple_type<IndexSequence>::type;
 
     template<std::size_t... Indexes>
     static auto make_value(const Position &position, const T &value,
                            std::index_sequence<Indexes...>)
-        -> std::tuple<coordinate_type<Indexes>..., T> {
+        -> tuple_type_t<std::index_sequence<Indexes...>> {
         return {position[Indexes]..., value};
     }
 
@@ -101,7 +106,7 @@ class Matrix {
     };
 
 public:
-    using value_type = decltype(tuple_type(std::make_index_sequence<Dimensions>{}));
+    using value_type = tuple_type_t<std::make_index_sequence<Dimensions>>;
 
     explicit Matrix(T default_value = DefaultValue) {
         state_->default_value = default_value;
