@@ -25,3 +25,16 @@ TEST(Matrix, IteratesOverOccupiedCells) {
     EXPECT_EQ(y, 100);
     EXPECT_EQ(value, 217);
 }
+
+TEST(Matrix, SupportsArbitraryDimensions) {
+    Matrix<int, 0, 3> matrix;
+    matrix[-1][2][3] = 42;
+
+    EXPECT_EQ(matrix[-1][2][3], 42);
+    ASSERT_EQ(matrix.size(), 1u);
+    const auto [x, y, z, value] = *matrix.begin();
+    EXPECT_EQ(x, -1);
+    EXPECT_EQ(y, 2);
+    EXPECT_EQ(z, 3);
+    EXPECT_EQ(value, 42);
+}

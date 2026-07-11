@@ -1,17 +1,24 @@
 #ifndef MATRIX_MATRIX_HPP
 #define MATRIX_MATRIX_HPP
 
-#include <map>
+#include <array>
+#include <cstddef>
 #include <iterator>
+#include <map>
 #include <memory>
 #include <tuple>
 #include <utility>
 
 
-/// Represents a 2D matrix with customizable default value.
-template <typename T = int, T DefaultValue = T{-1}>
+/// N-мерная матрица.
+/// T - Тип элементов матрицы.
+/// DefaultValue - Значение по умолчанию.
+/// Dimensions - Количество измерений.
+template<typename T = int, T DefaultValue = T{-1}, std::size_t Dimensions = 2>
 class Matrix {
-    using Position = std::pair<int, int>;
+    static_assert(Dimensions > 0, "Matrix must have at least one dimension");
+
+    using Position = std::array<size_t, Dimensions>;
     using Storage = std::map<Position, T>;
 
     struct State {
@@ -21,21 +28,39 @@ class Matrix {
 
     std::shared_ptr<State> state_ = std::make_shared<State>();
 
+    template<std::size_t... Indexes>
+    static auto tuple_type(std::index_sequence<Indexes...>)
+        -> std::tuple<decltype(Indexes, size_t{})..., T> {
+        return {};
+    }
+
+    template<std::size_t... Indexes>
+    static auto make_value(const Position &position, const T &value,
+                           std::index_sequence<Indexes...>)
+        -> std::tuple<decltype(Indexes, size_t{})..., T> {
+        return {position[Indexes]..., value};
+    }
+
     class Cell {
         std::shared_ptr<State> state_;
-        Position position_;
+        Position position_{};
 
     public:
-        Cell(std::shared_ptr<State> state, int x, int y)
-            : state_(std::move(state)), position_(x, y) {}
+        Cell(std::shared_ptr<State> state, Position position)
+            : state_(std::move(state)), position_(position) {
+        }
 
-        Cell(const Cell&) = default;
-        Cell(Cell&&) noexcept = default;
-        Cell& operator=(const Cell&) = default;
-        Cell& operator=(Cell&&) noexcept = default;
+        Cell(const Cell &) = default;
+
+        Cell(Cell &&) noexcept = default;
+
+        Cell &operator=(const Cell &) = default;
+
+        Cell &operator=(Cell &&) noexcept = default;
+
         ~Cell() = default;
 
-        Cell& operator=(const T& value) {
+        Cell &operator=(const T &value) {
             if (value == state_->default_value) {
                 state_->cells.erase(position_);
             } else {
@@ -51,54 +76,88 @@ class Matrix {
         }
     };
 
-    class Row {
+    template<std::size_t Remaining>
+    class IndexProxy {
         std::shared_ptr<State> state_;
-        int x_;
+        Position position_;
 
     public:
-        Row(std::shared_ptr<State> state, int x) : state_(std::move(state)), x_(x) {}
-        Cell operator[](int y) { return Cell(state_, x_, y); }
+        IndexProxy(std::shared_ptr<State> state, Position position)
+            : state_(std::move(state)), position_(position) {
+        }
+
+        auto operator[](int index) {
+            Position next = position_;
+            next[Dimensions - Remaining] = index;
+            if constexpr (Remaining == 1) {
+                return Cell(state_, next);
+            } else {
+                return IndexProxy<Remaining - 1>(state_, next);
+            }
+        }
     };
 
 public:
-    using value_type = std::tuple<int, int, T>;
+    using value_type = decltype(tuple_type(std::make_index_sequence<Dimensions>{}));
 
     explicit Matrix(T default_value = DefaultValue) {
         state_->default_value = default_value;
     }
 
-    Matrix(const Matrix& other) : state_(std::make_shared<State>(*other.state_)) {}
-    Matrix& operator=(const Matrix& other) {
+    Matrix(const Matrix &other) : state_(std::make_shared<State>(*other.state_)) {
+    }
+
+    Matrix &operator=(const Matrix &other) {
         if (this != &other) state_ = std::make_shared<State>(*other.state_);
         return *this;
     }
-    Matrix(Matrix&&) noexcept = default;
-    Matrix& operator=(Matrix&&) noexcept = default;
+
+    Matrix(Matrix &&) noexcept = default;
+
+    Matrix &operator=(Matrix &&) noexcept = default;
+
     ~Matrix() = default;
 
-    Row operator[](int x) { return Row(state_, x); }
+    auto operator[](int index) {
+        Position position{};
+        position[0] = index;
+        if constexpr (Dimensions == 1) {
+            return Cell(state_, position);
+        } else {
+            return IndexProxy<Dimensions - 1>(state_, position);
+        }
+    }
 
     [[nodiscard]] std::size_t size() const { return state_->cells.size(); }
 
-    class const_iterator {
-        Storage::const_iterator current_;
+    class iterator {
+        Storage::iterator current_;
 
     public:
         using iterator_category = std::forward_iterator_tag;
-        using value_type = std::tuple<int, int, T>;
+        // ReSharper disable once CppRedundantQualifier ошибка clang-tidy
+        using value_type = Matrix::value_type;
         using difference_type = std::ptrdiff_t;
 
-        explicit const_iterator(Storage::const_iterator current) : current_(current) {}
-        value_type operator*() const { return {current_->first.first, current_->first.second, current_->second}; }
-        const_iterator& operator++() { ++current_; return *this; }
-        bool operator==(const const_iterator& other) const { return current_ == other.current_; }
-        bool operator!=(const const_iterator& other) const { return !(*this == other); }
+        explicit iterator(Storage::iterator current) : current_(current) {
+        }
+
+        value_type operator*() const {
+            return make_value(current_->first, current_->second,
+                              std::make_index_sequence<Dimensions>{});
+        }
+
+        iterator &operator++() {
+            ++current_;
+            return *this;
+        }
+
+        bool operator==(const iterator &other) const { return current_ == other.current_; }
+        bool operator!=(const iterator &other) const { return !(*this == other); }
     };
 
-    const_iterator begin() const { return const_iterator(state_->cells.cbegin()); }
-    const_iterator end() const { return const_iterator(state_->cells.cend()); }
-    const_iterator cbegin() const { return begin(); }
-    const_iterator cend() const { return end(); }
+    iterator begin() { return iterator(state_->cells.begin()); }
+    iterator end() { return iterator(state_->cells.end()); }
 };
 
 #endif
