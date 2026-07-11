@@ -28,16 +28,19 @@ class Matrix {
 
     std::shared_ptr<State> state_ = std::make_shared<State>();
 
+    template<std::size_t>
+    using coordinate_type = size_t;
+
     template<std::size_t... Indexes>
     static auto tuple_type(std::index_sequence<Indexes...>)
-        -> std::tuple<decltype(Indexes, size_t{})..., T> {
+        -> std::tuple<coordinate_type<Indexes>..., T> {
         return {};
     }
 
     template<std::size_t... Indexes>
     static auto make_value(const Position &position, const T &value,
                            std::index_sequence<Indexes...>)
-        -> std::tuple<decltype(Indexes, size_t{})..., T> {
+        -> std::tuple<coordinate_type<Indexes>..., T> {
         return {position[Indexes]..., value};
     }
 
