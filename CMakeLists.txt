@@ -3,27 +3,24 @@ cmake_minimum_required(VERSION 3.20)
 set(PATCH_VERSION "1" CACHE INTERNAL "Patch version")
 set(PROJECT_VERSION_VALUE 0.0.${PATCH_VERSION})
 
-project(editor VERSION ${PROJECT_VERSION_VALUE})
+project(matrix VERSION ${PROJECT_VERSION_VALUE})
 
 find_package(GTest REQUIRED)
 
-add_library(editor_core
-    src/model.cpp
-    src/serialization.cpp
-    src/view.cpp
-    src/controller.cpp
+add_library(matrix_core
+        src/matrix.cpp
 )
 
-target_include_directories(editor_core
+target_include_directories(matrix_core
     PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}/include
 )
 
-target_compile_features(editor_core PUBLIC cxx_std_23)
+target_compile_features(matrix_core PUBLIC cxx_std_23)
 
-add_executable(editor main.cpp)
-target_link_libraries(editor PRIVATE editor_core)
-target_compile_features(editor PRIVATE cxx_std_23)
+add_executable(matrix main.cpp)
+target_link_libraries(matrix PRIVATE matrix_core)
+target_compile_features(matrix PRIVATE cxx_std_23)
 
 function(enable_project_warnings target_name)
     if (MSVC)
@@ -33,10 +30,10 @@ function(enable_project_warnings target_name)
     endif()
 endfunction()
 
-enable_project_warnings(editor_core)
-enable_project_warnings(editor)
+enable_project_warnings(matrix_core)
+enable_project_warnings(matrix)
 
-install(TARGETS editor RUNTIME DESTINATION bin)
+install(TARGETS matrix RUNTIME DESTINATION bin)
 
 set(CPACK_GENERATOR DEB)
 set(CPACK_PACKAGE_VERSION_MAJOR "${PROJECT_VERSION_MAJOR}")
@@ -51,11 +48,11 @@ include(CPack)
 
 add_executable(unit_tests
     tests/main.cpp
-    tests/editor_architecture_test.cpp
+        tests/matrix_test.cpp
 )
 target_link_libraries(unit_tests
     PRIVATE
-        editor_core
+        matrix_core
         GTest::GTest
 )
 target_compile_features(unit_tests PRIVATE cxx_std_23)

@@ -1,4 +1,4 @@
-PROJECT_NAME           = "editor"
+PROJECT_NAME           = "matrix"
 PROJECT_BRIEF          = "MVC vector editor class layout"
 OUTPUT_DIRECTORY       = docs
 INPUT                  = include src main.cpp tests
