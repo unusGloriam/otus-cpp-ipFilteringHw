@@ -29,6 +29,12 @@ class Matrix {
         Cell(std::shared_ptr<State> state, int x, int y)
             : state_(std::move(state)), position_(x, y) {}
 
+        Cell(const Cell&) = default;
+        Cell(Cell&&) noexcept = default;
+        Cell& operator=(const Cell&) = default;
+        Cell& operator=(Cell&&) noexcept = default;
+        ~Cell() = default;
+
         Cell& operator=(const T& value) {
             if (value == state_->default_value) {
                 state_->cells.erase(position_);
@@ -66,6 +72,9 @@ public:
         if (this != &other) state_ = std::make_shared<State>(*other.state_);
         return *this;
     }
+    Matrix(Matrix&&) noexcept = default;
+    Matrix& operator=(Matrix&&) noexcept = default;
+    ~Matrix() = default;
 
     Row operator[](int x) { return Row(state_, x); }
 
