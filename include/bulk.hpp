@@ -8,7 +8,9 @@
 
 #include <chrono>
 #include <cstddef>
+#include <filesystem>
 #include <functional>
+#include <iostream>
 #include <optional>
 #include <string>
 #include <variant>
@@ -105,6 +107,91 @@ namespace bulk {
 
         /** @brief Удаляет накопленные команды без формирования пачки. */
         void discard() noexcept;
+    };
+
+    /**
+     * @brief Интерфейс получателя готовых пачек.
+     *
+     * Накопление команд не зависит от конкретного способа вывода: консоль,
+     * файл и их композиция реализуют один и тот же интерфейс.
+     */
+    class IBulkSink {
+    public:
+        /** @brief Обеспечивает корректное полиморфное уничтожение получателя. */
+        virtual ~IBulkSink() = default;
+
+        /**
+         * @brief Записывает одну готовую пачку.
+         * @param command_bulk Пачка, доступная только на время вызова.
+         * @throws std::exception Реализация может сообщить об ошибке вывода.
+         */
+        virtual void write(const CommandBulk &command_bulk) = 0;
+    };
+
+    /** @brief Выводит каждую пачку команд в заданный поток и немедленно сбрасывает его буфер. */
+    class ConsoleBulkSink final : public IBulkSink {
+    public:
+        /**
+         * @brief Создаёт консольный получатель.
+         * @param output Поток вывода; должен существовать дольше объекта. По умолчанию std::cout
+         * @note Класс хранит ссылку и не владеет потоком.
+         */
+        explicit ConsoleBulkSink(std::ostream &output = std::cout) noexcept;
+
+        /**
+         * @brief Записывает форматированную пачку и перевод строки.
+         * @param command_bulk Пачка для вывода.
+         * @throws std::runtime_error Если запись в поток завершилась ошибкой.
+         */
+        void write(const CommandBulk &command_bulk) override;
+    };
+
+    /** @brief Сохраняет каждую пачку команд в отдельный log-файл. */
+    class FileBulkSink final : public IBulkSink {
+    public:
+        /**
+         * @brief Создаёт файловый получатель.
+         * @param output_directory Каталог для log-файлов; пустой путь означает `.`.
+         * @note Каталог создаётся при первой записи, а не в конструкторе.
+         */
+        explicit FileBulkSink(std::filesystem::path output_directory = ".");
+
+        /**
+         * @brief Записывает пачку в файл `bulk<timestamp>.log`.
+         * @param command_bulk Пачка для записи; timestamp берётся из `started_at`.
+         * @throws std::filesystem::filesystem_error При ошибке работы с каталогом.
+         * @throws std::runtime_error При ошибке открытия или записи файла.
+         */
+        void write(const CommandBulk &command_bulk) override;
+
+    private:
+        /** @brief Формирует имя файла для пачки команд. */
+        [[nodiscard]] std::filesystem::path file_path(TimePoint started_at) const;
+    };
+
+    /**
+     * @brief Передаёт одну пачку нескольким получателям в заданном порядке.
+     *
+     * Класс не владеет получателями. `std::reference_wrapper` нужен потому, что
+     * стандартный контейнер не может хранить обычные ссылки. Он хранит только
+     * ненулевую ссылку и не копирует объект `IBulkSink`; все получатели должны
+     * существовать дольше композиции.
+     */
+    class CompositeBulkSink final : public IBulkSink {
+    public:
+        /**
+         * @brief Создаёт композицию получателей.
+         * @param sinks Непустой набор не владеющих ссылок на получателей.
+         * @throws std::invalid_argument Если набор пуст.
+         */
+        explicit CompositeBulkSink(std::vector<std::reference_wrapper<IBulkSink> > sinks);
+
+        /**
+         * @brief Передаёт пачку каждому получателю.
+         * @param command_bulk Пачка для вывода.
+         * @throws std::exception Если возникает ошибка при записи в получателе.
+         */
+        void write(const CommandBulk &command_bulk) override;
     };
 } // namespace bulk
 
