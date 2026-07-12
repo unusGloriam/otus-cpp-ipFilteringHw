@@ -3,16 +3,22 @@
 
 /**
  * @file bulk.hpp
- * @brief Разбор входных строк и накопление блоков команд.
+ * @brief Компоненты пакетной обработки строковых команд.
+ *
+ * Основной поток данных выглядит так:
+ * `process_stream` читает строки, `BulkController` преобразует их в события,
+ * `BulkAccumulator` формирует пачки команд, а реализации `IBulkSink` выводят результат.
  */
 
 #include <chrono>
 #include <cstddef>
 #include <filesystem>
 #include <functional>
+#include <iosfwd>
 #include <iostream>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <variant>
 #include <vector>
 
@@ -66,6 +72,13 @@ namespace bulk {
     };
 
     /**
+     * @brief Формирует строковое представление пачки.
+     * @param command_bulk Пачка команд.
+     * @return Строка вида `bulk: cmd1, cmd2` без завершающего перевода строки.
+     */
+    [[nodiscard]] std::string format_bulk(const CommandBulk &command_bulk);
+
+    /**
      * @brief Накапливает команды и реализует правила статических и динамических пачек.
      *
      * Класс ничего не выводит: при завершении пачки он передаёт владение её
@@ -107,6 +120,11 @@ namespace bulk {
 
         /** @brief Удаляет накопленные команды без формирования пачки. */
         void discard() noexcept;
+
+        std::size_t static_batch_size_;
+        std::size_t dynamic_depth_{0};
+        std::vector<std::string> commands_;
+        std::optional<TimePoint> started_at_;
     };
 
     /**
@@ -144,6 +162,9 @@ namespace bulk {
          * @throws std::runtime_error Если запись в поток завершилась ошибкой.
          */
         void write(const CommandBulk &command_bulk) override;
+
+    private:
+        std::ostream &output_;
     };
 
     /** @brief Сохраняет каждую пачку команд в отдельный log-файл. */
@@ -167,6 +188,8 @@ namespace bulk {
     private:
         /** @brief Формирует имя файла для пачки команд. */
         [[nodiscard]] std::filesystem::path file_path(TimePoint started_at) const;
+
+        std::filesystem::path output_directory_;
     };
 
     /**
@@ -192,6 +215,9 @@ namespace bulk {
          * @throws std::exception Если возникает ошибка при записи в получателе.
          */
         void write(const CommandBulk &command_bulk) override;
+
+    private:
+        std::vector<std::reference_wrapper<IBulkSink> > sinks_;
     };
 
     /**
@@ -227,7 +253,34 @@ namespace bulk {
          * @throws std::exception Исключения получателя передаются наружу.
          */
         void finish();
+
+    private:
+        BulkAccumulator accumulator_;
+        IBulkSink &sink_;
+        bool finished_{false};
     };
+
+    /**
+     * @brief Разбирает размер статической пачки из аргумента командной строки.
+     * @param value Строка, которая должна целиком состоять из цифр и задавать
+     *        положительное число, представимое типом `std::size_t`.
+     * @return Разобранный размер или `std::nullopt` для некорректной строки.
+     */
+    [[nodiscard]] std::optional<std::size_t> parse_batch_size(
+        std::string_view value) noexcept;
+
+    /**
+     * @brief Читает команды до нормального EOF и завершает контроллер.
+     * @param input Входной поток, читаемый построчно.
+     * @param controller Контроллер, получающий прочитанные строки.
+     * @param clock Источник времени; пустое значение заменяется на
+     *        `std::chrono::system_clock::now`.
+     * @throws std::runtime_error Если чтение остановилось не из-за EOF.
+     * @throws std::exception Исключения clock, контроллера и получателя
+     *         передаются наружу.
+     */
+    void process_stream(std::istream &input, BulkController &controller,
+                        Clock clock = {});
 } // namespace bulk
 
 #endif
