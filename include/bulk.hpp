@@ -193,6 +193,41 @@ namespace bulk {
          */
         void write(const CommandBulk &command_bulk) override;
     };
+
+    /**
+     * @brief Связывает разбор строки, накопление пачки и её вывод.
+     *
+     * Контроллер владеет накопителем, но не владеет получателем `IBulkSink`.
+     */
+    class BulkController final {
+    public:
+        /**
+         * @brief Создаёт контроллер пакетной обработки.
+         * @param static_batch_size Размер статической пачки, больший нуля.
+         * @param sink Получатель пачек; должен существовать дольше контроллера.
+         * @throws std::invalid_argument Если размер пачки равен нулю.
+         */
+        BulkController(std::size_t static_batch_size, IBulkSink &sink);
+
+        /**
+         * @brief Обрабатывает одну исходную строку и при необходимости выводит пачку.
+         * @param line Строка без символа перевода строки.
+         * @param received_at Время получения строки.
+         * @throws std::logic_error Если обработка входа уже завершена методом `finish`.
+         * @throws std::exception Исключения накопителя и получателя передаются наружу.
+         */
+        void process_line(std::string line, TimePoint received_at);
+
+        /**
+         * @brief Сообщает о EOF конце ввода.
+         *
+         * Неполная статическая пачка выводится, незакрытая динамическая — удаляется.
+         * Повторный успешный вызов ничего не делает.
+         *
+         * @throws std::exception Исключения получателя передаются наружу.
+         */
+        void finish();
+    };
 } // namespace bulk
 
 #endif
