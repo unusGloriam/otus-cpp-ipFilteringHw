@@ -44,6 +44,10 @@ namespace bulk {
 
     std::optional<CommandBulk> BulkAccumulator::accept(ParsedLine line,
                                                        const TimePoint received_at) {
+        if (std::holds_alternative<CloseDynamicBlock>(line) && dynamic_depth_ == 0) {
+            line = Command{"}"};
+        }
+
         if (std::holds_alternative<Command>(line)) {
             if (commands_.empty()) {
                 started_at_ = received_at;
@@ -62,15 +66,11 @@ namespace bulk {
             return pending_bulk;
         }
 
-        /// TODO: } при dynamic_depth_ == 0 стоит воспринимать как команду. И почему мы не обрабатываем CloseDynamicBlock?
-        // An unmatched closing brace is a control token with no block to close.
-        if (dynamic_depth_ == 0) {
-            return std::nullopt;
-        }
-
-        --dynamic_depth_;
-        if (dynamic_depth_ == 0) {
-            return release();
+        if (std::holds_alternative<CloseDynamicBlock>(line)) {
+            --dynamic_depth_;
+            if (dynamic_depth_ == 0) {
+                return release();
+            }
         }
         return std::nullopt;
     }
