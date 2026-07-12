@@ -1,5 +1,5 @@
 PROJECT_NAME           = "bulk"
-PROJECT_BRIEF          = "MVC vector editor class layout"
+PROJECT_BRIEF          = "Batch command parser and logger"
 OUTPUT_DIRECTORY       = docs
 INPUT                  = include src main.cpp tests
 RECURSIVE              = YES

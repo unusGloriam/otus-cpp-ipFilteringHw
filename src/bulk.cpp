@@ -44,6 +44,7 @@ namespace bulk {
 
     std::optional<CommandBulk> BulkAccumulator::accept(ParsedLine line,
                                                        const TimePoint received_at) {
+        /// Про } при отсутствующем { не сказано в задании, считать ли ошибкой. Пусть это воспринимается как команда.
         if (std::holds_alternative<CloseDynamicBlock>(line) && dynamic_depth_ == 0) {
             line = Command{"}"};
         }
