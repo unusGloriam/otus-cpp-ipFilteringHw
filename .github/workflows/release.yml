@@ -1,0 +1,50 @@
+name: Build and Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build in Docker
+        run: |
+          # 1. Собираем образ
+          docker build -t builder .
+          
+          # 2. Создаем временный контейнер для копирования файлов
+          docker create --name extractor builder
+          
+          # 3. Подготавливаем папки на сервере GitHub
+          mkdir -p dist
+          
+          # 4. Копируем .deb пакет из папки /output контейнера
+          docker cp extractor:/output/. ./dist/
+          
+          # 5. Копируем документацию. 
+          # Путь /build/docs/html так как в Doxyfile OUTPUT_DIRECTORY = docs
+          docker cp extractor:/build/docs/html/. ./dist-docs
+          
+          # 6. Удаляем контейнер
+          docker rm extractor
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          files: dist/*.deb
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4
+        with:
+          folder: dist-docs
+          branch: gh-pages

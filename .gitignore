@@ -1,0 +1,12 @@
+**/.idea/
+**/.settings/
+**/.vscode/
+**/build/
+**/debug/
+**/release/
+html/
+latex/
+*.deb
+dist/
+output/
+*.pdb
