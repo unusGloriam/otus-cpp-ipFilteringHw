@@ -1,0 +1,39 @@
+\doxysection{statistics.\+hpp}
+\hypertarget{statistics_8hpp_source}{}\label{statistics_8hpp_source}\index{src/statistics.hpp@{src/statistics.hpp}}
+\doxymbox{\hyperlink{statistics_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <sstream>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <cmath>}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00010\ \textcolor{keyword}{struct\ }\doxymbox{\hyperlink{struct_stats}{Stats}}\ \{}
+\DoxyCodeLine{00011\ \ \ \ \ \textcolor{keywordtype}{double}\ \doxymbox{\hyperlink{struct_stats_a8aa5f868096fac761e50789d864d88f5}{sum}}\ =\ 0.0;}
+\DoxyCodeLine{00012\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ \doxymbox{\hyperlink{struct_stats_a2cfa514e4a4693d1317dc35462b25460}{count}}\ =\ 0;}
+\DoxyCodeLine{00013\ \ \ \ \ \textcolor{keywordtype}{double}\ \doxymbox{\hyperlink{struct_stats_aca6a3cd78fcdfc6bca09219ee0b20e44}{sum\_sq}}\ =\ 0.0;\ \textcolor{comment}{//\ Сумма\ квадратов\ для\ дисперсии}}
+\DoxyCodeLine{00014\ \ \ \ \ }
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{struct_stats_a4ecfbe3fb64154e918863a6426513f68}{add}}(\textcolor{keywordtype}{double}\ value);}
+\DoxyCodeLine{00019\ \ \ \ \ }
+\DoxyCodeLine{00023\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{struct_stats_af2c1339bb57974ace6fee422413c14d6}{merge}}(\textcolor{keyword}{const}\ \doxymbox{\hyperlink{struct_stats}{Stats}}\&\ other);}
+\DoxyCodeLine{00024\ \ \ \ \ }
+\DoxyCodeLine{00028\ \ \ \ \ \textcolor{keywordtype}{double}\ \doxymbox{\hyperlink{struct_stats_ada6439100a88cf0b9e4733a62a8f2a96}{mean}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00029\ \ \ \ \ }
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordtype}{double}\ \doxymbox{\hyperlink{struct_stats_a47ff11f6b97742ed8bc36325aa999fb4}{variance}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00034\ \ \ \ \ }
+\DoxyCodeLine{00038\ \ \ \ \ \textcolor{keywordtype}{double}\ \doxymbox{\hyperlink{struct_stats_a8924c3589d7815e84c91c7160bfe9566}{stddev}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00039\ \ \ \ \ }
+\DoxyCodeLine{00043\ \ \ \ \ std::string\ \doxymbox{\hyperlink{struct_stats_a21e35126440359c0e0e8937c80ca290e}{serialize}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00044\ \ \ \ \ }
+\DoxyCodeLine{00048\ \ \ \ \ \textcolor{keyword}{static}\ \doxymbox{\hyperlink{struct_stats}{Stats}}\ \doxymbox{\hyperlink{struct_stats_ad5c70aebb63a711a9bf74aa59ed6e04e}{deserialize}}(\textcolor{keyword}{const}\ std::string\&\ str);}
+\DoxyCodeLine{00049\ \};}
+\DoxyCodeLine{00050\ }
+\DoxyCodeLine{00054\ \textcolor{keyword}{struct\ }\doxymbox{\hyperlink{struct_key_value}{KeyValue}}\ \{}
+\DoxyCodeLine{00055\ \ \ \ \ std::string\ \doxymbox{\hyperlink{struct_key_value_a715dfb275608ae7f4ed5af5db0efcbf4}{key}};}
+\DoxyCodeLine{00056\ \ \ \ \ \doxymbox{\hyperlink{struct_stats}{Stats}}\ \doxymbox{\hyperlink{struct_key_value_a42dcf8a834c92a8cfc0c302b6a23686a}{stats}};}
+\DoxyCodeLine{00057\ \ \ \ \ }
+\DoxyCodeLine{00058\ \ \ \ \ std::string\ \doxymbox{\hyperlink{struct_key_value_aaab23d03d7ff6b1f1b5a3928dd8f2fff}{serialize}}()\ \textcolor{keyword}{const};}
+\DoxyCodeLine{00059\ \ \ \ \ \textcolor{keyword}{static}\ \doxymbox{\hyperlink{struct_key_value}{KeyValue}}\ \doxymbox{\hyperlink{struct_key_value_a516f82f9a95340d13e5c2a734bca866c}{deserialize}}(\textcolor{keyword}{const}\ std::string\&\ line);}
+\DoxyCodeLine{00060\ \};}
+
+\end{DoxyCode}

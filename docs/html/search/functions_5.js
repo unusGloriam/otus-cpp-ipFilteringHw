@@ -1,6 +1,4 @@
 var searchData=
 [
-  ['parseline_0',['parseLine',['../namespacecsv.html#a7f2ce68a9b9d16ebd06eec8289d5c6cb',1,'csv']]],
-  ['parsemode_1',['parseMode',['../main_8cpp.html#a3e9502d444d28f3fc8afe55e9cbb51d9',1,'main.cpp']]],
-  ['printhelp_2',['printHelp',['../main_8cpp.html#a0d20b69b0ad703df78459e1033d5c1d4',1,'main.cpp']]]
+  ['splitdata_0',['splitData',['../utils_8cpp.html#a8f8a2c2571af977576f0ff4fd742e24b',1,'splitData(const std::vector&lt; std::vector&lt; double &gt; &gt; &amp;data, std::vector&lt; std::vector&lt; double &gt; &gt; &amp;X, std::vector&lt; int &gt; &amp;y):&#160;utils.cpp'],['../utils_8hpp.html#a8f8a2c2571af977576f0ff4fd742e24b',1,'splitData(const std::vector&lt; std::vector&lt; double &gt; &gt; &amp;data, std::vector&lt; std::vector&lt; double &gt; &gt; &amp;X, std::vector&lt; int &gt; &amp;y):&#160;utils.cpp']]]
 ];

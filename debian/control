@@ -1,12 +1,12 @@
-Source: mapreduce
+Source: fashion-mnist
 Section: libs
 Priority: optional
 Maintainer: oshkines <oshkines@mail.ru>
 Build-Depends: debhelper-compat (= 13), cmake, g++
 Standards-Version: 4.6.0
 
-Package: mapreduce
+Package: fashion-mnist
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: mapreduce – Вычисляет среднее и дисперсию в парадигме map-reduce.
+Description: fashion-mnist – В данном задании вам предстоит реализовать инференс ML модели компьютерного зрения для классификации изображений предметов гардероба по типу.
  This is a student project for C++ course.

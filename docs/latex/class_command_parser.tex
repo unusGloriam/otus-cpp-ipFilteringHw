@@ -1,0 +1,75 @@
+\doxysection{Command\+Parser Class Reference}
+\hypertarget{class_command_parser}{}\label{class_command_parser}\index{CommandParser@{CommandParser}}
+
+
+{\ttfamily \+\#include $<$Command\+Parser.\+hpp$>$}
+
+
+
+Collaboration diagram for Command\+Parser:\+
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=181pt]{class_command_parser__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Types}
+\begin{DoxyCompactItemize}
+\item 
+using \doxymbox{\hyperlink{class_command_parser_aa9c456e891cd55475da842d5f00c0b63}{Command\+Callback}} = std::\+function$<$std::\+string(const std::\+vector$<$std::\+string$>$\&)$>$
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_command_parser_a1fd17c361d85ec13c212cbac1999b9b3}{Command\+Parser}} ()
+\item 
+void \doxymbox{\hyperlink{class_command_parser_ace2520105bdd1ed76ee4e8d7a0973674}{register\+Command}} (const std::\+string \&name, \doxymbox{\hyperlink{class_command_parser_aa9c456e891cd55475da842d5f00c0b63}{Command\+Callback}} callback)
+\item 
+std::\+string \doxymbox{\hyperlink{class_command_parser_a00a0d608133eec8fbf6f039e03223832}{parse}} (const std::\+string \&command)
+\end{DoxyCompactItemize}
+
+
+\label{class_command_parser_doc-typedef-members}
+\Hypertarget{class_command_parser_doc-typedef-members}
+\doxysubsection{Member Typedef Documentation}
+\Hypertarget{class_command_parser_aa9c456e891cd55475da842d5f00c0b63}\index{CommandParser@{CommandParser}!CommandCallback@{CommandCallback}}
+\index{CommandCallback@{CommandCallback}!CommandParser@{CommandParser}}
+\doxysubsubsection{\texorpdfstring{CommandCallback}{CommandCallback}}
+{\footnotesize\ttfamily \label{class_command_parser_aa9c456e891cd55475da842d5f00c0b63} 
+using \doxymbox{\hyperlink{class_command_parser_aa9c456e891cd55475da842d5f00c0b63}{Command\+Parser::\+\+Command\+Callback}} = std::\+function$<$std::\+string(const std::\+vector$<$std::\+string$>$\&)$>$}
+
+
+
+\label{class_command_parser_doc-constructors}
+\Hypertarget{class_command_parser_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_command_parser_a1fd17c361d85ec13c212cbac1999b9b3}\index{CommandParser@{CommandParser}!CommandParser@{CommandParser}}
+\index{CommandParser@{CommandParser}!CommandParser@{CommandParser}}
+\doxysubsubsection{\texorpdfstring{CommandParser()}{CommandParser()}}
+{\footnotesize\ttfamily \label{class_command_parser_a1fd17c361d85ec13c212cbac1999b9b3} 
+Command\+Parser::\+\+Command\+Parser (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+\label{class_command_parser_doc-func-members}
+\Hypertarget{class_command_parser_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_command_parser_a00a0d608133eec8fbf6f039e03223832}\index{CommandParser@{CommandParser}!parse@{parse}}
+\index{parse@{parse}!CommandParser@{CommandParser}}
+\doxysubsubsection{\texorpdfstring{parse()}{parse()}}
+{\footnotesize\ttfamily \label{class_command_parser_a00a0d608133eec8fbf6f039e03223832} 
+std::\+string Command\+Parser::\+parse (\begin{DoxyParamCaption}\item[{const std::\+string \&}]{command}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_command_parser_ace2520105bdd1ed76ee4e8d7a0973674}\index{CommandParser@{CommandParser}!registerCommand@{registerCommand}}
+\index{registerCommand@{registerCommand}!CommandParser@{CommandParser}}
+\doxysubsubsection{\texorpdfstring{registerCommand()}{registerCommand()}}
+{\footnotesize\ttfamily \label{class_command_parser_ace2520105bdd1ed76ee4e8d7a0973674} 
+void Command\+Parser::\+register\+Command (\begin{DoxyParamCaption}\item[{const std::\+string \&}]{name}{, }\item[{\doxymbox{\hyperlink{class_command_parser_aa9c456e891cd55475da842d5f00c0b63}{Command\+Callback}}}]{callback}{}\end{DoxyParamCaption})}
+
+
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+src/\+\doxymbox{\hyperlink{_command_parser_8hpp}{Command\+Parser.\+hpp}}\item 
+src/\+\doxymbox{\hyperlink{_command_parser_8cpp}{Command\+Parser.\+cpp}}\end{DoxyCompactItemize}

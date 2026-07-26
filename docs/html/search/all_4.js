@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['isheader_0',['isHeader',['../namespacecsv.html#a5bf172c42f33794fcb1e98c4f1f999a3',1,'csv']]]
+  ['readcsv_0',['readCSV',['../utils_8cpp.html#a9304f494c76870f73a191360ab8b3c0b',1,'readCSV(const std::string &amp;filename):&#160;utils.cpp'],['../utils_8hpp.html#a9304f494c76870f73a191360ab8b3c0b',1,'readCSV(const std::string &amp;filename):&#160;utils.cpp']]]
 ];

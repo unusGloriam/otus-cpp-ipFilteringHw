@@ -1,0 +1,31 @@
+\doxysection{include/\+async/\+async.h File Reference}
+\hypertarget{async_8h}{}\label{async_8h}\index{include/async/async.h@{include/async/async.h}}
+{\ttfamily \+\#include $<$cstddef$>$}\newline
+Include dependency graph for async.\+h:\+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=194pt]{async_8h__incl}
+\end{center}
+\end{figure}
+This graph shows which files directly or indirectly include this file:\+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=278pt]{async_8h__dep__incl}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \doxymbox{\hyperlink{namespaceasync}{async}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{namespaceasync_ae2e262c7441b39869bef2fc869d1ad30}{async::\+connect}} (std::\+size\+\_\+t block\+\_\+size)
+\begin{DoxyCompactList}\small\item\em Создаёт новый контекст обработки команд (для одного клиента). \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{namespaceasync_accdbf20335da737c7408462481462dfb}{async::\+receive}} (void \texorpdfstring{$\ast$}{*}context, const char \texorpdfstring{$\ast$}{*}data, std::\+size\+\_\+t size)
+\begin{DoxyCompactList}\small\item\em Передаёт данные (одну или несколько команд) в контекст. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{namespaceasync_a06a20899f877f7f9d300a074eca0ce87}{async::\+disconnect}} (void \texorpdfstring{$\ast$}{*}context)
+\begin{DoxyCompactList}\small\item\em Завершает работу с контекстом. Все накопленные команды сбрасываются. \end{DoxyCompactList}\end{DoxyCompactItemize}

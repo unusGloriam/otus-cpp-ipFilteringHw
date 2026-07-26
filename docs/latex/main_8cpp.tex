@@ -2,14 +2,10 @@
 \hypertarget{main_8cpp}{}\label{main_8cpp}\index{src/main.cpp@{src/main.cpp}}
 {\ttfamily \+\#include $<$iostream$>$}\newline
 {\ttfamily \+\#include $<$string$>$}\newline
-{\ttfamily \+\#include $<$fstream$>$}\newline
-{\ttfamily \+\#include $<$vector$>$}\newline
-{\ttfamily \+\#include $<$algorithm$>$}\newline
-{\ttfamily \+\#include $<$map$>$}\newline
+{\ttfamily \+\#include $<$chrono$>$}\newline
 {\ttfamily \+\#include $<$iomanip$>$}\newline
-{\ttfamily \+\#include $<$cstdlib$>$}\newline
-{\ttfamily \+\#include "{}csv\+\_\+parser.\+hpp"{}}\newline
-{\ttfamily \+\#include "{}statistics.\+hpp"{}}\newline
+{\ttfamily \+\#include "{}logistic\+\_\+regression.\+hpp"{}}\newline
+{\ttfamily \+\#include "{}utils.\+hpp"{}}\newline
 Include dependency graph for main.\+cpp:\+
 \nopagebreak
 \begin{figure}[H]
@@ -18,30 +14,8 @@ Include dependency graph for main.\+cpp:\+
 \includegraphics[width=350pt]{main_8cpp__incl}
 \end{center}
 \end{figure}
-\doxysubsubsection*{Enumerations}
-\begin{DoxyCompactItemize}
-\item 
-enum class \doxymbox{\hyperlink{main_8cpp_a46c8a310cf4c094f8c80e1cb8dc1f911}{Mode}} \{ \newline
-\doxymbox{\hyperlink{main_8cpp_a46c8a310cf4c094f8c80e1cb8dc1f911a34e62cfc8e8416231ecc423264f50b5e}{MAPPER}}
-, \doxymbox{\hyperlink{main_8cpp_a46c8a310cf4c094f8c80e1cb8dc1f911a3834ae1d4a379397c5a3a03820f66e6f}{REDUCER}}
-, \doxymbox{\hyperlink{main_8cpp_a46c8a310cf4c094f8c80e1cb8dc1f911a54b4c4075463b2e02cd69f5cd139b5b2}{LOCAL}}
-, \doxymbox{\hyperlink{main_8cpp_a46c8a310cf4c094f8c80e1cb8dc1f911a426708f5e123b45ded3bdc67cd895db5}{STATS}}
-, \newline
-\doxymbox{\hyperlink{main_8cpp_a46c8a310cf4c094f8c80e1cb8dc1f911a4fc963e213bba362778f5c175eb4d5ff}{HELP}}
- \}
-\end{DoxyCompactItemize}
 \doxysubsubsection*{Functions}
 \begin{DoxyCompactItemize}
-\item 
-int \doxymbox{\hyperlink{main_8cpp_a0294728b869f8f9039f225080c03877f}{mapper\+\_\+main}} ()
-\item 
-int \doxymbox{\hyperlink{main_8cpp_abf1d818773da3a3d4643f88d08872a7a}{reducer\+\_\+main}} ()
-\item 
-\doxymbox{\hyperlink{main_8cpp_a46c8a310cf4c094f8c80e1cb8dc1f911}{Mode}} \doxymbox{\hyperlink{main_8cpp_a3e9502d444d28f3fc8afe55e9cbb51d9}{parse\+Mode}} (const std::\+string \&mode)
-\item 
-void \doxymbox{\hyperlink{main_8cpp_a19d3901f55fa48a173c7219dfedcd12f}{run\+Local}} (const std::\+string \&input\+\_\+file)
-\item 
-void \doxymbox{\hyperlink{main_8cpp_ab29f63c5a7ea025b4596705d3b93f8f9}{compute\+Stats}} (const std::\+string \&input\+\_\+file)
 \item 
 void \doxymbox{\hyperlink{main_8cpp_a0d20b69b0ad703df78459e1033d5c1d4}{print\+Help}} ()
 \item 
@@ -49,91 +23,18 @@ int \doxymbox{\hyperlink{main_8cpp_a0ddf1224851353fc92bfbff6f499fa97}{main}} (in
 \end{DoxyCompactItemize}
 
 
-\label{main_8cpp_doc-enum-members}
-\Hypertarget{main_8cpp_doc-enum-members}
-\doxysubsection{Enumeration Type Documentation}
-\Hypertarget{main_8cpp_a46c8a310cf4c094f8c80e1cb8dc1f911}\index{main.cpp@{main.cpp}!Mode@{Mode}}
-\index{Mode@{Mode}!main.cpp@{main.cpp}}
-\doxysubsubsection{\texorpdfstring{Mode}{Mode}}
-{\footnotesize\ttfamily \label{main_8cpp_a46c8a310cf4c094f8c80e1cb8dc1f911} 
-enum class \doxymbox{\hyperlink{main_8cpp_a46c8a310cf4c094f8c80e1cb8dc1f911}{Mode}}\hspace{0.3cm}{\ttfamily [strong]}}
-
-\begin{DoxyEnumFields}[2]{Enumerator}
-\raisebox{\heightof{T}}[0pt][0pt]{\index{MAPPER@{MAPPER}!main.cpp@{main.cpp}}
-\index{main.cpp@{main.cpp}!MAPPER@{MAPPER}}
-}\Hypertarget{main_8cpp_a46c8a310cf4c094f8c80e1cb8dc1f911a34e62cfc8e8416231ecc423264f50b5e}\label{main_8cpp_a46c8a310cf4c094f8c80e1cb8dc1f911a34e62cfc8e8416231ecc423264f50b5e} 
-MAPPER&\\
-\hline
-
-\raisebox{\heightof{T}}[0pt][0pt]{\index{REDUCER@{REDUCER}!main.cpp@{main.cpp}}
-\index{main.cpp@{main.cpp}!REDUCER@{REDUCER}}
-}\Hypertarget{main_8cpp_a46c8a310cf4c094f8c80e1cb8dc1f911a3834ae1d4a379397c5a3a03820f66e6f}\label{main_8cpp_a46c8a310cf4c094f8c80e1cb8dc1f911a3834ae1d4a379397c5a3a03820f66e6f} 
-REDUCER&\\
-\hline
-
-\raisebox{\heightof{T}}[0pt][0pt]{\index{LOCAL@{LOCAL}!main.cpp@{main.cpp}}
-\index{main.cpp@{main.cpp}!LOCAL@{LOCAL}}
-}\Hypertarget{main_8cpp_a46c8a310cf4c094f8c80e1cb8dc1f911a54b4c4075463b2e02cd69f5cd139b5b2}\label{main_8cpp_a46c8a310cf4c094f8c80e1cb8dc1f911a54b4c4075463b2e02cd69f5cd139b5b2} 
-LOCAL&\\
-\hline
-
-\raisebox{\heightof{T}}[0pt][0pt]{\index{STATS@{STATS}!main.cpp@{main.cpp}}
-\index{main.cpp@{main.cpp}!STATS@{STATS}}
-}\Hypertarget{main_8cpp_a46c8a310cf4c094f8c80e1cb8dc1f911a426708f5e123b45ded3bdc67cd895db5}\label{main_8cpp_a46c8a310cf4c094f8c80e1cb8dc1f911a426708f5e123b45ded3bdc67cd895db5} 
-STATS&\\
-\hline
-
-\raisebox{\heightof{T}}[0pt][0pt]{\index{HELP@{HELP}!main.cpp@{main.cpp}}
-\index{main.cpp@{main.cpp}!HELP@{HELP}}
-}\Hypertarget{main_8cpp_a46c8a310cf4c094f8c80e1cb8dc1f911a4fc963e213bba362778f5c175eb4d5ff}\label{main_8cpp_a46c8a310cf4c094f8c80e1cb8dc1f911a4fc963e213bba362778f5c175eb4d5ff} 
-HELP&\\
-\hline
-
-\end{DoxyEnumFields}
-
-
 \label{main_8cpp_doc-func-members}
 \Hypertarget{main_8cpp_doc-func-members}
 \doxysubsection{Function Documentation}
-\Hypertarget{main_8cpp_ab29f63c5a7ea025b4596705d3b93f8f9}\index{main.cpp@{main.cpp}!computeStats@{computeStats}}
-\index{computeStats@{computeStats}!main.cpp@{main.cpp}}
-\doxysubsubsection{\texorpdfstring{computeStats()}{computeStats()}}
-{\footnotesize\ttfamily \label{main_8cpp_ab29f63c5a7ea025b4596705d3b93f8f9} 
-void compute\+Stats (\begin{DoxyParamCaption}\item[{const std::\+string \&}]{input\+\_\+file}{}\end{DoxyParamCaption})}
-
 \Hypertarget{main_8cpp_a0ddf1224851353fc92bfbff6f499fa97}\index{main.cpp@{main.cpp}!main@{main}}
 \index{main@{main}!main.cpp@{main.cpp}}
 \doxysubsubsection{\texorpdfstring{main()}{main()}}
 {\footnotesize\ttfamily \label{main_8cpp_a0ddf1224851353fc92bfbff6f499fa97} 
 int main (\begin{DoxyParamCaption}\item[{int}]{argc}{, }\item[{char \texorpdfstring{$\ast$}{*}}]{argv}{\+[$\,$]\+}\end{DoxyParamCaption})}
 
-\Hypertarget{main_8cpp_a0294728b869f8f9039f225080c03877f}\index{main.cpp@{main.cpp}!mapper\_main@{mapper\_main}}
-\index{mapper\_main@{mapper\_main}!main.cpp@{main.cpp}}
-\doxysubsubsection{\texorpdfstring{mapper\_main()}{mapper\_main()}}
-{\footnotesize\ttfamily \label{main_8cpp_a0294728b869f8f9039f225080c03877f} 
-int mapper\+\_\+main (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
-
-\Hypertarget{main_8cpp_a3e9502d444d28f3fc8afe55e9cbb51d9}\index{main.cpp@{main.cpp}!parseMode@{parseMode}}
-\index{parseMode@{parseMode}!main.cpp@{main.cpp}}
-\doxysubsubsection{\texorpdfstring{parseMode()}{parseMode()}}
-{\footnotesize\ttfamily \label{main_8cpp_a3e9502d444d28f3fc8afe55e9cbb51d9} 
-\doxymbox{\hyperlink{main_8cpp_a46c8a310cf4c094f8c80e1cb8dc1f911}{Mode}} parse\+Mode (\begin{DoxyParamCaption}\item[{const std::\+string \&}]{mode}{}\end{DoxyParamCaption})}
-
 \Hypertarget{main_8cpp_a0d20b69b0ad703df78459e1033d5c1d4}\index{main.cpp@{main.cpp}!printHelp@{printHelp}}
 \index{printHelp@{printHelp}!main.cpp@{main.cpp}}
 \doxysubsubsection{\texorpdfstring{printHelp()}{printHelp()}}
 {\footnotesize\ttfamily \label{main_8cpp_a0d20b69b0ad703df78459e1033d5c1d4} 
 void print\+Help (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
-
-\Hypertarget{main_8cpp_abf1d818773da3a3d4643f88d08872a7a}\index{main.cpp@{main.cpp}!reducer\_main@{reducer\_main}}
-\index{reducer\_main@{reducer\_main}!main.cpp@{main.cpp}}
-\doxysubsubsection{\texorpdfstring{reducer\_main()}{reducer\_main()}}
-{\footnotesize\ttfamily \label{main_8cpp_abf1d818773da3a3d4643f88d08872a7a} 
-int reducer\+\_\+main (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
-
-\Hypertarget{main_8cpp_a19d3901f55fa48a173c7219dfedcd12f}\index{main.cpp@{main.cpp}!runLocal@{runLocal}}
-\index{runLocal@{runLocal}!main.cpp@{main.cpp}}
-\doxysubsubsection{\texorpdfstring{runLocal()}{runLocal()}}
-{\footnotesize\ttfamily \label{main_8cpp_a19d3901f55fa48a173c7219dfedcd12f} 
-void run\+Local (\begin{DoxyParamCaption}\item[{const std::\+string \&}]{input\+\_\+file}{}\end{DoxyParamCaption})}
 

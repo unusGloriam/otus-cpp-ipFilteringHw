@@ -1,0 +1,82 @@
+\doxysection{Database\+Manager Class Reference}
+\hypertarget{class_database_manager}{}\label{class_database_manager}\index{DatabaseManager@{DatabaseManager}}
+
+
+{\ttfamily \+\#include $<$Database\+Manager.\+hpp$>$}
+
+
+
+Collaboration diagram for Database\+Manager:\+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=194pt]{class_database_manager__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_database_manager_aa162d97472e6c31a4e873adda435dbb6}{Database\+Manager}} ()
+\item 
+\doxymbox{\hyperlink{class_database_manager_ae9b3a5da1e04fbb00faf8a034da1d063}{\texorpdfstring{$\sim$}{\string~}\+Database\+Manager}} ()
+\item 
+bool \doxymbox{\hyperlink{class_database_manager_a3bfe5cb6177fdd1b93b0fa50133c61c4}{insert}} (const std::\+string \&table, int id, const std::\+string \&name, std::\+string \&error)
+\item 
+bool \doxymbox{\hyperlink{class_database_manager_a46c243b61291651b0851942c2642b2db}{truncate}} (const std::\+string \&table, std::\+string \&error)
+\item 
+std::\+vector$<$ \doxymbox{\hyperlink{struct_row}{Row}} $>$ \doxymbox{\hyperlink{class_database_manager_a49420646236d1965b2e0b2ecfc99dfa1}{intersection}} (std::\+string \&error)
+\item 
+std::\+vector$<$ \doxymbox{\hyperlink{struct_row}{Row}} $>$ \doxymbox{\hyperlink{class_database_manager_ad9a19961423669b080348982c380189a}{symmetric\+Difference}} (std::\+string \&error)
+\end{DoxyCompactItemize}
+
+
+\label{class_database_manager_doc-constructors}
+\Hypertarget{class_database_manager_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_database_manager_aa162d97472e6c31a4e873adda435dbb6}\index{DatabaseManager@{DatabaseManager}!DatabaseManager@{DatabaseManager}}
+\index{DatabaseManager@{DatabaseManager}!DatabaseManager@{DatabaseManager}}
+\doxysubsubsection{\texorpdfstring{DatabaseManager()}{DatabaseManager()}}
+{\footnotesize\ttfamily \label{class_database_manager_aa162d97472e6c31a4e873adda435dbb6} 
+Database\+Manager::\+\+Database\+Manager (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_database_manager_ae9b3a5da1e04fbb00faf8a034da1d063}\index{DatabaseManager@{DatabaseManager}!````~DatabaseManager@{\texorpdfstring{$\sim$}{\string~}DatabaseManager}}
+\index{````~DatabaseManager@{\texorpdfstring{$\sim$}{\string~}DatabaseManager}!DatabaseManager@{DatabaseManager}}
+\doxysubsubsection{\texorpdfstring{\texorpdfstring{$\sim$}{\string~}DatabaseManager()}{\string~DatabaseManager()}}
+{\footnotesize\ttfamily \label{class_database_manager_ae9b3a5da1e04fbb00faf8a034da1d063} 
+Database\+Manager::\+\texorpdfstring{$\sim$}{\string~}\+Database\+Manager (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+\label{class_database_manager_doc-func-members}
+\Hypertarget{class_database_manager_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_database_manager_a3bfe5cb6177fdd1b93b0fa50133c61c4}\index{DatabaseManager@{DatabaseManager}!insert@{insert}}
+\index{insert@{insert}!DatabaseManager@{DatabaseManager}}
+\doxysubsubsection{\texorpdfstring{insert()}{insert()}}
+{\footnotesize\ttfamily \label{class_database_manager_a3bfe5cb6177fdd1b93b0fa50133c61c4} 
+bool Database\+Manager::\+insert (\begin{DoxyParamCaption}\item[{const std::\+string \&}]{table}{, }\item[{int}]{id}{, }\item[{const std::\+string \&}]{name}{, }\item[{std::\+string \&}]{error}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_database_manager_a49420646236d1965b2e0b2ecfc99dfa1}\index{DatabaseManager@{DatabaseManager}!intersection@{intersection}}
+\index{intersection@{intersection}!DatabaseManager@{DatabaseManager}}
+\doxysubsubsection{\texorpdfstring{intersection()}{intersection()}}
+{\footnotesize\ttfamily \label{class_database_manager_a49420646236d1965b2e0b2ecfc99dfa1} 
+std::\+vector$<$ \doxymbox{\hyperlink{struct_row}{Row}} $>$ Database\+Manager::\+intersection (\begin{DoxyParamCaption}\item[{std::\+string \&}]{error}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_database_manager_ad9a19961423669b080348982c380189a}\index{DatabaseManager@{DatabaseManager}!symmetricDifference@{symmetricDifference}}
+\index{symmetricDifference@{symmetricDifference}!DatabaseManager@{DatabaseManager}}
+\doxysubsubsection{\texorpdfstring{symmetricDifference()}{symmetricDifference()}}
+{\footnotesize\ttfamily \label{class_database_manager_ad9a19961423669b080348982c380189a} 
+std::\+vector$<$ \doxymbox{\hyperlink{struct_row}{Row}} $>$ Database\+Manager::\+symmetric\+Difference (\begin{DoxyParamCaption}\item[{std::\+string \&}]{error}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_database_manager_a46c243b61291651b0851942c2642b2db}\index{DatabaseManager@{DatabaseManager}!truncate@{truncate}}
+\index{truncate@{truncate}!DatabaseManager@{DatabaseManager}}
+\doxysubsubsection{\texorpdfstring{truncate()}{truncate()}}
+{\footnotesize\ttfamily \label{class_database_manager_a46c243b61291651b0851942c2642b2db} 
+bool Database\+Manager::\+truncate (\begin{DoxyParamCaption}\item[{const std::\+string \&}]{table}{, }\item[{std::\+string \&}]{error}{}\end{DoxyParamCaption})}
+
+
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+src/\+\doxymbox{\hyperlink{_database_manager_8hpp}{Database\+Manager.\+hpp}}\item 
+src/\+\doxymbox{\hyperlink{_database_manager_8cpp}{Database\+Manager.\+cpp}}\end{DoxyCompactItemize}

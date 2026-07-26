@@ -1,0 +1,5 @@
+<map id="KeyValue" name="KeyValue">
+<area shape="rect" id="Node000001" title="Структура для хранения данных между маппером и редуктором" alt="" coords="5,317,99,408"/>
+<area shape="rect" id="Node000002" href="$struct_stats.html" title="Структура для хранения статистических данных" alt="" coords="5,5,99,245"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="53,243,55,301,50,300,51,248"/>
+</map>

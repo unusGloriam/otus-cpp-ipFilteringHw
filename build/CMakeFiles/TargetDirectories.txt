@@ -1,0 +1,4 @@
+D:/Soft/_C++ Course/Prof/Lesson37/HomeWork/build/CMakeFiles/fashion-mnist.dir
+D:/Soft/_C++ Course/Prof/Lesson37/HomeWork/build/CMakeFiles/INSTALL.dir
+D:/Soft/_C++ Course/Prof/Lesson37/HomeWork/build/CMakeFiles/ALL_BUILD.dir
+D:/Soft/_C++ Course/Prof/Lesson37/HomeWork/build/CMakeFiles/ZERO_CHECK.dir

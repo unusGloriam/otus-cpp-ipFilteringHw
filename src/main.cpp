@@ -1,195 +1,91 @@
 #include <iostream>
 #include <string>
-#include <fstream>
-#include <vector>
-#include <algorithm>
-#include <map>
-#include <iomanip>
-#include <cstdlib>
-#include "csv_parser.hpp"
-#include "statistics.hpp"
-
-// Объявляем функции из mapper.cpp и reducer.cpp
-int mapper_main();
-int reducer_main();
-
-enum class Mode {
-    MAPPER,
-    REDUCER,
-    LOCAL,
-    STATS,
-    HELP
-};
-
-Mode parseMode(const std::string& mode) {
-    if (mode == "mapper") return Mode::MAPPER;
-    if (mode == "reducer") return Mode::REDUCER;
-    if (mode == "local") return Mode::LOCAL;
-    if (mode == "stats") return Mode::STATS;
-    return Mode::HELP;
-}
-
-void runLocal(const std::string& input_file) {
-    std::ifstream file(input_file);
-    if (!file.is_open()) {
-        std::cerr << "Error: Cannot open file " << input_file << std::endl;
-        return;
-    }
-    
-    std::vector<KeyValue> mapped;
-    std::string line;
-    bool is_first = true;
-    size_t processed = 0;
-    
-    while (std::getline(file, line)) {
-        if (is_first) {
-            is_first = false;
-            continue;
-        }
-        
-        auto fields = csv::parseLine(line);
-        if (fields.size() > 9 && !fields[9].empty()) {
-            try {
-                double price = std::stod(fields[9]);
-                if (price >= 0) {
-                    Stats stats;
-                    stats.add(price);
-                    mapped.push_back({"price", stats});
-                    processed++;
-                }
-            } catch (...) {
-                // Игнорируем ошибки
-            }
-        }
-    }
-    file.close();
-    
-    // Shuffle - сортировка по ключу
-    std::sort(mapped.begin(), mapped.end(), 
-        [](const KeyValue& a, const KeyValue& b) {
-            return a.key < b.key;
-        });
-    
-    // Reduce - агрегация
-    std::map<std::string, Stats> reduced;
-    for (const auto& kv : mapped) {
-        reduced[kv.key].merge(kv.stats);
-    }
-    
-    std::cout << std::fixed << std::setprecision(2);
-    std::cout << "\n=== MapReduce Results ===" << std::endl;
-    std::cout << "Processed entries: " << processed << std::endl;
-    std::cout << "------------------------" << std::endl;
-    
-    for (const auto& pair : reduced) {
-        const std::string& key = pair.first;
-        const Stats& stats = pair.second;
-        std::cout << "Key: " << key << std::endl;
-        std::cout << "  Mean:      " << stats.mean() << std::endl;
-        std::cout << "  Variance:  " << stats.variance() << std::endl;
-        std::cout << "  Std Dev:   " << stats.stddev() << std::endl;
-        std::cout << "  Count:     " << stats.count << std::endl;
-    }
-}
-
-void computeStats(const std::string& input_file) {
-    std::ifstream file(input_file);
-    if (!file.is_open()) {
-        std::cerr << "Error: Cannot open file " << input_file << std::endl;
-        return;
-    }
-    
-    Stats stats;
-    std::string line;
-    bool is_first = true;
-    size_t processed = 0;
-    
-    while (std::getline(file, line)) {
-        if (is_first) {
-            is_first = false;
-            continue;
-        }
-        
-        auto fields = csv::parseLine(line);
-        if (fields.size() > 9 && !fields[9].empty()) {
-            try {
-                double price = std::stod(fields[9]);
-                if (price >= 0) {
-                    stats.add(price);
-                    processed++;
-                }
-            } catch (...) {
-                // Игнорируем ошибки
-            }
-        }
-    }
-    file.close();
-    
-    std::cout << std::fixed << std::setprecision(2);
-    std::cout << "\n=== Direct Statistics (Verification) ===" << std::endl;
-    std::cout << "Processed entries: " << processed << std::endl;
-    std::cout << "------------------------" << std::endl;
-    std::cout << "Mean:      " << stats.mean() << std::endl;
-    std::cout << "Variance:  " << stats.variance() << std::endl;
-    std::cout << "Std Dev:   " << stats.stddev() << std::endl;
-    std::cout << "Count:     " << stats.count << std::endl;
-    std::cout << "Sum:       " << stats.sum << std::endl;
-    std::cout << "Sum Sq:    " << stats.sum_sq << std::endl;
-}
+#include <chrono>
+#include <iomanip>  // <-- ДОБАВЛЯЕМ ЭТОТ ЗАГОЛОВОК
+#include "logistic_regression.hpp"
+#include "utils.hpp"
 
 void printHelp() {
-    std::cout << "MapReduce - Airbnb Price Statistics" << std::endl;
+    std::cout << "Fashion MNIST Classifier" << std::endl;
     std::cout << std::endl;
     std::cout << "Usage:" << std::endl;
-    std::cout << "  mapreduce <mode> [input_file]" << std::endl;
+    std::cout << "  fashion_mnist <model_type> <test_file> <model_file>" << std::endl;
     std::cout << std::endl;
-    std::cout << "Modes:" << std::endl;
-    std::cout << "  mapper           - Run as mapper (reads from stdin)" << std::endl;
-    std::cout << "  reducer          - Run as reducer (reads from stdin)" << std::endl;
-    std::cout << "  local <file>     - Run full pipeline locally" << std::endl;
-    std::cout << "  stats <file>     - Compute stats directly (verification)" << std::endl;
-    std::cout << "  help             - Show this help" << std::endl;
+    std::cout << "Model types:" << std::endl;
+    std::cout << "  logreg   - Logistic Regression (logreg_coef.txt)" << std::endl;
+    std::cout << "  mlp      - Multi-Layer Perceptron (w1.txt, w2.txt)" << std::endl;
+    std::cout << "  catboost - CatBoost model (model.cbm)" << std::endl;
+    std::cout << "  cnn      - CNN model (saved_model/)" << std::endl;
     std::cout << std::endl;
-    std::cout << "Examples:" << std::endl;
-    std::cout << "  cat input.csv | mapreduce mapper | sort | mapreduce reducer" << std::endl;
-    std::cout << "  mapreduce local input/AB_NYC_2019.csv" << std::endl;
+    std::cout << "Example:" << std::endl;
+    std::cout << "  fashion_mnist logreg test.csv logreg_coef.txt" << std::endl;
 }
 
 int main(int argc, char* argv[]) {
-    if (argc < 2) {
+    if (argc != 4) {
         printHelp();
         return 1;
     }
     
-    Mode mode = parseMode(argv[1]);
+    std::string model_type = argv[1];
+    std::string test_file = argv[2];
+    std::string model_file = argv[3];
     
-    switch (mode) {
-        case Mode::MAPPER:
-            return mapper_main();
-            
-        case Mode::REDUCER:
-            return reducer_main();
-            
-        case Mode::LOCAL:
-            if (argc < 3) {
-                std::cerr << "Error: Missing input file" << std::endl;
-                return 1;
-            }
-            runLocal(argv[2]);
-            break;
-            
-        case Mode::STATS:
-            if (argc < 3) {
-                std::cerr << "Error: Missing input file" << std::endl;
-                return 1;
-            }
-            computeStats(argv[2]);
-            break;
-            
-        default:
-            printHelp();
-            return 1;
+    std::cout << "Loading test data from: " << test_file << std::endl;
+    auto data = readCSV(test_file);
+    
+    if (data.empty()) {
+        std::cerr << "Error: No data loaded" << std::endl;
+        return 1;
     }
+    
+    std::vector<std::vector<double>> X;
+    std::vector<int> y;
+    splitData(data, X, y);
+    
+    std::cout << "Loaded " << X.size() << " test samples" << std::endl;
+    std::cout << "Features per sample: " << X[0].size() << std::endl;
+    
+    auto start = std::chrono::high_resolution_clock::now();
+    double acc = 0.0;
+    
+    if (model_type == "logreg") {
+        std::cout << "Using Logistic Regression model" << std::endl;
+        LogisticRegression model;
+        
+        if (!model.loadWeights(model_file)) {
+            return 1;
+        }
+        
+        acc = model.accuracy(X, y);
+    } 
+    else if (model_type == "mlp") {
+        std::cout << "MLP model loading not yet implemented" << std::endl;
+        std::cout << "Implement MLP inference using w1.txt and w2.txt" << std::endl;
+        return 1;
+    }
+    else if (model_type == "catboost") {
+        std::cout << "CatBoost model loading not yet implemented" << std::endl;
+        std::cout << "Need to link with libcatboost.so" << std::endl;
+        return 1;
+    }
+    else if (model_type == "cnn") {
+        std::cout << "CNN model loading not yet implemented" << std::endl;
+        std::cout << "Need to link with TensorFlow C API" << std::endl;
+        return 1;
+    }
+    else {
+        std::cerr << "Unknown model type: " << model_type << std::endl;
+        printHelp();
+        return 1;
+    }
+    
+    auto end = std::chrono::high_resolution_clock::now();
+    auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(end - start);
+    
+    // Исправляем вывод - убираем setprecision, используем стандартный вывод
+    std::cout << "Accuracy: " << acc << std::endl;
+    std::cout << "Time: " << duration.count() << " ms" << std::endl;
     
     return 0;
 }

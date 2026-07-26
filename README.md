@@ -1,148 +1,196 @@
-# MapReduce - Airbnb Price Statistics
+# Fashion MNIST Classifier
 
-Проект для вычисления статистических характеристик (среднее, дисперсия) цен на недвижимость в Нью-Йорке в парадигме MapReduce.
+Реализация инференса модели классификации изображений Fashion MNIST на C++. 
+В проекте реализована **логистическая регрессия** - самая простая и понятная модель для начала.
 
 ## Структура проекта
-.
+
+fashion_mnist/
 ├── CMakeLists.txt # Конфигурация сборки
-├── Dockerfile # Docker образ
-├── Doxyfile # Конфигурация Doxygen
 ├── README.md # Этот файл
-├── .gitignore # Игнорируемые файлы
-├── debian/ # Debian пакет
-│ └── (файлы для debian-пакета)
-├── docs/ # Документация
-├── src/ # Исходный код
+├── src/
 │ ├── main.cpp # Главная программа
-│ ├── mapper.cpp # Mapper
-│ ├── reducer.cpp # Reducer
-│ ├── csv_parser.hpp # Парсер CSV
-│ ├── statistics.hpp # Статистические функции
-│ └── statistics.cpp # Реализация статистики
-├── input/ # Входные данные
-│ └── AB_NYC_2019.csv # Датасет Airbnb
-├── bin/ # Собранные бинарники
-├── scripts/ # Скрипты
-│ ├── run_locally.sh # Локальный запуск
-│ └── run_hadoop.sh # Запуск в Hadoop
-└── tests/ # Тесты (опционально)
+│ ├── logistic_regression.hpp # Заголовочный файл логистической регрессии
+│ ├── logistic_regression.cpp # Реализация логистической регрессии
+│ ├── utils.hpp # Заголовочный файл утилит
+│ └── utils.cpp # Реализация утилит (чтение CSV)
+├── models/ # Папка с моделями
+│ ├── logreg_coef.txt # Веса логистической регрессии
+│ ├── w1.txt # Веса первого слоя MLP
+│ ├── w2.txt # Веса второго слоя MLP
+│ └── model.cbm # Модель CatBoost
+└── test.csv # Тестовые данные
 
 
-## Сборка
+## Требования
 
-### Локальная сборка
-
-```bash
-mkdir build && cd build
-cmake ..
-make -j$(nproc)
-
+- **Компилятор**: C++17 (GCC 7+, Clang 5+, MSVC 2019+)
+- **CMake**: 3.10 или выше
+- **Операционная система**: Windows / Linux / macOS
 
 ## Сборка
 
-### Локальная сборка
+### Windows (Visual Studio / MinGW)
 
-```bash
-mkdir build && cd build
+```powershell
+# Создаем папку для сборки
+mkdir build
+cd build
+
+# Конфигурируем CMake
 cmake ..
+
+# Собираем проект
+cmake --build . --config Release
+
+# Создаем папку для сборки
+mkdir build
+cd build
+
+# Конфигурируем CMake
+cmake ..
+
+# Собираем проект
 make -j$(nproc)
 
-docker build -t mapreduce .
-docker run --rm -v $(pwd)/input:/app/input -v $(pwd)/output:/app/output mapreduce
+# Копируем файлы моделей и данных в папку с исполняемым файлом
+copy ..\models\logreg_coef.txt Release\
+copy ..\test.csv Release\
 
-Использование
-1. Основные режимы
+# Запускаем
+cd Release
+.\fashion_mnist.exe logreg test.csv logreg_coef.txt
 
-# Запуск mapper (читает из stdin)
-cat input.csv | ./bin/mapreduce mapper
+# Копируем файлы моделей и данных
+cp ../models/logreg_coef.txt .
+cp ../test.csv .
 
-# Запуск reducer (читает из stdin)
-./bin/mapreduce reducer
+# Запускаем
+./fashion_mnist logreg test.csv logreg_coef.txt
 
-# Полный пайплайн локально
-./bin/mapreduce local input/AB_NYC_2019.csv
+Формат входных данных
+test.csv
+Формат: CSV без заголовка
 
-# Прямой подсчёт статистики (для верификации)
-./bin/mapreduce stats input/AB_NYC_2019.csv
+Количество столбцов: 785
 
-2. MapReduce пайплайн
+1-й столбец: метка класса (0-9)
 
-# Полный пайплайн вручную
-cat input/AB_NYC_2019.csv | \
-    ./bin/mapreduce mapper | \
-    sort -k1 | \
-    ./bin/mapreduce reducer
+Столбцы 2-785: значения пикселей (0-255), 28x28 изображение, развернутое в строку
 
-# Использование скрипта
-./scripts/run_locally.sh
+logreg_coef.txt
+Формат: текстовый файл с вещественными числами
 
-3. Отдельные бинарники
+Размер: 10 строк × 785 столбцов
 
-# Собрать отдельные бинарники
-make mapper reducer
+Каждая строка - веса для одного класса (0-9)
 
-# Использовать
-cat input.csv | ./bin/mapper | sort | ./bin/reducer
+1-й элемент - свободный член (bias)
 
-Результаты
-Программа выводит:
+Остальные 784 элемента - веса для пикселей
 
-Mean - средняя цена
+Как это работает
+1. Загрузка данных
+Программа читает test.csv и извлекает:
 
-Variance - дисперсия цены
+X: матрица признаков (пиксели изображений)
 
-Std Dev - среднеквадратическое отклонение
+y: вектор меток классов
 
-Count - количество записей
+2. Загрузка модели
+Читает файл logreg_coef.txt и загружает матрицу весов 10×785.
 
-Пример вывода:
+3. Предсказание для одного изображения
+Для каждого класса вычисляется линейная комбинация:
+score_class = bias + w1*pixel1 + w2*pixel2 + ... + w784*pixel784
+Затем применяется softmax для получения вероятностей:
+P(class_i) = exp(score_i) / sum(exp(score_j))
+Выбирается класс с максимальной вероятностью.
 
-=== Statistics for: price ===
-Mean:      152.72
-Variance:  28765.81
-Std Dev:   169.60
-Count:     48895
+4. Вычисление точности
+accuracy = (количество правильных предсказаний) / (общее количество примеров)
+Пример вывода
+Loading test data from: test.csv
+Loaded 10000 test samples
+Features per sample: 784
+Using Logistic Regression model
+Loaded 10 x 785 weights matrix
+Accuracy: 0.850
+Time: 1234 ms
 
-Тестирование
-Проверка корректности
-Программа имеет режим stats, который вычисляет статистику напрямую (без MapReduce) для верификации результатов.
+Архитектура модели
+Логистическая регрессия
+Вход: 784 пикселя (изображение 28x28)
+      ↓
+Линейное преобразование для каждого класса
+      ↓
+Softmax (10 классов)
+      ↓
+Выход: номер класса (0-9)
 
-./bin/mapreduce stats input/AB_NYC_2019.csv
+Математическая формула
+Для класса c:
+z_c = w_{c,0} + Σ_{i=1}^{784} w_{c,i} * x_i
+Где:
 
-Dependencies
-CMake 3.10+
+w_{c,0} - свободный член (bias)
 
-C++17 compiler (GCC 7+, Clang 5+)
+w_{c,i} - вес для i-го пикселя
 
-(Опционально) Docker для контейнеризации
+x_i - значение i-го пикселя
 
-Автор
-Студент курса "C++ Профессионал" от OTUS
+Вероятность класса c:
+P(c) = exp(z_c) / Σ_{j=0}^{9} exp(z_j)
+
+Сравнение моделей
+Модель	Точность	Сложность реализации
+Логистическая регрессия	~0.85	★☆☆ (простая)
+MLP			~0.89	★★☆ (средняя)
+CatBoost	~0.87	★★★ (сложная)
+CNN			~0.91	★★★ (сложная)
+
+Расширение проекта
+Добавление MLP
+Реализовать класс MLP
+
+Загружать w1.txt (784×128) и w2.txt (128×10)
+
+Применить сигмоиду на скрытом слое и softmax на выходе
+
+Добавление CatBoost
+Скачать и собрать библиотеку CatBoost
+
+Подключить libcatboost.so
+
+Использовать CalcModelPredictionSingle
+
+Добавление CNN (TensorFlow)
+Скачать TensorFlow C API
+
+Загрузить модель из saved_model/
+
+Выполнить инференс через тензоры
+
+Решение проблем
+Ошибка "Cannot open file"
+Проверьте, что файлы существуют
+
+Убедитесь, что указаны правильные пути
+
+Низкая точность
+Проверьте, что используется правильный файл модели
+
+Убедитесь, что данные нормализованы (0-255)
+
+Ошибка сборки
+Убедитесь, что установлен компилятор C++17
+
+Проверьте, что CMake версии 3.10 или выше
 
 Лицензия
 MIT License
 
-## Использование
+Автор
+Студент курса "C++ Профессионал" от OTUS
 
-### Сборка и запуск
-
-```bash
-# Сборка
-mkdir build && cd build
-cmake ..
-make
-
-# Запуск полного пайплайна
-cd ..
-./bin/mapreduce local input/AB_NYC_2019.csv
-
-# Или используя скрипт
-./scripts/run_locally.sh
-
-Проверка результатов
-# Прямой подсчёт статистики для верификации
-./bin/mapreduce stats input/AB_NYC_2019.csv
-
-# Сравнение с результатами MapReduce
-cat output/result.txt
 

@@ -8,5 +8,5 @@ Standards-Version: 4.6.0
 Package: @PROJECT_NAME@
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: @PROJECT_NAME@ – Вычисляет среднее и дисперсию в парадигме map-reduce.
+Description: @PROJECT_NAME@ – В данном задании вам предстоит реализовать инференс ML модели компьютерного зрения для классификации изображений предметов гардероба по типу.
  This is a student project for C++ course.

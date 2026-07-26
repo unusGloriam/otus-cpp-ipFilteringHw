@@ -1,0 +1,45 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Run MapReduce Local",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/mapreduce.exe",
+            "args": ["local", "${workspaceFolder}/input/AB_NYC_2019.csv"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        },
+        {
+            "name": "Run MapReduce Stats",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/build/mapreduce.exe",
+            "args": ["stats", "${workspaceFolder}/input/AB_NYC_2019.csv"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb",
+            "miDebuggerPath": "gdb",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for gdb",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ]
+        }
+    ]
+}

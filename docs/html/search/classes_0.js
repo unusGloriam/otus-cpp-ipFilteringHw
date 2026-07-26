@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['keyvalue_0',['KeyValue',['../struct_key_value.html',1,'']]]
+  ['logisticregression_0',['LogisticRegression',['../class_logistic_regression.html',1,'']]]
 ];

@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['key_0',['key',['../struct_key_value.html#a715dfb275608ae7f4ed5af5db0efcbf4',1,'KeyValue']]],
-  ['keyvalue_1',['KeyValue',['../struct_key_value.html',1,'']]]
+  ['splitdata_0',['splitData',['../utils_8cpp.html#a8f8a2c2571af977576f0ff4fd742e24b',1,'splitData(const std::vector&lt; std::vector&lt; double &gt; &gt; &amp;data, std::vector&lt; std::vector&lt; double &gt; &gt; &amp;X, std::vector&lt; int &gt; &amp;y):&#160;utils.cpp'],['../utils_8hpp.html#a8f8a2c2571af977576f0ff4fd742e24b',1,'splitData(const std::vector&lt; std::vector&lt; double &gt; &gt; &amp;data, std::vector&lt; std::vector&lt; double &gt; &gt; &amp;X, std::vector&lt; int &gt; &amp;y):&#160;utils.cpp']]]
 ];

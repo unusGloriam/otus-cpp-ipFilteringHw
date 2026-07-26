@@ -1,0 +1,35 @@
+\doxysection{Block\+Processor.\+hpp}
+\hypertarget{_block_processor_8hpp_source}{}\label{_block_processor_8hpp_source}\index{src/BlockProcessor.hpp@{src/BlockProcessor.hpp}}
+\doxymbox{\hyperlink{_block_processor_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <memory>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <ctime>}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_i_observer_8hpp}{IObserver.hpp}}"{}}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_block_processor_a92959ba0a38e139fb72d019c1c1a8536}{BlockProcessor}}\ \{}
+\DoxyCodeLine{00010\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00011\ \ \ \ \ \textcolor{keyword}{explicit}\ \doxymbox{\hyperlink{class_block_processor_a92959ba0a38e139fb72d019c1c1a8536}{BlockProcessor}}(\textcolor{keywordtype}{size\_t}\ staticBlockSize);}
+\DoxyCodeLine{00012\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_block_processor_a63ad5e8abf40105654686e8e0eb1e5b2}{processCommand}}(\textcolor{keyword}{const}\ std::string\&\ cmd);}
+\DoxyCodeLine{00013\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_block_processor_aa2213b99f83b7ecba72400a55dae3dfc}{addObserver}}(std::shared\_ptr<IObserver>\ observer);}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_block_processor_ade1278dc93bb1803cad63780eee6dc50}{flush}}();}
+\DoxyCodeLine{00015\ }
+\DoxyCodeLine{00016\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00017\ \ \ \ \ \textcolor{keywordtype}{void}\ flushCurrentBlock();}
+\DoxyCodeLine{00018\ \ \ \ \ \textcolor{keywordtype}{void}\ startDynamicBlock();}
+\DoxyCodeLine{00019\ \ \ \ \ \textcolor{keywordtype}{void}\ endDynamicBlock();}
+\DoxyCodeLine{00020\ }
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keywordtype}{size\_t}\ staticBlockSize\_;}
+\DoxyCodeLine{00022\ \ \ \ \ std::vector<std::string>\ currentBlock\_;}
+\DoxyCodeLine{00023\ \ \ \ \ std::time\_t\ blockStartTime\_;}
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{keywordtype}{int}\ dynamicBlockDepth\_;\ \ \ \ \ \ \textcolor{comment}{//\ уровень\ вложенности\ динамических\ блоков}}
+\DoxyCodeLine{00025\ \ \ \ \ \textcolor{keywordtype}{bool}\ inDynamicBlock\_;\ \ \ \ \ \ \ \ \textcolor{comment}{//\ находимся\ ли\ в\ динамическом\ блоке}}
+\DoxyCodeLine{00026\ \ \ \ \ \textcolor{keywordtype}{bool}\ ignoreDynamicBlock\_;\ \ \ \ \textcolor{comment}{//\ игнорировать\ ли\ текущий\ динамический\ блок\ (из-\/за\ нехватки\ закрытия)}}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \ \ \ \ std::vector<std::shared\_ptr<IObserver>>\ observers\_;}
+\DoxyCodeLine{00029\ \};}
+
+\end{DoxyCode}

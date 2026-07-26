@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="D:\Soft\_C++ Course\Prof\Lesson37\HomeWork\src\main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Soft\_C++ Course\Prof\Lesson37\HomeWork\src\logistic_regression.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="D:\Soft\_C++ Course\Prof\Lesson37\HomeWork\src\utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="D:\Soft\_C++ Course\Prof\Lesson37\HomeWork\src\logistic_regression.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="D:\Soft\_C++ Course\Prof\Lesson37\HomeWork\src\utils.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Soft\_C++ Course\Prof\Lesson37\HomeWork\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{089C8DE9-FD84-31D3-882D-698AEE006F07}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{F8BC79F1-7250-36D2-8ABF-C5C5DA5AF05E}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

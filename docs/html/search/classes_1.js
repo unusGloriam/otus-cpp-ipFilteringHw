@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['stats_0',['Stats',['../struct_stats.html',1,'']]]
+  ['mlp_0',['MLP',['../class_m_l_p.html',1,'']]]
 ];

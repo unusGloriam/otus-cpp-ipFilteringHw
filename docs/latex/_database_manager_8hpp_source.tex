@@ -1,0 +1,41 @@
+\doxysection{Database\+Manager.\+hpp}
+\hypertarget{_database_manager_8hpp_source}{}\label{_database_manager_8hpp_source}\index{src/DatabaseManager.hpp@{src/DatabaseManager.hpp}}
+\doxymbox{\hyperlink{_database_manager_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <sqlite3.h>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <memory>}}
+\DoxyCodeLine{00007\ \textcolor{preprocessor}{\#include\ <mutex>}}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00009\ \textcolor{keyword}{struct\ }\doxymbox{\hyperlink{struct_row}{Row}}\ \{}
+\DoxyCodeLine{00010\ \ \ \ \ \textcolor{keywordtype}{int}\ \doxymbox{\hyperlink{struct_row_acae84002320209edac0e112e9b3a4b2a}{id}};}
+\DoxyCodeLine{00011\ \ \ \ \ std::string\ \doxymbox{\hyperlink{struct_row_a767693f62c0b4d506228531a13482c67}{nameA}};}
+\DoxyCodeLine{00012\ \ \ \ \ std::string\ \doxymbox{\hyperlink{struct_row_abcef77a7155b50c95f483fd2976fc18e}{nameB}};}
+\DoxyCodeLine{00013\ \};}
+\DoxyCodeLine{00014\ }
+\DoxyCodeLine{00015\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_database_manager_aa162d97472e6c31a4e873adda435dbb6}{DatabaseManager}}\ \{}
+\DoxyCodeLine{00016\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00017\ \ \ \ \ \doxymbox{\hyperlink{class_database_manager_aa162d97472e6c31a4e873adda435dbb6}{DatabaseManager}}();}
+\DoxyCodeLine{00018\ \ \ \ \ \doxymbox{\hyperlink{class_database_manager_ae9b3a5da1e04fbb00faf8a034da1d063}{\string~DatabaseManager}}();}
+\DoxyCodeLine{00019\ }
+\DoxyCodeLine{00020\ \ \ \ \ \textcolor{comment}{//\ Команды}}
+\DoxyCodeLine{00021\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_database_manager_a3bfe5cb6177fdd1b93b0fa50133c61c4}{insert}}(\textcolor{keyword}{const}\ std::string\&\ table,\ \textcolor{keywordtype}{int}\ \textcolor{keywordtype}{id},\ \textcolor{keyword}{const}\ std::string\&\ name,\ std::string\&\ error);}
+\DoxyCodeLine{00022\ \ \ \ \ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{class_database_manager_a46c243b61291651b0851942c2642b2db}{truncate}}(\textcolor{keyword}{const}\ std::string\&\ table,\ std::string\&\ error);}
+\DoxyCodeLine{00023\ }
+\DoxyCodeLine{00024\ \ \ \ \ \textcolor{comment}{//\ Операции}}
+\DoxyCodeLine{00025\ \ \ \ \ std::vector<Row>\ \doxymbox{\hyperlink{class_database_manager_a49420646236d1965b2e0b2ecfc99dfa1}{intersection}}(std::string\&\ error);}
+\DoxyCodeLine{00026\ \ \ \ \ std::vector<Row>\ \doxymbox{\hyperlink{class_database_manager_ad9a19961423669b080348982c380189a}{symmetricDifference}}(std::string\&\ error);}
+\DoxyCodeLine{00027\ }
+\DoxyCodeLine{00028\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00029\ \ \ \ \ sqlite3*\ db\_;}
+\DoxyCodeLine{00030\ \ \ \ \ std::mutex\ mutex\_;}
+\DoxyCodeLine{00031\ }
+\DoxyCodeLine{00032\ \ \ \ \ \textcolor{keywordtype}{bool}\ executeQuery(\textcolor{keyword}{const}\ std::string\&\ query,\ std::string\&\ error);}
+\DoxyCodeLine{00033\ \ \ \ \ \textcolor{keywordtype}{bool}\ prepareTables(std::string\&\ error);}
+\DoxyCodeLine{00034\ \ \ \ \ \textcolor{keywordtype}{bool}\ idExists(\textcolor{keyword}{const}\ std::string\&\ table,\ \textcolor{keywordtype}{int}\ \textcolor{keywordtype}{id});}
+\DoxyCodeLine{00035\ \};}
+
+\end{DoxyCode}

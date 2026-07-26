@@ -1,0 +1,42 @@
+\doxysection{csv Namespace Reference}
+\hypertarget{namespacecsv}{}\label{namespacecsv}\index{csv@{csv}}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+std::\+vector$<$ std::\+string $>$ \doxymbox{\hyperlink{namespacecsv_a7f2ce68a9b9d16ebd06eec8289d5c6cb}{parse\+Line}} (const std::\+string \&line)
+\begin{DoxyCompactList}\small\item\em Парсит CSV строку с учётом кавычек \end{DoxyCompactList}\item 
+bool \doxymbox{\hyperlink{namespacecsv_a5bf172c42f33794fcb1e98c4f1f999a3}{is\+Header}} (const std::\+string \&line)
+\begin{DoxyCompactList}\small\item\em Проверяет, является ли строка заголовком \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\label{namespacecsv_doc-func-members}
+\Hypertarget{namespacecsv_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{namespacecsv_a5bf172c42f33794fcb1e98c4f1f999a3}\index{csv@{csv}!isHeader@{isHeader}}
+\index{isHeader@{isHeader}!csv@{csv}}
+\doxysubsubsection{\texorpdfstring{isHeader()}{isHeader()}}
+{\footnotesize\ttfamily \label{namespacecsv_a5bf172c42f33794fcb1e98c4f1f999a3} 
+bool csv::\+is\+Header (\begin{DoxyParamCaption}\item[{const std::\+string \&}]{line}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Проверяет, является ли строка заголовком 
+
+\Hypertarget{namespacecsv_a7f2ce68a9b9d16ebd06eec8289d5c6cb}\index{csv@{csv}!parseLine@{parseLine}}
+\index{parseLine@{parseLine}!csv@{csv}}
+\doxysubsubsection{\texorpdfstring{parseLine()}{parseLine()}}
+{\footnotesize\ttfamily \label{namespacecsv_a7f2ce68a9b9d16ebd06eec8289d5c6cb} 
+std::\+vector$<$ std::\+string $>$ csv::\+parse\+Line (\begin{DoxyParamCaption}\item[{const std::\+string \&}]{line}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [inline]}}
+
+
+
+Парсит CSV строку с учётом кавычек 
+
+
+\begin{DoxyParams}{Parameters}
+{\em line} & Строка CSV \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Вектор полей 
+\end{DoxyReturn}

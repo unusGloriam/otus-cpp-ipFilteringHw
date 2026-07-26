@@ -1,0 +1,67 @@
+\doxysection{Logistic\+Regression Class Reference}
+\hypertarget{class_logistic_regression}{}\label{class_logistic_regression}\index{LogisticRegression@{LogisticRegression}}
+
+
+{\ttfamily \+\#include $<$logistic\+\_\+regression.\+hpp$>$}
+
+
+
+Collaboration diagram for Logistic\+Regression:\+
+\nopagebreak
+\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[width=187pt]{class_logistic_regression__coll__graph}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\doxymbox{\hyperlink{class_logistic_regression_aa638305c34f1be7f98541204d050d8e2}{Logistic\+Regression}} ()=default
+\item 
+bool \doxymbox{\hyperlink{class_logistic_regression_aa9b7a3e6bdd33a81bd82dfc7a639e68b}{load\+Weights}} (const std::\+string \&filename)
+\item 
+int \doxymbox{\hyperlink{class_logistic_regression_a3865f1957755297c1d0dc44de5af65dc}{predict}} (const std::\+vector$<$ double $>$ \&features) const
+\item 
+double \doxymbox{\hyperlink{class_logistic_regression_a4f0db40c34e8ceba61834c53a5b0b2b6}{accuracy}} (const std::\+vector$<$ std::\+vector$<$ double $>$ $>$ \&X, const std::\+vector$<$ int $>$ \&y) const
+\end{DoxyCompactItemize}
+
+
+\label{class_logistic_regression_doc-constructors}
+\Hypertarget{class_logistic_regression_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{class_logistic_regression_aa638305c34f1be7f98541204d050d8e2}\index{LogisticRegression@{LogisticRegression}!LogisticRegression@{LogisticRegression}}
+\index{LogisticRegression@{LogisticRegression}!LogisticRegression@{LogisticRegression}}
+\doxysubsubsection{\texorpdfstring{LogisticRegression()}{LogisticRegression()}}
+{\footnotesize\ttfamily \label{class_logistic_regression_aa638305c34f1be7f98541204d050d8e2} 
+Logistic\+Regression::\+\+Logistic\+Regression (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [default]}}
+
+
+
+\label{class_logistic_regression_doc-func-members}
+\Hypertarget{class_logistic_regression_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{class_logistic_regression_a4f0db40c34e8ceba61834c53a5b0b2b6}\index{LogisticRegression@{LogisticRegression}!accuracy@{accuracy}}
+\index{accuracy@{accuracy}!LogisticRegression@{LogisticRegression}}
+\doxysubsubsection{\texorpdfstring{accuracy()}{accuracy()}}
+{\footnotesize\ttfamily \label{class_logistic_regression_a4f0db40c34e8ceba61834c53a5b0b2b6} 
+double Logistic\+Regression::\+accuracy (\begin{DoxyParamCaption}\item[{const std::\+vector$<$ std::\+vector$<$ double $>$ $>$ \&}]{X}{, }\item[{const std::\+vector$<$ int $>$ \&}]{y}{}\end{DoxyParamCaption}) const}
+
+\Hypertarget{class_logistic_regression_aa9b7a3e6bdd33a81bd82dfc7a639e68b}\index{LogisticRegression@{LogisticRegression}!loadWeights@{loadWeights}}
+\index{loadWeights@{loadWeights}!LogisticRegression@{LogisticRegression}}
+\doxysubsubsection{\texorpdfstring{loadWeights()}{loadWeights()}}
+{\footnotesize\ttfamily \label{class_logistic_regression_aa9b7a3e6bdd33a81bd82dfc7a639e68b} 
+bool Logistic\+Regression::\+load\+Weights (\begin{DoxyParamCaption}\item[{const std::\+string \&}]{filename}{}\end{DoxyParamCaption})}
+
+\Hypertarget{class_logistic_regression_a3865f1957755297c1d0dc44de5af65dc}\index{LogisticRegression@{LogisticRegression}!predict@{predict}}
+\index{predict@{predict}!LogisticRegression@{LogisticRegression}}
+\doxysubsubsection{\texorpdfstring{predict()}{predict()}}
+{\footnotesize\ttfamily \label{class_logistic_regression_a3865f1957755297c1d0dc44de5af65dc} 
+int Logistic\+Regression::\+predict (\begin{DoxyParamCaption}\item[{const std::\+vector$<$ double $>$ \&}]{features}{}\end{DoxyParamCaption}) const}
+
+
+
+The documentation for this class was generated from the following files:\+\begin{DoxyCompactItemize}
+\item 
+src/\+\doxymbox{\hyperlink{logistic__regression_8hpp}{logistic\+\_\+regression.\+hpp}}\item 
+src/\+\doxymbox{\hyperlink{logistic__regression_8cpp}{logistic\+\_\+regression.\+cpp}}\end{DoxyCompactItemize}

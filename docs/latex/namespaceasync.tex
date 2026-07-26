@@ -1,0 +1,81 @@
+\doxysection{async Namespace Reference}
+\hypertarget{namespaceasync}{}\label{namespaceasync}\index{async@{async}}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+struct \doxymbox{\hyperlink{structasync_1_1_command_block}{Command\+Block}}
+\item 
+class \doxymbox{\hyperlink{classasync_1_1_blocking_queue}{Blocking\+Queue}}
+\item 
+class \doxymbox{\hyperlink{classasync_1_1_dispatcher}{Dispatcher}}
+\item 
+class \doxymbox{\hyperlink{classasync_1_1_static_pool_manager}{Static\+Pool\+Manager}}
+\item 
+class \doxymbox{\hyperlink{classasync_1_1_context}{Context}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+void \texorpdfstring{$\ast$}{*} \doxymbox{\hyperlink{namespaceasync_ae2e262c7441b39869bef2fc869d1ad30}{connect}} (std::\+size\+\_\+t block\+\_\+size)
+\begin{DoxyCompactList}\small\item\em Создаёт новый контекст обработки команд (для одного клиента). \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{namespaceasync_accdbf20335da737c7408462481462dfb}{receive}} (void \texorpdfstring{$\ast$}{*}context, const char \texorpdfstring{$\ast$}{*}data, std::\+size\+\_\+t size)
+\begin{DoxyCompactList}\small\item\em Передаёт данные (одну или несколько команд) в контекст. \end{DoxyCompactList}\item 
+void \doxymbox{\hyperlink{namespaceasync_a06a20899f877f7f9d300a074eca0ce87}{disconnect}} (void \texorpdfstring{$\ast$}{*}context)
+\begin{DoxyCompactList}\small\item\em Завершает работу с контекстом. Все накопленные команды сбрасываются. \end{DoxyCompactList}\end{DoxyCompactItemize}
+
+
+\label{namespaceasync_doc-func-members}
+\Hypertarget{namespaceasync_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{namespaceasync_ae2e262c7441b39869bef2fc869d1ad30}\index{async@{async}!connect@{connect}}
+\index{connect@{connect}!async@{async}}
+\doxysubsubsection{\texorpdfstring{connect()}{connect()}}
+{\footnotesize\ttfamily \label{namespaceasync_ae2e262c7441b39869bef2fc869d1ad30} 
+void \texorpdfstring{$\ast$}{*} async::\+connect (\begin{DoxyParamCaption}\item[{std::\+size\+\_\+t}]{block\+\_\+size}{}\end{DoxyParamCaption})}
+
+
+
+Создаёт новый контекст обработки команд (для одного клиента). 
+
+
+\begin{DoxyParams}{Parameters}
+{\em block\+\_\+size} & Размер статического блока. \\
+\hline
+\end{DoxyParams}
+\begin{DoxyReturn}{Returns}
+Указатель на контекст (неинтерпретируемый для вызывающего кода). 
+\end{DoxyReturn}
+\Hypertarget{namespaceasync_a06a20899f877f7f9d300a074eca0ce87}\index{async@{async}!disconnect@{disconnect}}
+\index{disconnect@{disconnect}!async@{async}}
+\doxysubsubsection{\texorpdfstring{disconnect()}{disconnect()}}
+{\footnotesize\ttfamily \label{namespaceasync_a06a20899f877f7f9d300a074eca0ce87} 
+void async::\+disconnect (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{context}{}\end{DoxyParamCaption})}
+
+
+
+Завершает работу с контекстом. Все накопленные команды сбрасываются. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em context} & Контекст, возвращённый \doxylink{namespaceasync_ae2e262c7441b39869bef2fc869d1ad30}{connect()}. \\
+\hline
+\end{DoxyParams}
+\Hypertarget{namespaceasync_accdbf20335da737c7408462481462dfb}\index{async@{async}!receive@{receive}}
+\index{receive@{receive}!async@{async}}
+\doxysubsubsection{\texorpdfstring{receive()}{receive()}}
+{\footnotesize\ttfamily \label{namespaceasync_accdbf20335da737c7408462481462dfb} 
+void async::\+receive (\begin{DoxyParamCaption}\item[{void \texorpdfstring{$\ast$}{*}}]{context}{, }\item[{const char \texorpdfstring{$\ast$}{*}}]{data}{, }\item[{std::\+size\+\_\+t}]{size}{}\end{DoxyParamCaption})}
+
+
+
+Передаёт данные (одну или несколько команд) в контекст. 
+
+
+\begin{DoxyParams}{Parameters}
+{\em context} & Контекст, возвращённый \doxylink{namespaceasync_ae2e262c7441b39869bef2fc869d1ad30}{connect()}. \\
+\hline
+{\em data} & Указатель на буфер с командами. \\
+\hline
+{\em size} & Размер буфера в байтах. \\
+\hline
+\end{DoxyParams}

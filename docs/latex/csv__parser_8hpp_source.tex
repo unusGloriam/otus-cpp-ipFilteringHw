@@ -1,0 +1,39 @@
+\doxysection{csv\+\_\+parser.\+hpp}
+\hypertarget{csv__parser_8hpp_source}{}\label{csv__parser_8hpp_source}\index{src/csv\_parser.hpp@{src/csv\_parser.hpp}}
+\doxymbox{\hyperlink{csv__parser_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <sstream>}}
+\DoxyCodeLine{00006\ }
+\DoxyCodeLine{00007\ \textcolor{keyword}{namespace\ }\doxymbox{\hyperlink{namespacecsv}{csv}}\ \{}
+\DoxyCodeLine{00008\ }
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{keyword}{inline}\ std::vector<std::string>\ \doxymbox{\hyperlink{namespacecsv_a7f2ce68a9b9d16ebd06eec8289d5c6cb}{parseLine}}(\textcolor{keyword}{const}\ std::string\&\ line)\ \{}
+\DoxyCodeLine{00015\ \ \ \ \ \ \ \ \ std::vector<std::string>\ fields;}
+\DoxyCodeLine{00016\ \ \ \ \ \ \ \ \ std::string\ field;}
+\DoxyCodeLine{00017\ \ \ \ \ \ \ \ \ \textcolor{keywordtype}{bool}\ in\_quotes\ =\ \textcolor{keyword}{false};}
+\DoxyCodeLine{00018\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00019\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ (\textcolor{keywordtype}{char}\ c\ :\ line)\ \{}
+\DoxyCodeLine{00020\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ (c\ ==\ \textcolor{charliteral}{'"{}'})\ \{}
+\DoxyCodeLine{00021\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ in\_quotes\ =\ !in\_quotes;}
+\DoxyCodeLine{00022\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \textcolor{keywordflow}{if}\ (c\ ==\ \textcolor{charliteral}{','}\ \&\&\ !in\_quotes)\ \{}
+\DoxyCodeLine{00023\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ fields.push\_back(field);}
+\DoxyCodeLine{00024\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ field.clear();}
+\DoxyCodeLine{00025\ \ \ \ \ \ \ \ \ \ \ \ \ \}\ \textcolor{keywordflow}{else}\ \{}
+\DoxyCodeLine{00026\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ field\ +=\ c;}
+\DoxyCodeLine{00027\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00028\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{00029\ \ \ \ \ \ \ \ \ fields.push\_back(field);}
+\DoxyCodeLine{00030\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{00031\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ fields;}
+\DoxyCodeLine{00032\ \ \ \ \ \}}
+\DoxyCodeLine{00033\ }
+\DoxyCodeLine{00037\ \ \ \ \ \textcolor{keyword}{inline}\ \textcolor{keywordtype}{bool}\ \doxymbox{\hyperlink{namespacecsv_a5bf172c42f33794fcb1e98c4f1f999a3}{isHeader}}(\textcolor{keyword}{const}\ std::string\&\ line)\ \{}
+\DoxyCodeLine{00038\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ line.find(\textcolor{stringliteral}{"{}id"{}})\ ==\ 0\ \&\&\ line.find(\textcolor{stringliteral}{"{}price"{}})\ !=\ std::string::npos;}
+\DoxyCodeLine{00039\ \ \ \ \ \}}
+\DoxyCodeLine{00040\ }
+\DoxyCodeLine{00041\ \}\ \textcolor{comment}{//\ namespace\ csv}}
+
+\end{DoxyCode}

@@ -1,0 +1,21 @@
+\doxysection{Block\+Handler.\+hpp}
+\hypertarget{_block_handler_8hpp_source}{}\label{_block_handler_8hpp_source}\index{src/BlockHandler.hpp@{src/BlockHandler.hpp}}
+\doxymbox{\hyperlink{_block_handler_8hpp}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ \textcolor{preprocessor}{\#pragma\ once}}
+\DoxyCodeLine{00002\ }
+\DoxyCodeLine{00003\ \textcolor{preprocessor}{\#include\ "{}\doxymbox{\hyperlink{_i_observer_8hpp}{IObserver.hpp}}"{}}}
+\DoxyCodeLine{00004\ \textcolor{preprocessor}{\#include\ <vector>}}
+\DoxyCodeLine{00005\ \textcolor{preprocessor}{\#include\ <string>}}
+\DoxyCodeLine{00006\ \textcolor{preprocessor}{\#include\ <ctime>}}
+\DoxyCodeLine{00007\ }
+\DoxyCodeLine{00008\ \textcolor{keyword}{class\ }\doxymbox{\hyperlink{class_block_handler}{BlockHandler}}\ :\ \textcolor{keyword}{public}\ \doxymbox{\hyperlink{class_i_observer}{IObserver}}\ \{}
+\DoxyCodeLine{00009\ \textcolor{keyword}{public}:}
+\DoxyCodeLine{00010\ \ \ \ \ \textcolor{keywordtype}{void}\ \doxymbox{\hyperlink{class_block_handler_ab73a4b54c5244c83b3aefcc43eb44e53}{onCommandsReady}}(\textcolor{keyword}{const}\ std::vector<std::string>\&\ commands,\ std::time\_t\ timestamp)\ \textcolor{keyword}{override};}
+\DoxyCodeLine{00011\ }
+\DoxyCodeLine{00012\ \textcolor{keyword}{private}:}
+\DoxyCodeLine{00013\ \ \ \ \ \textcolor{keywordtype}{void}\ printToConsole(\textcolor{keyword}{const}\ std::vector<std::string>\&\ commands);}
+\DoxyCodeLine{00014\ \ \ \ \ \textcolor{keywordtype}{void}\ saveToFile(\textcolor{keyword}{const}\ std::vector<std::string>\&\ commands,\ std::time\_t\ timestamp);}
+\DoxyCodeLine{00015\ \};}
+
+\end{DoxyCode}

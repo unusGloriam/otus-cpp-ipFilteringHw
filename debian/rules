@@ -1,7 +1,7 @@
 #!/usr/bin/make -f
 
 # Экспорт переменных из CMake
-export PROJECT_NAME = mapreduce
+export PROJECT_NAME = fashion-mnist
 
 %:
 	dh	$@
