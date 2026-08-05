@@ -1,0 +1,19 @@
+<map id="AppConfig" name="AppConfig">
+<area shape="rect" id="Node000001" title=" " alt="" coords="558,189,640,216"/>
+<area shape="rect" id="Node000002" href="$struct_kafka_config.html" title=" " alt="" coords="330,67,424,93"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="424,97,535,155,583,189,577,188,533,160,423,103"/>
+<area shape="rect" id="Node000003" href="$struct_kafka_config_1_1_topics.html" title=" " alt="" coords="32,5,172,32"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="187,25,291,45,346,65,341,67,290,51,188,31"/>
+<area shape="rect" id="Node000004" href="$struct_kafka_config_1_1_producer.html" title=" " alt="" coords="25,60,179,87"/>
+<area shape="poly" id="edge3_Node000002_Node000004" title=" " alt="" coords="194,73,332,77,328,81,195,78"/>
+<area shape="rect" id="Node000005" href="$struct_kafka_config_1_1_consumer.html" title=" " alt="" coords="21,115,183,141"/>
+<area shape="poly" id="edge4_Node000002_Node000005" title=" " alt="" coords="198,118,290,104,339,93,334,95,291,109,199,123"/>
+<area shape="rect" id="Node000006" href="$struct_database_config.html" title=" " alt="" coords="319,163,434,189"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="450,182,560,197,555,198,450,187"/>
+<area shape="rect" id="Node000007" href="$structdatabase_1_1_connection_params.html" title=" " alt="" coords="5,169,199,196"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="214,180,291,179,322,179,316,181,291,184,215,186"/>
+<area shape="rect" id="Node000008" href="$struct_processing_config.html" title=" " alt="" coords="315,216,439,243"/>
+<area shape="poly" id="edge7_Node000001_Node000008" title=" " alt="" coords="455,228,534,221,560,217,565,216,534,227,455,234"/>
+<area shape="rect" id="Node000009" href="$struct_cache_config.html" title=" " alt="" coords="328,271,426,297"/>
+<area shape="poly" id="edge8_Node000001_Node000009" title=" " alt="" coords="441,280,487,273,533,258,562,237,584,218,589,215,566,242,535,262,488,278,441,285"/>
+</map>

@@ -1,0 +1,604 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ru">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.17.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Kafka-1C Connector: Исходный файл src/main.cpp</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="codefolding.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="module">
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+const theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'default';
+mermaid.initialize({ startOnLoad: true, theme: theme });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Kafka-1C Connector<span id="projectnumber">&#160;1.0.0</span>
+   </div>
+   <div id="projectbrief">High-performance Kafka-1C integration microservice</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Создано системой Doxygen 1.17.0 -->
+<script type="text/javascript">
+let searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', codefold.init);
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', () => {
+  initMenu('',true);
+  init_search();
+});
+</script>
+<div id="main-nav-mobile">
+<div class="sm sm-dox"><input id="main-menu-state" type="checkbox"/>
+<label class="main-menu-btn" for="main-menu-state">
+<span class="main-menu-btn-icon"></span> Toggle main menu visibility</label>
+<span id="searchBoxPos1" style="position:absolute;right:8px;top:8px;height:36px;"></span>
+</div>
+</div><!-- main-nav-mobile -->
+<div id="main-nav">
+  <ul class="sm sm-dox" id="main-menu">
+    <li id="searchBoxPos2" style="float:right">
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <span id="MSearchSelect" class="search-icon" onmouseover="return searchBox.OnSearchSelectShow()" onmouseout="return searchBox.OnSearchSelectHide()"><span class="search-icon-dropdown"></span></span>
+          <input type="text" id="MSearchField" value="" placeholder="Поиск" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><div id="MSearchCloseImg" class="close-icon"></div></a>
+          </span>
+        </div>
+    </li>
+  </ul>
+</div><!-- main-nav -->
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded',() => { initNavTree('main_8cpp_source.html','',''); });
+</script>
+<div id="container">
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Загрузка...</div>
+<div class="SRStatus" id="Searching">Поиск...</div>
+<div class="SRStatus" id="NoMatches">Не найдено</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">main.cpp</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="main_8cpp.html">См. документацию.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#include &lt;iostream&gt;</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;thread&gt;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;atomic&gt;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;chrono&gt;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;filesystem&gt;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span><span class="preprocessor">#include &lt;csignal&gt;</span></div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="preprocessor">#include &lt;iomanip&gt;</span></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span> </div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="preprocessor">#include &quot;<a class="code" href="config_8hpp.html">config/config.hpp</a>&quot;</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="preprocessor">#include &quot;<a class="code" href="producer_8hpp.html">kafka/producer.hpp</a>&quot;</span></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span><span class="preprocessor">#include &quot;<a class="code" href="consumer_8hpp.html">kafka/consumer.hpp</a>&quot;</span></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span><span class="preprocessor">#include &quot;<a class="code" href="json__parser_8hpp.html">parser/json_parser.hpp</a>&quot;</span></div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno">   15</span><span class="preprocessor">#include &quot;<a class="code" href="sqlite__cache_8hpp.html">cache/sqlite_cache.hpp</a>&quot;</span></div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno">   16</span><span class="preprocessor">#include &quot;<a class="code" href="postgresql_8hpp.html">database/postgresql.hpp</a>&quot;</span></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span><span class="preprocessor">#include &quot;<a class="code" href="order__processor_8hpp.html">processor/order_processor.hpp</a>&quot;</span></div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno">   18</span><span class="preprocessor">#include &quot;<a class="code" href="logger_8hpp.html">utils/logger.hpp</a>&quot;</span></div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno">   20</span><span class="keyword">namespace </span>fs = std::filesystem;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span> </div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span><span class="comment">// ============================================================</span></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span><span class="comment">// ГЛОБАЛЬНЫЕ ПЕРЕМЕННЫЕ</span></div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span><span class="comment">// ============================================================</span></div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span> </div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="main_8cpp.html#af53701aded99286de42137bffab9561a">   26</a></span>std::atomic&lt;bool&gt; <a class="code hl_variable" href="main_8cpp.html#af53701aded99286de42137bffab9561a">running</a>{<span class="keyword">true</span>};</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="main_8cpp.html#a658b214911501898d6087b601d6b152e">   27</a></span>std::atomic&lt;size_t&gt; <a class="code hl_variable" href="main_8cpp.html#a658b214911501898d6087b601d6b152e">producer_count</a>{0};</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="main_8cpp.html#a8a2b3452989432f0e06d48049de87e33">   28</a></span>std::atomic&lt;size_t&gt; <a class="code hl_variable" href="main_8cpp.html#a8a2b3452989432f0e06d48049de87e33">consumer_count</a>{0};</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="main_8cpp.html#a77c334a9669f26a519f128b8f85765a6">   29</a></span>std::atomic&lt;size_t&gt; <a class="code hl_variable" href="main_8cpp.html#a77c334a9669f26a519f128b8f85765a6">error_count</a>{0};</div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span> </div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span><span class="comment">// ============================================================</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span><span class="comment">// ОБРАБОТЧИК СИГНАЛОВ (Ctrl+C)</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span><span class="comment">// ============================================================</span></div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno">   34</span> </div>
+<div class="foldopen" id="foldopen00035" data-start="{" data-end="}">
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno"><a class="line" href="main_8cpp.html#ad2e59c7203b3bddc1bc9a2224b52e8e7">   35</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="main_8cpp.html#ad2e59c7203b3bddc1bc9a2224b52e8e7">signalHandler</a>(<span class="keywordtype">int</span> signal)</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span>{</div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span>    <a class="code hl_function" href="class_logger.html#a474176e6966186566a2a321cb5cbd739">Logger::info</a>(<span class="stringliteral">&quot;Received signal &quot;</span> + std::to_string(signal) + <span class="stringliteral">&quot;, shutting down...&quot;</span>);</div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span>    <a class="code hl_variable" href="main_8cpp.html#af53701aded99286de42137bffab9561a">running</a> = <span class="keyword">false</span>;</div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span>}</div>
+</div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno">   40</span> </div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span><span class="comment">// ============================================================</span></div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span><span class="comment">// ВСПОМОГАТЕЛЬНАЯ ФУНКЦИЯ — ПОЛУЧЕНИЕ СПИСКА ФАЙЛОВ</span></div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span><span class="comment">// ============================================================</span></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="foldopen" id="foldopen00045" data-start="{" data-end="}">
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="main_8cpp.html#a5a216c3284e0a72fe4f8101cd8b12b60">   45</a></span>std::vector&lt;std::string&gt; <a class="code hl_function" href="main_8cpp.html#a5a216c3284e0a72fe4f8101cd8b12b60">getJsonFiles</a>(<span class="keyword">const</span> std::string &amp;directory)</div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span>{</div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span>    std::vector&lt;std::string&gt; files;</div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno">   48</span>    <span class="keywordflow">try</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>    {</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;entry : fs::directory_iterator(directory))</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span>        {</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno">   52</span>            <span class="keywordflow">if</span> (entry.path().extension() == <span class="stringliteral">&quot;.json&quot;</span>)</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>            {</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>                files.push_back(entry.path().string());</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span>            }</div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span>        }</div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span>    }</div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e)</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span>    {</div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>        <a class="code hl_function" href="class_logger.html#aafe8b4f6ed1259fbde150ab59e0785e7">Logger::error</a>(<span class="stringliteral">&quot;Directory read error: &quot;</span> + std::string(e.what()));</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    }</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    <span class="keywordflow">return</span> files;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span>}</div>
+</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno">   64</span> </div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span><span class="comment">// ============================================================</span></div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span><span class="comment">// ФУНКЦИЯ PRODUCER (отправка файлов в Kafka)</span></div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="comment">// ============================================================</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span> </div>
+<div class="foldopen" id="foldopen00069" data-start="{" data-end="}">
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno"><a class="line" href="main_8cpp.html#a5bc44c4396b63ff16c6a74bb1c394478">   69</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="main_8cpp.html#a5bc44c4396b63ff16c6a74bb1c394478">processFiles</a>(<span class="keyword">const</span> std::string &amp;directory,</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span>                  <a class="code hl_class" href="class_kafka_producer.html">KafkaProducer</a> &amp;producer,</div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>                  <a class="code hl_class" href="class_message_cache.html">MessageCache</a> &amp;cache,</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>                  <span class="keyword">const</span> std::string &amp;topic,</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>                  std::atomic&lt;size_t&gt; &amp;next_index,</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span>                  <span class="keyword">const</span> std::vector&lt;std::string&gt; &amp;files)</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>{</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span> </div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span>    <span class="keywordtype">size_t</span> idx;</div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>    <span class="keywordflow">while</span> ((idx = next_index.fetch_add(1)) &lt; files.size())</div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>    {</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span>        <span class="keyword">const</span> std::string &amp;filepath = files[idx];</div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span> </div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        <span class="keywordflow">try</span></div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span>        {</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>            <a class="code hl_function" href="class_logger.html#aed78385ee0ad9d124521735894abab46">Logger::debug</a>(<span class="stringliteral">&quot;[Producer] Processing: &quot;</span> + filepath);</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span> </div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>            <span class="keyword">auto</span> order = <a class="code hl_function" href="class_json_parser.html#af18e9188a3948e4c5b3d9c17a76bcd74">JsonParser::parseOrder</a>(filepath);</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>            <span class="keywordflow">if</span> (!<a class="code hl_function" href="class_json_parser.html#a1d6b83be5c0757b3a628a7c1737e4628">JsonParser::validate</a>(order))</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>            {</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span>                <a class="code hl_function" href="class_logger.html#aafe8b4f6ed1259fbde150ab59e0785e7">Logger::error</a>(<span class="stringliteral">&quot;[Producer] Invalid order: &quot;</span> + filepath);</div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>                <a class="code hl_variable" href="main_8cpp.html#a77c334a9669f26a519f128b8f85765a6">error_count</a>.fetch_add(1);</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>                <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>            }</div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span> </div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span>            std::string json_message = order.toJson();</div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>            std::string key = order.tin + <span class="stringliteral">&quot;-&quot;</span> + order.number;</div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>            std::string source_type = <span class="stringliteral">&quot;producer&quot;</span>;</div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span> </div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>            <span class="keywordflow">if</span> (!cache.<a class="code hl_function" href="class_message_cache.html#a699e48cdd16aaf9e8a67d25d30925a24">save</a>(filepath, topic, json_message, order.tin, order.trrc, source_type))</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>            {</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>                <a class="code hl_function" href="class_logger.html#aafe8b4f6ed1259fbde150ab59e0785e7">Logger::error</a>(<span class="stringliteral">&quot;[Producer] Failed to cache: &quot;</span> + filepath);</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>                <a class="code hl_variable" href="main_8cpp.html#a77c334a9669f26a519f128b8f85765a6">error_count</a>.fetch_add(1);</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>                <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span>            }</div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span> </div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>            <span class="keywordflow">if</span> (producer.<a class="code hl_function" href="class_kafka_producer.html#a5c01eb2a998310bbfe16ebc77666af8f">send</a>(key, json_message))</div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>            {</div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>                <a class="code hl_variable" href="main_8cpp.html#a658b214911501898d6087b601d6b152e">producer_count</a>.fetch_add(1);</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>                <a class="code hl_function" href="class_logger.html#a474176e6966186566a2a321cb5cbd739">Logger::info</a>(<span class="stringliteral">&quot;[Producer] Sent: &quot;</span> + key + <span class="stringliteral">&quot; (&quot;</span> + std::to_string(<a class="code hl_variable" href="main_8cpp.html#a658b214911501898d6087b601d6b152e">producer_count</a>.load()) + <span class="stringliteral">&quot;)&quot;</span>);</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span> </div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>                <span class="keywordflow">try</span></div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>                {</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span>                    fs::remove(filepath);</div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>                    <a class="code hl_function" href="class_logger.html#aed78385ee0ad9d124521735894abab46">Logger::debug</a>(<span class="stringliteral">&quot;[Producer] Deleted: &quot;</span> + filepath);</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>                }</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>                <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e)</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>                {</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span>                    <a class="code hl_function" href="class_logger.html#a5025d14c1f40cc23e9cbb48f98f0d9a6">Logger::warning</a>(<span class="stringliteral">&quot;[Producer] Failed to delete: &quot;</span> + filepath + <span class="stringliteral">&quot; - &quot;</span> + e.what());</div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>                }</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>            }</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>            <span class="keywordflow">else</span></div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>            {</div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>                <a class="code hl_function" href="class_logger.html#aafe8b4f6ed1259fbde150ab59e0785e7">Logger::error</a>(<span class="stringliteral">&quot;[Producer] Failed to send: &quot;</span> + key);</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>                <a class="code hl_variable" href="main_8cpp.html#a77c334a9669f26a519f128b8f85765a6">error_count</a>.fetch_add(1);</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span>            }</div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>        }</div>
+<div class="line"><a id="l00126" name="l00126"></a><span class="lineno">  126</span>        <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e)</div>
+<div class="line"><a id="l00127" name="l00127"></a><span class="lineno">  127</span>        {</div>
+<div class="line"><a id="l00128" name="l00128"></a><span class="lineno">  128</span>            <a class="code hl_function" href="class_logger.html#aafe8b4f6ed1259fbde150ab59e0785e7">Logger::error</a>(<span class="stringliteral">&quot;[Producer] Error processing &quot;</span> + filepath + <span class="stringliteral">&quot;: &quot;</span> + e.what());</div>
+<div class="line"><a id="l00129" name="l00129"></a><span class="lineno">  129</span>            <a class="code hl_variable" href="main_8cpp.html#a77c334a9669f26a519f128b8f85765a6">error_count</a>.fetch_add(1);</div>
+<div class="line"><a id="l00130" name="l00130"></a><span class="lineno">  130</span>        }</div>
+<div class="line"><a id="l00131" name="l00131"></a><span class="lineno">  131</span>    }</div>
+<div class="line"><a id="l00132" name="l00132"></a><span class="lineno">  132</span>}</div>
+</div>
+<div class="line"><a id="l00133" name="l00133"></a><span class="lineno">  133</span> </div>
+<div class="line"><a id="l00134" name="l00134"></a><span class="lineno">  134</span><span class="comment">// ============================================================</span></div>
+<div class="line"><a id="l00135" name="l00135"></a><span class="lineno">  135</span><span class="comment">// ФУНКЦИЯ PRODUCER — ЗАПУСК В ОТДЕЛЬНОМ ПОТОКЕ</span></div>
+<div class="line"><a id="l00136" name="l00136"></a><span class="lineno">  136</span><span class="comment">// ============================================================</span></div>
+<div class="line"><a id="l00137" name="l00137"></a><span class="lineno">  137</span> </div>
+<div class="foldopen" id="foldopen00138" data-start="{" data-end="}">
+<div class="line"><a id="l00138" name="l00138"></a><span class="lineno"><a class="line" href="main_8cpp.html#a046be377067f3f52c8b9516cdb1e47b5">  138</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="main_8cpp.html#a046be377067f3f52c8b9516cdb1e47b5">runProducer</a>(<a class="code hl_struct" href="struct_app_config.html">AppConfig</a> &amp;config, <a class="code hl_class" href="class_kafka_producer.html">KafkaProducer</a> &amp;producer, <a class="code hl_class" href="class_message_cache.html">MessageCache</a> &amp;cache)</div>
+<div class="line"><a id="l00139" name="l00139"></a><span class="lineno">  139</span>{</div>
+<div class="line"><a id="l00140" name="l00140"></a><span class="lineno">  140</span>    <a class="code hl_function" href="class_logger.html#a474176e6966186566a2a321cb5cbd739">Logger::info</a>(<span class="stringliteral">&quot;[Producer] Thread started&quot;</span>);</div>
+<div class="line"><a id="l00141" name="l00141"></a><span class="lineno">  141</span> </div>
+<div class="line"><a id="l00142" name="l00142"></a><span class="lineno">  142</span>    <span class="keyword">const</span> <span class="keywordtype">int</span> MAX_WORKERS = config.<a class="code hl_variable" href="struct_app_config.html#a317a75e33b14b550d5037863dc12d6a9">processing</a>.<a class="code hl_variable" href="struct_processing_config.html#ad5e444469cadb6aa3f141fed824fc2fb">max_workers</a>;</div>
+<div class="line"><a id="l00143" name="l00143"></a><span class="lineno">  143</span>    std::vector&lt;std::thread&gt; workers;</div>
+<div class="line"><a id="l00144" name="l00144"></a><span class="lineno">  144</span> </div>
+<div class="line"><a id="l00145" name="l00145"></a><span class="lineno">  145</span>    <span class="keywordflow">while</span> (<a class="code hl_variable" href="main_8cpp.html#af53701aded99286de42137bffab9561a">running</a>)</div>
+<div class="line"><a id="l00146" name="l00146"></a><span class="lineno">  146</span>    {</div>
+<div class="line"><a id="l00147" name="l00147"></a><span class="lineno">  147</span>        <span class="keywordflow">for</span> (<span class="keyword">const</span> <span class="keyword">auto</span> &amp;group : config.<a class="code hl_variable" href="struct_app_config.html#a278bb1ffae10e016c5355964746230f9">groups</a>)</div>
+<div class="line"><a id="l00148" name="l00148"></a><span class="lineno">  148</span>        {</div>
+<div class="line"><a id="l00149" name="l00149"></a><span class="lineno">  149</span>            <span class="keywordflow">if</span> (!group.enabled)</div>
+<div class="line"><a id="l00150" name="l00150"></a><span class="lineno">  150</span>                <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00151" name="l00151"></a><span class="lineno">  151</span> </div>
+<div class="line"><a id="l00152" name="l00152"></a><span class="lineno">  152</span>            <span class="keyword">auto</span> files = <a class="code hl_function" href="main_8cpp.html#a5a216c3284e0a72fe4f8101cd8b12b60">getJsonFiles</a>(group.input_directory);</div>
+<div class="line"><a id="l00153" name="l00153"></a><span class="lineno">  153</span>            <span class="keywordflow">if</span> (files.empty())</div>
+<div class="line"><a id="l00154" name="l00154"></a><span class="lineno">  154</span>            {</div>
+<div class="line"><a id="l00155" name="l00155"></a><span class="lineno">  155</span>                std::this_thread::sleep_for(std::chrono::milliseconds(100));</div>
+<div class="line"><a id="l00156" name="l00156"></a><span class="lineno">  156</span>                <span class="keywordflow">continue</span>;</div>
+<div class="line"><a id="l00157" name="l00157"></a><span class="lineno">  157</span>            }</div>
+<div class="line"><a id="l00158" name="l00158"></a><span class="lineno">  158</span> </div>
+<div class="line"><a id="l00159" name="l00159"></a><span class="lineno">  159</span>            <a class="code hl_function" href="class_logger.html#a474176e6966186566a2a321cb5cbd739">Logger::info</a>(<span class="stringliteral">&quot;[Producer] Found &quot;</span> + std::to_string(files.size()) + <span class="stringliteral">&quot; files in &quot;</span> + group.input_directory);</div>
+<div class="line"><a id="l00160" name="l00160"></a><span class="lineno">  160</span> </div>
+<div class="line"><a id="l00161" name="l00161"></a><span class="lineno">  161</span>            std::atomic&lt;size_t&gt; next_index{0};</div>
+<div class="line"><a id="l00162" name="l00162"></a><span class="lineno">  162</span> </div>
+<div class="line"><a id="l00163" name="l00163"></a><span class="lineno">  163</span>            <span class="keywordflow">for</span> (<span class="keywordtype">int</span> i = 0; i &lt; MAX_WORKERS &amp;&amp; <a class="code hl_variable" href="main_8cpp.html#af53701aded99286de42137bffab9561a">running</a>; ++i)</div>
+<div class="line"><a id="l00164" name="l00164"></a><span class="lineno">  164</span>            {</div>
+<div class="line"><a id="l00165" name="l00165"></a><span class="lineno">  165</span>                workers.emplace_back([&amp;]()</div>
+<div class="line"><a id="l00166" name="l00166"></a><span class="lineno">  166</span>                                     { <a class="code hl_function" href="main_8cpp.html#a5bc44c4396b63ff16c6a74bb1c394478">processFiles</a>(</div>
+<div class="line"><a id="l00167" name="l00167"></a><span class="lineno">  167</span>                                           group.input_directory,</div>
+<div class="line"><a id="l00168" name="l00168"></a><span class="lineno">  168</span>                                           producer,</div>
+<div class="line"><a id="l00169" name="l00169"></a><span class="lineno">  169</span>                                           cache,</div>
+<div class="line"><a id="l00170" name="l00170"></a><span class="lineno">  170</span>                                           group.kafka_topic,</div>
+<div class="line"><a id="l00171" name="l00171"></a><span class="lineno">  171</span>                                           std::ref(next_index),</div>
+<div class="line"><a id="l00172" name="l00172"></a><span class="lineno">  172</span>                                           std::cref(files)); });</div>
+<div class="line"><a id="l00173" name="l00173"></a><span class="lineno">  173</span>            }</div>
+<div class="line"><a id="l00174" name="l00174"></a><span class="lineno">  174</span> </div>
+<div class="line"><a id="l00175" name="l00175"></a><span class="lineno">  175</span>            <span class="keywordflow">for</span> (<span class="keyword">auto</span> &amp;worker : workers)</div>
+<div class="line"><a id="l00176" name="l00176"></a><span class="lineno">  176</span>            {</div>
+<div class="line"><a id="l00177" name="l00177"></a><span class="lineno">  177</span>                <span class="keywordflow">if</span> (worker.joinable())</div>
+<div class="line"><a id="l00178" name="l00178"></a><span class="lineno">  178</span>                {</div>
+<div class="line"><a id="l00179" name="l00179"></a><span class="lineno">  179</span>                    worker.join();</div>
+<div class="line"><a id="l00180" name="l00180"></a><span class="lineno">  180</span>                }</div>
+<div class="line"><a id="l00181" name="l00181"></a><span class="lineno">  181</span>            }</div>
+<div class="line"><a id="l00182" name="l00182"></a><span class="lineno">  182</span>            workers.clear();</div>
+<div class="line"><a id="l00183" name="l00183"></a><span class="lineno">  183</span>        }</div>
+<div class="line"><a id="l00184" name="l00184"></a><span class="lineno">  184</span> </div>
+<div class="line"><a id="l00185" name="l00185"></a><span class="lineno">  185</span>        <span class="keywordflow">if</span> (<a class="code hl_variable" href="main_8cpp.html#af53701aded99286de42137bffab9561a">running</a>)</div>
+<div class="line"><a id="l00186" name="l00186"></a><span class="lineno">  186</span>        {</div>
+<div class="line"><a id="l00187" name="l00187"></a><span class="lineno">  187</span>            std::this_thread::sleep_for(std::chrono::seconds(1));</div>
+<div class="line"><a id="l00188" name="l00188"></a><span class="lineno">  188</span>        }</div>
+<div class="line"><a id="l00189" name="l00189"></a><span class="lineno">  189</span>    }</div>
+<div class="line"><a id="l00190" name="l00190"></a><span class="lineno">  190</span> </div>
+<div class="line"><a id="l00191" name="l00191"></a><span class="lineno">  191</span>    <a class="code hl_function" href="class_logger.html#a474176e6966186566a2a321cb5cbd739">Logger::info</a>(<span class="stringliteral">&quot;[Producer] Thread stopped&quot;</span>);</div>
+<div class="line"><a id="l00192" name="l00192"></a><span class="lineno">  192</span>}</div>
+</div>
+<div class="line"><a id="l00193" name="l00193"></a><span class="lineno">  193</span> </div>
+<div class="line"><a id="l00194" name="l00194"></a><span class="lineno">  194</span><span class="comment">// ============================================================</span></div>
+<div class="line"><a id="l00195" name="l00195"></a><span class="lineno">  195</span><span class="comment">// ФУНКЦИЯ CONSUMER — ЗАПУСК В ОТДЕЛЬНОМ ПОТОКЕ</span></div>
+<div class="line"><a id="l00196" name="l00196"></a><span class="lineno">  196</span><span class="comment">// ============================================================</span></div>
+<div class="line"><a id="l00197" name="l00197"></a><span class="lineno">  197</span> </div>
+<div class="foldopen" id="foldopen00198" data-start="{" data-end="}">
+<div class="line"><a id="l00198" name="l00198"></a><span class="lineno"><a class="line" href="main_8cpp.html#a9e945a592fa4a0f1706ea24ebb2ab854">  198</a></span><span class="keywordtype">void</span> <a class="code hl_function" href="main_8cpp.html#a9e945a592fa4a0f1706ea24ebb2ab854">runConsumer</a>(<a class="code hl_struct" href="struct_app_config.html">AppConfig</a> &amp;config, <a class="code hl_class" href="classdatabase_1_1_postgre_s_q_l.html">database::PostgreSQL</a> &amp;db, <a class="code hl_class" href="class_message_cache.html">MessageCache</a> &amp;cache, <a class="code hl_class" href="class_kafka_producer.html">KafkaProducer</a> &amp;error_producer)</div>
+<div class="line"><a id="l00199" name="l00199"></a><span class="lineno">  199</span>{</div>
+<div class="line"><a id="l00200" name="l00200"></a><span class="lineno">  200</span>    <a class="code hl_function" href="class_logger.html#a474176e6966186566a2a321cb5cbd739">Logger::info</a>(<span class="stringliteral">&quot;[Consumer] Thread started&quot;</span>);</div>
+<div class="line"><a id="l00201" name="l00201"></a><span class="lineno">  201</span> </div>
+<div class="line"><a id="l00202" name="l00202"></a><span class="lineno">  202</span>    <span class="keywordflow">try</span></div>
+<div class="line"><a id="l00203" name="l00203"></a><span class="lineno">  203</span>    {</div>
+<div class="line"><a id="l00204" name="l00204"></a><span class="lineno">  204</span>        <a class="code hl_class" href="class_kafka_consumer.html">KafkaConsumer</a> consumer( <span class="comment">// Создание consumer</span></div>
+<div class="line"><a id="l00205" name="l00205"></a><span class="lineno">  205</span>            config.<a class="code hl_variable" href="struct_app_config.html#a6eabe866e9b2dded624221f90e6bec7f">kafka</a>.<a class="code hl_variable" href="struct_kafka_config.html#a2348a03b02fe3fd8603b36d0668a466d">bootstrap_servers</a>,</div>
+<div class="line"><a id="l00206" name="l00206"></a><span class="lineno">  206</span>            config.<a class="code hl_variable" href="struct_app_config.html#a6eabe866e9b2dded624221f90e6bec7f">kafka</a>.<a class="code hl_variable" href="struct_kafka_config.html#a28fc38d804239de7371366e113fe82ea">consumer</a>.<a class="code hl_variable" href="struct_kafka_config_1_1_consumer.html#a038ca3598f8aca14524c11bc9e1c6730">group_id</a>,</div>
+<div class="line"><a id="l00207" name="l00207"></a><span class="lineno">  207</span>            config.<a class="code hl_variable" href="struct_app_config.html#a6eabe866e9b2dded624221f90e6bec7f">kafka</a>.<a class="code hl_variable" href="struct_kafka_config.html#ab1be7681f0d61eb354db018745e25c1f">topics</a>.<a class="code hl_variable" href="struct_kafka_config_1_1_topics.html#a3512bb9c634bc7bb91b8adac920696d2">input</a>);</div>
+<div class="line"><a id="l00208" name="l00208"></a><span class="lineno">  208</span> </div>
+<div class="line"><a id="l00209" name="l00209"></a><span class="lineno">  209</span>        <span class="keywordflow">if</span> (!consumer.<a class="code hl_function" href="class_kafka_consumer.html#ad3e3608060a00e4429a2e14d24ad09c8">init</a>())</div>
+<div class="line"><a id="l00210" name="l00210"></a><span class="lineno">  210</span>        { <span class="comment">// Инициализация</span></div>
+<div class="line"><a id="l00211" name="l00211"></a><span class="lineno">  211</span>            <a class="code hl_function" href="class_logger.html#aafe8b4f6ed1259fbde150ab59e0785e7">Logger::error</a>(<span class="stringliteral">&quot;[Consumer] Failed to initialize&quot;</span>);</div>
+<div class="line"><a id="l00212" name="l00212"></a><span class="lineno">  212</span>            <span class="keywordflow">return</span>;</div>
+<div class="line"><a id="l00213" name="l00213"></a><span class="lineno">  213</span>        }</div>
+<div class="line"><a id="l00214" name="l00214"></a><span class="lineno">  214</span> </div>
+<div class="line"><a id="l00215" name="l00215"></a><span class="lineno">  215</span>        <a class="code hl_class" href="class_order_processor.html">OrderProcessor</a> processor(db, cache, error_producer); <span class="comment">// Создание processor</span></div>
+<div class="line"><a id="l00216" name="l00216"></a><span class="lineno">  216</span> </div>
+<div class="line"><a id="l00217" name="l00217"></a><span class="lineno">  217</span>        <a class="code hl_function" href="class_logger.html#a474176e6966186566a2a321cb5cbd739">Logger::info</a>(<span class="stringliteral">&quot;[Consumer] Checking for pending messages in cache...&quot;</span>);</div>
+<div class="line"><a id="l00218" name="l00218"></a><span class="lineno">  218</span>        processor.<a class="code hl_function" href="class_order_processor.html#af7a710bdbf4bd5c4578db73437477a5f">reprocessPendingMessages</a>(); <span class="comment">// Восстановление</span></div>
+<div class="line"><a id="l00219" name="l00219"></a><span class="lineno">  219</span> </div>
+<div class="line"><a id="l00220" name="l00220"></a><span class="lineno">  220</span>        <span class="comment">// Устанавливаем callback для обработки сообщений</span></div>
+<div class="line"><a id="l00221" name="l00221"></a><span class="lineno">  221</span>        consumer.<a class="code hl_function" href="class_kafka_consumer.html#a21535be303ced919722a21c8a10646ba">setMessageCallback</a>([&amp;processor](<span class="keyword">const</span> std::string &amp;key,</div>
+<div class="line"><a id="l00222" name="l00222"></a><span class="lineno">  222</span>                                                 <span class="keyword">const</span> std::string &amp;value,</div>
+<div class="line"><a id="l00223" name="l00223"></a><span class="lineno">  223</span>                                                 int64_t timestamp)</div>
+<div class="line"><a id="l00224" name="l00224"></a><span class="lineno">  224</span>                                    {</div>
+<div class="line"><a id="l00225" name="l00225"></a><span class="lineno">  225</span>            <span class="keywordflow">if</span> (processor.<a class="code hl_function" href="class_order_processor.html#a6f8aa8e2aeb597be492065036c2f23f5">processMessage</a>(key, value, timestamp)) {</div>
+<div class="line"><a id="l00226" name="l00226"></a><span class="lineno">  226</span>                <a class="code hl_variable" href="main_8cpp.html#a8a2b3452989432f0e06d48049de87e33">consumer_count</a>.fetch_add(1);</div>
+<div class="line"><a id="l00227" name="l00227"></a><span class="lineno">  227</span>            } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00228" name="l00228"></a><span class="lineno">  228</span>                <a class="code hl_variable" href="main_8cpp.html#a77c334a9669f26a519f128b8f85765a6">error_count</a>.fetch_add(1);</div>
+<div class="line"><a id="l00229" name="l00229"></a><span class="lineno">  229</span>            } });</div>
+<div class="line"><a id="l00230" name="l00230"></a><span class="lineno">  230</span> </div>
+<div class="line"><a id="l00231" name="l00231"></a><span class="lineno">  231</span>        <span class="comment">// Запускаем consumer (блокирующий вызов в отдельном потоке)</span></div>
+<div class="line"><a id="l00232" name="l00232"></a><span class="lineno">  232</span>        consumer.<a class="code hl_function" href="class_kafka_consumer.html#a56ee2ca2d7d35993b23f95d1dee846c1">start</a>(); <span class="comment">// Запуск consumer</span></div>
+<div class="line"><a id="l00233" name="l00233"></a><span class="lineno">  233</span> </div>
+<div class="line"><a id="l00234" name="l00234"></a><span class="lineno">  234</span>        <span class="comment">// Ждем завершения (while running)</span></div>
+<div class="line"><a id="l00235" name="l00235"></a><span class="lineno">  235</span>        <span class="keywordflow">while</span> (<a class="code hl_variable" href="main_8cpp.html#af53701aded99286de42137bffab9561a">running</a>)</div>
+<div class="line"><a id="l00236" name="l00236"></a><span class="lineno">  236</span>        {</div>
+<div class="line"><a id="l00237" name="l00237"></a><span class="lineno">  237</span>            std::this_thread::sleep_for(std::chrono::milliseconds(100));</div>
+<div class="line"><a id="l00238" name="l00238"></a><span class="lineno">  238</span>        }</div>
+<div class="line"><a id="l00239" name="l00239"></a><span class="lineno">  239</span> </div>
+<div class="line"><a id="l00240" name="l00240"></a><span class="lineno">  240</span>        <span class="comment">// Останавливаем consumer (он автоматически закоммитит offset)</span></div>
+<div class="line"><a id="l00241" name="l00241"></a><span class="lineno">  241</span>        consumer.<a class="code hl_function" href="class_kafka_consumer.html#a4b681b6d27e4cb550a35f61c7acf279a">stop</a>();</div>
+<div class="line"><a id="l00242" name="l00242"></a><span class="lineno">  242</span>    }</div>
+<div class="line"><a id="l00243" name="l00243"></a><span class="lineno">  243</span>    <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e)</div>
+<div class="line"><a id="l00244" name="l00244"></a><span class="lineno">  244</span>    {</div>
+<div class="line"><a id="l00245" name="l00245"></a><span class="lineno">  245</span>        <a class="code hl_function" href="class_logger.html#aafe8b4f6ed1259fbde150ab59e0785e7">Logger::error</a>(<span class="stringliteral">&quot;[Consumer] Error: &quot;</span> + std::string(e.what()));</div>
+<div class="line"><a id="l00246" name="l00246"></a><span class="lineno">  246</span>    }</div>
+<div class="line"><a id="l00247" name="l00247"></a><span class="lineno">  247</span> </div>
+<div class="line"><a id="l00248" name="l00248"></a><span class="lineno">  248</span>    <a class="code hl_function" href="class_logger.html#a474176e6966186566a2a321cb5cbd739">Logger::info</a>(<span class="stringliteral">&quot;[Consumer] Thread stopped&quot;</span>);</div>
+<div class="line"><a id="l00249" name="l00249"></a><span class="lineno">  249</span>}</div>
+</div>
+<div class="line"><a id="l00250" name="l00250"></a><span class="lineno">  250</span> </div>
+<div class="line"><a id="l00251" name="l00251"></a><span class="lineno">  251</span><span class="comment">// ============================================================</span></div>
+<div class="line"><a id="l00252" name="l00252"></a><span class="lineno">  252</span><span class="comment">// ГЛАВНАЯ ФУНКЦИЯ</span></div>
+<div class="line"><a id="l00253" name="l00253"></a><span class="lineno">  253</span><span class="comment">// ============================================================</span></div>
+<div class="line"><a id="l00254" name="l00254"></a><span class="lineno">  254</span> </div>
+<div class="foldopen" id="foldopen00255" data-start="{" data-end="}">
+<div class="line"><a id="l00255" name="l00255"></a><span class="lineno"><a class="line" href="main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97">  255</a></span><span class="keywordtype">int</span> <a class="code hl_function" href="main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97">main</a>(<span class="keywordtype">int</span> argc, <span class="keywordtype">char</span> *argv[])</div>
+<div class="line"><a id="l00256" name="l00256"></a><span class="lineno">  256</span>{</div>
+<div class="line"><a id="l00257" name="l00257"></a><span class="lineno">  257</span>    <span class="comment">// 1. Устанавливаем обработчик сигналов</span></div>
+<div class="line"><a id="l00258" name="l00258"></a><span class="lineno">  258</span>    signal(SIGINT, <a class="code hl_function" href="main_8cpp.html#ad2e59c7203b3bddc1bc9a2224b52e8e7">signalHandler</a>);</div>
+<div class="line"><a id="l00259" name="l00259"></a><span class="lineno">  259</span>    signal(SIGTERM, <a class="code hl_function" href="main_8cpp.html#ad2e59c7203b3bddc1bc9a2224b52e8e7">signalHandler</a>);</div>
+<div class="line"><a id="l00260" name="l00260"></a><span class="lineno">  260</span> </div>
+<div class="line"><a id="l00261" name="l00261"></a><span class="lineno">  261</span>    <span class="keywordflow">try</span></div>
+<div class="line"><a id="l00262" name="l00262"></a><span class="lineno">  262</span>    {</div>
+<div class="line"><a id="l00263" name="l00263"></a><span class="lineno">  263</span>        <a class="code hl_function" href="class_logger.html#a474176e6966186566a2a321cb5cbd739">Logger::info</a>(<span class="stringliteral">&quot;=== Kafka-1C Connector (Producer + Consumer) ===&quot;</span>);</div>
+<div class="line"><a id="l00264" name="l00264"></a><span class="lineno">  264</span>        <a class="code hl_function" href="class_logger.html#a474176e6966186566a2a321cb5cbd739">Logger::info</a>(<span class="stringliteral">&quot;Version: 1.0.0&quot;</span>);</div>
+<div class="line"><a id="l00265" name="l00265"></a><span class="lineno">  265</span> </div>
+<div class="line"><a id="l00266" name="l00266"></a><span class="lineno">  266</span>        <span class="comment">// 2. Загружаем конфигурацию</span></div>
+<div class="line"><a id="l00267" name="l00267"></a><span class="lineno">  267</span>        <a class="code hl_struct" href="struct_app_config.html">AppConfig</a> config = <a class="code hl_function" href="struct_app_config.html#ad5f556af8ec235c8f58b14d1125b9d23">AppConfig::load</a>(<span class="stringliteral">&quot;./config/settings.json&quot;</span>);</div>
+<div class="line"><a id="l00268" name="l00268"></a><span class="lineno">  268</span>        <a class="code hl_function" href="class_logger.html#a474176e6966186566a2a321cb5cbd739">Logger::info</a>(<span class="stringliteral">&quot;Config loaded successfully&quot;</span>);</div>
+<div class="line"><a id="l00269" name="l00269"></a><span class="lineno">  269</span> </div>
+<div class="line"><a id="l00270" name="l00270"></a><span class="lineno">  270</span>        <span class="comment">// 3. Инициализируем SQLite кэш</span></div>
+<div class="line"><a id="l00271" name="l00271"></a><span class="lineno">  271</span>        <a class="code hl_class" href="class_message_cache.html">MessageCache</a> cache(config.<a class="code hl_variable" href="struct_app_config.html#ab61fecf8d49e3d3eae421cfcab3a94bd">cache</a>.<a class="code hl_variable" href="struct_cache_config.html#a906e9e3cebb56102ef80e04ae332b6b8">path</a>);</div>
+<div class="line"><a id="l00272" name="l00272"></a><span class="lineno">  272</span>        <span class="keywordflow">if</span> (!cache.<a class="code hl_function" href="class_message_cache.html#ae986415d8621c4d18493379325ce04cc">init</a>())</div>
+<div class="line"><a id="l00273" name="l00273"></a><span class="lineno">  273</span>        {</div>
+<div class="line"><a id="l00274" name="l00274"></a><span class="lineno">  274</span>            <a class="code hl_function" href="class_logger.html#aafe8b4f6ed1259fbde150ab59e0785e7">Logger::error</a>(<span class="stringliteral">&quot;Failed to initialize cache&quot;</span>);</div>
+<div class="line"><a id="l00275" name="l00275"></a><span class="lineno">  275</span>            <span class="keywordflow">return</span> 1;</div>
+<div class="line"><a id="l00276" name="l00276"></a><span class="lineno">  276</span>        }</div>
+<div class="line"><a id="l00277" name="l00277"></a><span class="lineno">  277</span> </div>
+<div class="line"><a id="l00278" name="l00278"></a><span class="lineno">  278</span>        <span class="comment">// УСТАНАВЛИВАЕМ НАСТРОЙКИ</span></div>
+<div class="line"><a id="l00279" name="l00279"></a><span class="lineno">  279</span>        cache.<a class="code hl_function" href="class_message_cache.html#a7d8db594bd5c90375565decd61911596">setSourcePrefix</a>(config.<a class="code hl_variable" href="struct_app_config.html#ab61fecf8d49e3d3eae421cfcab3a94bd">cache</a>.<a class="code hl_variable" href="struct_cache_config.html#a7e8c2d3a69fd12df4809602ec825c62e">source_prefix</a>);</div>
+<div class="line"><a id="l00280" name="l00280"></a><span class="lineno">  280</span>        cache.<a class="code hl_function" href="class_message_cache.html#abe7996aada9f77e39d9ed2d830dcddb9">setReprocessDelay</a>(config.<a class="code hl_variable" href="struct_app_config.html#ab61fecf8d49e3d3eae421cfcab3a94bd">cache</a>.<a class="code hl_variable" href="struct_cache_config.html#a789469e676460aba92e45f59634c9baa">reprocess_delay_seconds</a>);</div>
+<div class="line"><a id="l00281" name="l00281"></a><span class="lineno">  281</span> </div>
+<div class="line"><a id="l00282" name="l00282"></a><span class="lineno">  282</span>        <a class="code hl_function" href="class_logger.html#a474176e6966186566a2a321cb5cbd739">Logger::info</a>(<span class="stringliteral">&quot;Cache initialized: &quot;</span> + config.<a class="code hl_variable" href="struct_app_config.html#ab61fecf8d49e3d3eae421cfcab3a94bd">cache</a>.<a class="code hl_variable" href="struct_cache_config.html#a906e9e3cebb56102ef80e04ae332b6b8">path</a>);</div>
+<div class="line"><a id="l00283" name="l00283"></a><span class="lineno">  283</span> </div>
+<div class="line"><a id="l00284" name="l00284"></a><span class="lineno">  284</span>        <span class="comment">// 4. Инициализируем PostgreSQL</span></div>
+<div class="line"><a id="l00285" name="l00285"></a><span class="lineno">  285</span>        <a class="code hl_class" href="classdatabase_1_1_postgre_s_q_l.html">database::PostgreSQL</a> db(config.<a class="code hl_variable" href="struct_app_config.html#ad48b440bdfae4964ca599149729d09ec">database</a>.<a class="code hl_variable" href="struct_database_config.html#a466fbc3aae51e96a09e18a610510ddda">postgresql</a>);</div>
+<div class="line"><a id="l00286" name="l00286"></a><span class="lineno">  286</span>        <span class="keywordflow">if</span> (!db.<a class="code hl_function" href="classdatabase_1_1_postgre_s_q_l.html#a785b7fa2f3259b5258c06bfbd9e8b2c3">connect</a>())</div>
+<div class="line"><a id="l00287" name="l00287"></a><span class="lineno">  287</span>        {</div>
+<div class="line"><a id="l00288" name="l00288"></a><span class="lineno">  288</span>            <a class="code hl_function" href="class_logger.html#aafe8b4f6ed1259fbde150ab59e0785e7">Logger::error</a>(<span class="stringliteral">&quot;Failed to connect to PostgreSQL&quot;</span>);</div>
+<div class="line"><a id="l00289" name="l00289"></a><span class="lineno">  289</span>            <span class="keywordflow">return</span> 1;</div>
+<div class="line"><a id="l00290" name="l00290"></a><span class="lineno">  290</span>        }</div>
+<div class="line"><a id="l00291" name="l00291"></a><span class="lineno">  291</span>        <a class="code hl_function" href="class_logger.html#a474176e6966186566a2a321cb5cbd739">Logger::info</a>(<span class="stringliteral">&quot;PostgreSQL connected: &quot;</span> + config.<a class="code hl_variable" href="struct_app_config.html#ad48b440bdfae4964ca599149729d09ec">database</a>.<a class="code hl_variable" href="struct_database_config.html#a466fbc3aae51e96a09e18a610510ddda">postgresql</a>.<a class="code hl_variable" href="structdatabase_1_1_connection_params.html#a190de2967f826558a7ad5a9fdbc8f5de">database</a>);</div>
+<div class="line"><a id="l00292" name="l00292"></a><span class="lineno">  292</span> </div>
+<div class="line"><a id="l00293" name="l00293"></a><span class="lineno">  293</span>        <span class="comment">// 5. Инициализируем Kafka Producer (основной)</span></div>
+<div class="line"><a id="l00294" name="l00294"></a><span class="lineno">  294</span>        <a class="code hl_class" href="class_kafka_producer.html">KafkaProducer</a> producer(</div>
+<div class="line"><a id="l00295" name="l00295"></a><span class="lineno">  295</span>            config.<a class="code hl_variable" href="struct_app_config.html#a6eabe866e9b2dded624221f90e6bec7f">kafka</a>.<a class="code hl_variable" href="struct_kafka_config.html#a2348a03b02fe3fd8603b36d0668a466d">bootstrap_servers</a>,</div>
+<div class="line"><a id="l00296" name="l00296"></a><span class="lineno">  296</span>            config.<a class="code hl_variable" href="struct_app_config.html#a6eabe866e9b2dded624221f90e6bec7f">kafka</a>.<a class="code hl_variable" href="struct_kafka_config.html#ab1be7681f0d61eb354db018745e25c1f">topics</a>.<a class="code hl_variable" href="struct_kafka_config_1_1_topics.html#a3512bb9c634bc7bb91b8adac920696d2">input</a>);</div>
+<div class="line"><a id="l00297" name="l00297"></a><span class="lineno">  297</span> </div>
+<div class="line"><a id="l00298" name="l00298"></a><span class="lineno">  298</span>        <span class="keywordflow">if</span> (!producer.<a class="code hl_function" href="class_kafka_producer.html#a6012cf74b1de379e1110c0db1690b64c">init</a>(config.<a class="code hl_variable" href="struct_app_config.html#a6eabe866e9b2dded624221f90e6bec7f">kafka</a>.<a class="code hl_variable" href="struct_kafka_config.html#a44989757e6df2b612ba641b15444030a">producer</a>.<a class="code hl_variable" href="struct_kafka_config_1_1_producer.html#a2fe3aa9fe31856c6b64ff8b2f3c0b361">acks</a>, config.<a class="code hl_variable" href="struct_app_config.html#a6eabe866e9b2dded624221f90e6bec7f">kafka</a>.<a class="code hl_variable" href="struct_kafka_config.html#a44989757e6df2b612ba641b15444030a">producer</a>.<a class="code hl_variable" href="struct_kafka_config_1_1_producer.html#ad949a76f16ffbbd833c093bf6832277c">retries</a>))</div>
+<div class="line"><a id="l00299" name="l00299"></a><span class="lineno">  299</span>        {</div>
+<div class="line"><a id="l00300" name="l00300"></a><span class="lineno">  300</span>            <a class="code hl_function" href="class_logger.html#aafe8b4f6ed1259fbde150ab59e0785e7">Logger::error</a>(<span class="stringliteral">&quot;Failed to initialize Kafka producer&quot;</span>);</div>
+<div class="line"><a id="l00301" name="l00301"></a><span class="lineno">  301</span>            <span class="keywordflow">return</span> 1;</div>
+<div class="line"><a id="l00302" name="l00302"></a><span class="lineno">  302</span>        }</div>
+<div class="line"><a id="l00303" name="l00303"></a><span class="lineno">  303</span> </div>
+<div class="line"><a id="l00304" name="l00304"></a><span class="lineno">  304</span>        <span class="comment">// 6. Инициализируем Kafka Producer для ошибок</span></div>
+<div class="line"><a id="l00305" name="l00305"></a><span class="lineno">  305</span>        <a class="code hl_class" href="class_kafka_producer.html">KafkaProducer</a> error_producer(</div>
+<div class="line"><a id="l00306" name="l00306"></a><span class="lineno">  306</span>            config.<a class="code hl_variable" href="struct_app_config.html#a6eabe866e9b2dded624221f90e6bec7f">kafka</a>.<a class="code hl_variable" href="struct_kafka_config.html#a2348a03b02fe3fd8603b36d0668a466d">bootstrap_servers</a>,</div>
+<div class="line"><a id="l00307" name="l00307"></a><span class="lineno">  307</span>            config.<a class="code hl_variable" href="struct_app_config.html#a6eabe866e9b2dded624221f90e6bec7f">kafka</a>.<a class="code hl_variable" href="struct_kafka_config.html#ab1be7681f0d61eb354db018745e25c1f">topics</a>.<a class="code hl_variable" href="struct_kafka_config_1_1_topics.html#a58392568ff76c07a0d3b70d420089040">errors</a>);</div>
+<div class="line"><a id="l00308" name="l00308"></a><span class="lineno">  308</span> </div>
+<div class="line"><a id="l00309" name="l00309"></a><span class="lineno">  309</span>        <span class="keywordflow">if</span> (!error_producer.<a class="code hl_function" href="class_kafka_producer.html#a6012cf74b1de379e1110c0db1690b64c">init</a>(config.<a class="code hl_variable" href="struct_app_config.html#a6eabe866e9b2dded624221f90e6bec7f">kafka</a>.<a class="code hl_variable" href="struct_kafka_config.html#a44989757e6df2b612ba641b15444030a">producer</a>.<a class="code hl_variable" href="struct_kafka_config_1_1_producer.html#a2fe3aa9fe31856c6b64ff8b2f3c0b361">acks</a>, config.<a class="code hl_variable" href="struct_app_config.html#a6eabe866e9b2dded624221f90e6bec7f">kafka</a>.<a class="code hl_variable" href="struct_kafka_config.html#a44989757e6df2b612ba641b15444030a">producer</a>.<a class="code hl_variable" href="struct_kafka_config_1_1_producer.html#ad949a76f16ffbbd833c093bf6832277c">retries</a>))</div>
+<div class="line"><a id="l00310" name="l00310"></a><span class="lineno">  310</span>        {</div>
+<div class="line"><a id="l00311" name="l00311"></a><span class="lineno">  311</span>            <a class="code hl_function" href="class_logger.html#aafe8b4f6ed1259fbde150ab59e0785e7">Logger::error</a>(<span class="stringliteral">&quot;Failed to initialize Kafka error producer&quot;</span>);</div>
+<div class="line"><a id="l00312" name="l00312"></a><span class="lineno">  312</span>            <span class="keywordflow">return</span> 1;</div>
+<div class="line"><a id="l00313" name="l00313"></a><span class="lineno">  313</span>        }</div>
+<div class="line"><a id="l00314" name="l00314"></a><span class="lineno">  314</span> </div>
+<div class="line"><a id="l00315" name="l00315"></a><span class="lineno">  315</span>        <span class="comment">// 7. Устанавливаем callback для подтверждения доставки</span></div>
+<div class="line"><a id="l00316" name="l00316"></a><span class="lineno">  316</span>        producer.<a class="code hl_function" href="class_kafka_producer.html#a848df41ef97ff523fc21c3b12285c26c">setDeliveryCallback</a>([](<span class="keyword">const</span> std::string &amp;key, <span class="keywordtype">int</span> error, int64_t offset)</div>
+<div class="line"><a id="l00317" name="l00317"></a><span class="lineno">  317</span>                                     {</div>
+<div class="line"><a id="l00318" name="l00318"></a><span class="lineno">  318</span>            <span class="keywordflow">if</span> (error == 0) {</div>
+<div class="line"><a id="l00319" name="l00319"></a><span class="lineno">  319</span>                <a class="code hl_function" href="class_logger.html#aed78385ee0ad9d124521735894abab46">Logger::debug</a>(<span class="stringliteral">&quot;[Producer] Delivered: &quot;</span> + key + <span class="stringliteral">&quot; (offset: &quot;</span> + std::to_string(offset) + <span class="stringliteral">&quot;)&quot;</span>);</div>
+<div class="line"><a id="l00320" name="l00320"></a><span class="lineno">  320</span>            } <span class="keywordflow">else</span> {</div>
+<div class="line"><a id="l00321" name="l00321"></a><span class="lineno">  321</span>                <a class="code hl_function" href="class_logger.html#a5025d14c1f40cc23e9cbb48f98f0d9a6">Logger::warning</a>(<span class="stringliteral">&quot;[Producer] Delivery failed: &quot;</span> + key + <span class="stringliteral">&quot; (error: &quot;</span> + std::to_string(error) + <span class="stringliteral">&quot;)&quot;</span>);</div>
+<div class="line"><a id="l00322" name="l00322"></a><span class="lineno">  322</span>            } });</div>
+<div class="line"><a id="l00323" name="l00323"></a><span class="lineno">  323</span> </div>
+<div class="line"><a id="l00324" name="l00324"></a><span class="lineno">  324</span>        <span class="comment">// 8. Определяем режим работы</span></div>
+<div class="line"><a id="l00325" name="l00325"></a><span class="lineno">  325</span>        std::string mode = config.<a class="code hl_variable" href="struct_app_config.html#a71293784add692e888b81f72d2e27a6a">mode</a>;</div>
+<div class="line"><a id="l00326" name="l00326"></a><span class="lineno">  326</span>        <span class="keywordflow">if</span> (argc &gt; 1)</div>
+<div class="line"><a id="l00327" name="l00327"></a><span class="lineno">  327</span>        {</div>
+<div class="line"><a id="l00328" name="l00328"></a><span class="lineno">  328</span>            mode = argv[1];</div>
+<div class="line"><a id="l00329" name="l00329"></a><span class="lineno">  329</span>        }</div>
+<div class="line"><a id="l00330" name="l00330"></a><span class="lineno">  330</span> </div>
+<div class="line"><a id="l00331" name="l00331"></a><span class="lineno">  331</span>        <a class="code hl_function" href="class_logger.html#a474176e6966186566a2a321cb5cbd739">Logger::info</a>(<span class="stringliteral">&quot;Mode: &quot;</span> + mode);</div>
+<div class="line"><a id="l00332" name="l00332"></a><span class="lineno">  332</span> </div>
+<div class="line"><a id="l00333" name="l00333"></a><span class="lineno">  333</span>        <span class="comment">// 9. Запускаем потоки в зависимости от режима</span></div>
+<div class="line"><a id="l00334" name="l00334"></a><span class="lineno">  334</span>        std::thread producer_thread;</div>
+<div class="line"><a id="l00335" name="l00335"></a><span class="lineno">  335</span>        std::thread consumer_thread;</div>
+<div class="line"><a id="l00336" name="l00336"></a><span class="lineno">  336</span> </div>
+<div class="line"><a id="l00337" name="l00337"></a><span class="lineno">  337</span>        <span class="keywordflow">if</span> (mode == <span class="stringliteral">&quot;producer&quot;</span> || mode == <span class="stringliteral">&quot;both&quot;</span>)</div>
+<div class="line"><a id="l00338" name="l00338"></a><span class="lineno">  338</span>        {</div>
+<div class="line"><a id="l00339" name="l00339"></a><span class="lineno">  339</span>            <a class="code hl_function" href="class_logger.html#a474176e6966186566a2a321cb5cbd739">Logger::info</a>(<span class="stringliteral">&quot;Starting Producer thread...&quot;</span>);</div>
+<div class="line"><a id="l00340" name="l00340"></a><span class="lineno">  340</span>            producer_thread = std::thread(<a class="code hl_function" href="main_8cpp.html#a046be377067f3f52c8b9516cdb1e47b5">runProducer</a>, std::ref(config), std::ref(producer), std::ref(cache));</div>
+<div class="line"><a id="l00341" name="l00341"></a><span class="lineno">  341</span>        }</div>
+<div class="line"><a id="l00342" name="l00342"></a><span class="lineno">  342</span> </div>
+<div class="line"><a id="l00343" name="l00343"></a><span class="lineno">  343</span>        <span class="keywordflow">if</span> (mode == <span class="stringliteral">&quot;consumer&quot;</span> || mode == <span class="stringliteral">&quot;both&quot;</span>)</div>
+<div class="line"><a id="l00344" name="l00344"></a><span class="lineno">  344</span>        {</div>
+<div class="line"><a id="l00345" name="l00345"></a><span class="lineno">  345</span>            <a class="code hl_function" href="class_logger.html#a474176e6966186566a2a321cb5cbd739">Logger::info</a>(<span class="stringliteral">&quot;Starting Consumer thread...&quot;</span>);</div>
+<div class="line"><a id="l00346" name="l00346"></a><span class="lineno">  346</span>            std::this_thread::sleep_for(std::chrono::seconds(2));</div>
+<div class="line"><a id="l00347" name="l00347"></a><span class="lineno">  347</span>            consumer_thread = std::thread(<a class="code hl_function" href="main_8cpp.html#a9e945a592fa4a0f1706ea24ebb2ab854">runConsumer</a>, std::ref(config), std::ref(db), std::ref(cache), std::ref(error_producer));</div>
+<div class="line"><a id="l00348" name="l00348"></a><span class="lineno">  348</span>        }</div>
+<div class="line"><a id="l00349" name="l00349"></a><span class="lineno">  349</span> </div>
+<div class="line"><a id="l00350" name="l00350"></a><span class="lineno">  350</span>        <span class="comment">// 10. Ждем завершения (Ctrl+C)</span></div>
+<div class="line"><a id="l00351" name="l00351"></a><span class="lineno">  351</span>        <span class="keywordflow">while</span> (<a class="code hl_variable" href="main_8cpp.html#af53701aded99286de42137bffab9561a">running</a>)</div>
+<div class="line"><a id="l00352" name="l00352"></a><span class="lineno">  352</span>        {</div>
+<div class="line"><a id="l00353" name="l00353"></a><span class="lineno">  353</span>            std::this_thread::sleep_for(std::chrono::seconds(1));</div>
+<div class="line"><a id="l00354" name="l00354"></a><span class="lineno">  354</span>        }</div>
+<div class="line"><a id="l00355" name="l00355"></a><span class="lineno">  355</span> </div>
+<div class="line"><a id="l00356" name="l00356"></a><span class="lineno">  356</span>        <span class="comment">// 11. Остановка потоков</span></div>
+<div class="line"><a id="l00357" name="l00357"></a><span class="lineno">  357</span>        <a class="code hl_function" href="class_logger.html#a474176e6966186566a2a321cb5cbd739">Logger::info</a>(<span class="stringliteral">&quot;Stopping threads...&quot;</span>);</div>
+<div class="line"><a id="l00358" name="l00358"></a><span class="lineno">  358</span> </div>
+<div class="line"><a id="l00359" name="l00359"></a><span class="lineno">  359</span>        <span class="keywordflow">if</span> (producer_thread.joinable())</div>
+<div class="line"><a id="l00360" name="l00360"></a><span class="lineno">  360</span>        {</div>
+<div class="line"><a id="l00361" name="l00361"></a><span class="lineno">  361</span>            producer_thread.join();</div>
+<div class="line"><a id="l00362" name="l00362"></a><span class="lineno">  362</span>        }</div>
+<div class="line"><a id="l00363" name="l00363"></a><span class="lineno">  363</span> </div>
+<div class="line"><a id="l00364" name="l00364"></a><span class="lineno">  364</span>        <span class="keywordflow">if</span> (consumer_thread.joinable())</div>
+<div class="line"><a id="l00365" name="l00365"></a><span class="lineno">  365</span>        {</div>
+<div class="line"><a id="l00366" name="l00366"></a><span class="lineno">  366</span>            consumer_thread.join();</div>
+<div class="line"><a id="l00367" name="l00367"></a><span class="lineno">  367</span>        }</div>
+<div class="line"><a id="l00368" name="l00368"></a><span class="lineno">  368</span> </div>
+<div class="line"><a id="l00369" name="l00369"></a><span class="lineno">  369</span>        <span class="comment">// 12. Завершение</span></div>
+<div class="line"><a id="l00370" name="l00370"></a><span class="lineno">  370</span>        producer.<a class="code hl_function" href="class_kafka_producer.html#a6266bb25d0bbec95a32243d88006ea55">flush</a>();</div>
+<div class="line"><a id="l00371" name="l00371"></a><span class="lineno">  371</span>        error_producer.<a class="code hl_function" href="class_kafka_producer.html#a6266bb25d0bbec95a32243d88006ea55">flush</a>();</div>
+<div class="line"><a id="l00372" name="l00372"></a><span class="lineno">  372</span>        cache.<a class="code hl_function" href="class_message_cache.html#a50c216e984ae61005f4daf4b8c124a22">cleanup</a>(7);</div>
+<div class="line"><a id="l00373" name="l00373"></a><span class="lineno">  373</span> </div>
+<div class="line"><a id="l00374" name="l00374"></a><span class="lineno">  374</span>        <a class="code hl_function" href="class_logger.html#a474176e6966186566a2a321cb5cbd739">Logger::info</a>(<span class="stringliteral">&quot;=== Summary ===&quot;</span>);</div>
+<div class="line"><a id="l00375" name="l00375"></a><span class="lineno">  375</span>        <a class="code hl_function" href="class_logger.html#a474176e6966186566a2a321cb5cbd739">Logger::info</a>(<span class="stringliteral">&quot;Producer sent: &quot;</span> + std::to_string(<a class="code hl_variable" href="main_8cpp.html#a658b214911501898d6087b601d6b152e">producer_count</a>.load()));</div>
+<div class="line"><a id="l00376" name="l00376"></a><span class="lineno">  376</span>        <a class="code hl_function" href="class_logger.html#a474176e6966186566a2a321cb5cbd739">Logger::info</a>(<span class="stringliteral">&quot;Consumer processed: &quot;</span> + std::to_string(<a class="code hl_variable" href="main_8cpp.html#a8a2b3452989432f0e06d48049de87e33">consumer_count</a>.load()));</div>
+<div class="line"><a id="l00377" name="l00377"></a><span class="lineno">  377</span>        <a class="code hl_function" href="class_logger.html#a474176e6966186566a2a321cb5cbd739">Logger::info</a>(<span class="stringliteral">&quot;Errors: &quot;</span> + std::to_string(<a class="code hl_variable" href="main_8cpp.html#a77c334a9669f26a519f128b8f85765a6">error_count</a>.load()));</div>
+<div class="line"><a id="l00378" name="l00378"></a><span class="lineno">  378</span>        <a class="code hl_function" href="class_logger.html#a474176e6966186566a2a321cb5cbd739">Logger::info</a>(<span class="stringliteral">&quot;Pending in cache: &quot;</span> + std::to_string(cache.<a class="code hl_function" href="class_message_cache.html#ab3729d708193c6be1460fb7a2860e03a">getPendingCount</a>()));</div>
+<div class="line"><a id="l00379" name="l00379"></a><span class="lineno">  379</span>        <a class="code hl_function" href="class_logger.html#a474176e6966186566a2a321cb5cbd739">Logger::info</a>(<span class="stringliteral">&quot;Total in cache: &quot;</span> + std::to_string(cache.<a class="code hl_function" href="class_message_cache.html#aba79bed3c66e3fe011ae25ed45bb9f8b">getTotalCount</a>()));</div>
+<div class="line"><a id="l00380" name="l00380"></a><span class="lineno">  380</span>        <a class="code hl_function" href="class_logger.html#a474176e6966186566a2a321cb5cbd739">Logger::info</a>(<span class="stringliteral">&quot;Shutdown complete&quot;</span>);</div>
+<div class="line"><a id="l00381" name="l00381"></a><span class="lineno">  381</span>    }</div>
+<div class="line"><a id="l00382" name="l00382"></a><span class="lineno">  382</span>    <span class="keywordflow">catch</span> (<span class="keyword">const</span> std::exception &amp;e)</div>
+<div class="line"><a id="l00383" name="l00383"></a><span class="lineno">  383</span>    {</div>
+<div class="line"><a id="l00384" name="l00384"></a><span class="lineno">  384</span>        <a class="code hl_function" href="class_logger.html#aafe8b4f6ed1259fbde150ab59e0785e7">Logger::error</a>(<span class="stringliteral">&quot;Fatal error: &quot;</span> + std::string(e.what()));</div>
+<div class="line"><a id="l00385" name="l00385"></a><span class="lineno">  385</span>        <span class="keywordflow">return</span> 1;</div>
+<div class="line"><a id="l00386" name="l00386"></a><span class="lineno">  386</span>    }</div>
+<div class="line"><a id="l00387" name="l00387"></a><span class="lineno">  387</span> </div>
+<div class="line"><a id="l00388" name="l00388"></a><span class="lineno">  388</span>    <span class="keywordflow">return</span> 0;</div>
+<div class="line"><a id="l00389" name="l00389"></a><span class="lineno">  389</span>}</div>
+</div>
+<div class="ttc" id="aclass_json_parser_html_a1d6b83be5c0757b3a628a7c1737e4628"><div class="ttname"><a href="class_json_parser.html#a1d6b83be5c0757b3a628a7c1737e4628">JsonParser::validate</a></div><div class="ttdeci">static bool validate(const OrderData &amp;order)</div></div>
+<div class="ttc" id="aclass_json_parser_html_af18e9188a3948e4c5b3d9c17a76bcd74"><div class="ttname"><a href="class_json_parser.html#af18e9188a3948e4c5b3d9c17a76bcd74">JsonParser::parseOrder</a></div><div class="ttdeci">static OrderData parseOrder(const std::string &amp;filename)</div></div>
+<div class="ttc" id="aclass_kafka_consumer_html"><div class="ttname"><a href="class_kafka_consumer.html">KafkaConsumer</a></div><div class="ttdef"><b>Определения</b> <a href="consumer_8hpp_source.html#l00010">consumer.hpp:11</a></div></div>
+<div class="ttc" id="aclass_kafka_consumer_html_a21535be303ced919722a21c8a10646ba"><div class="ttname"><a href="class_kafka_consumer.html#a21535be303ced919722a21c8a10646ba">KafkaConsumer::setMessageCallback</a></div><div class="ttdeci">void setMessageCallback(MessageCallback cb)</div><div class="ttdef"><b>Определения</b> <a href="consumer_8cpp_source.html#l00069">consumer.cpp:69</a></div></div>
+<div class="ttc" id="aclass_kafka_consumer_html_a4b681b6d27e4cb550a35f61c7acf279a"><div class="ttname"><a href="class_kafka_consumer.html#a4b681b6d27e4cb550a35f61c7acf279a">KafkaConsumer::stop</a></div><div class="ttdeci">void stop()</div><div class="ttdef"><b>Определения</b> <a href="consumer_8cpp_source.html#l00053">consumer.cpp:53</a></div></div>
+<div class="ttc" id="aclass_kafka_consumer_html_a56ee2ca2d7d35993b23f95d1dee846c1"><div class="ttname"><a href="class_kafka_consumer.html#a56ee2ca2d7d35993b23f95d1dee846c1">KafkaConsumer::start</a></div><div class="ttdeci">void start()</div><div class="ttdef"><b>Определения</b> <a href="consumer_8cpp_source.html#l00045">consumer.cpp:45</a></div></div>
+<div class="ttc" id="aclass_kafka_consumer_html_ad3e3608060a00e4429a2e14d24ad09c8"><div class="ttname"><a href="class_kafka_consumer.html#ad3e3608060a00e4429a2e14d24ad09c8">KafkaConsumer::init</a></div><div class="ttdeci">bool init()</div><div class="ttdef"><b>Определения</b> <a href="consumer_8cpp_source.html#l00015">consumer.cpp:15</a></div></div>
+<div class="ttc" id="aclass_kafka_producer_html"><div class="ttname"><a href="class_kafka_producer.html">KafkaProducer</a></div><div class="ttdef"><b>Определения</b> <a href="producer_8hpp_source.html#l00009">producer.hpp:9</a></div></div>
+<div class="ttc" id="aclass_kafka_producer_html_a5c01eb2a998310bbfe16ebc77666af8f"><div class="ttname"><a href="class_kafka_producer.html#a5c01eb2a998310bbfe16ebc77666af8f">KafkaProducer::send</a></div><div class="ttdeci">bool send(const std::string &amp;message)</div></div>
+<div class="ttc" id="aclass_kafka_producer_html_a6012cf74b1de379e1110c0db1690b64c"><div class="ttname"><a href="class_kafka_producer.html#a6012cf74b1de379e1110c0db1690b64c">KafkaProducer::init</a></div><div class="ttdeci">bool init(const std::string &amp;acks=&quot;all&quot;, int retries=3)</div></div>
+<div class="ttc" id="aclass_kafka_producer_html_a6266bb25d0bbec95a32243d88006ea55"><div class="ttname"><a href="class_kafka_producer.html#a6266bb25d0bbec95a32243d88006ea55">KafkaProducer::flush</a></div><div class="ttdeci">void flush(int timeout_ms=5000)</div></div>
+<div class="ttc" id="aclass_kafka_producer_html_a848df41ef97ff523fc21c3b12285c26c"><div class="ttname"><a href="class_kafka_producer.html#a848df41ef97ff523fc21c3b12285c26c">KafkaProducer::setDeliveryCallback</a></div><div class="ttdeci">void setDeliveryCallback(DeliveryCallback cb)</div></div>
+<div class="ttc" id="aclass_logger_html_a474176e6966186566a2a321cb5cbd739"><div class="ttname"><a href="class_logger.html#a474176e6966186566a2a321cb5cbd739">Logger::info</a></div><div class="ttdeci">static void info(const std::string &amp;message)</div><div class="ttdef"><b>Определения</b> <a href="logger_8hpp_source.html#l00025">logger.hpp:25</a></div></div>
+<div class="ttc" id="aclass_logger_html_a5025d14c1f40cc23e9cbb48f98f0d9a6"><div class="ttname"><a href="class_logger.html#a5025d14c1f40cc23e9cbb48f98f0d9a6">Logger::warning</a></div><div class="ttdeci">static void warning(const std::string &amp;message)</div><div class="ttdef"><b>Определения</b> <a href="logger_8hpp_source.html#l00029">logger.hpp:29</a></div></div>
+<div class="ttc" id="aclass_logger_html_aafe8b4f6ed1259fbde150ab59e0785e7"><div class="ttname"><a href="class_logger.html#aafe8b4f6ed1259fbde150ab59e0785e7">Logger::error</a></div><div class="ttdeci">static void error(const std::string &amp;message)</div><div class="ttdef"><b>Определения</b> <a href="logger_8hpp_source.html#l00033">logger.hpp:33</a></div></div>
+<div class="ttc" id="aclass_logger_html_aed78385ee0ad9d124521735894abab46"><div class="ttname"><a href="class_logger.html#aed78385ee0ad9d124521735894abab46">Logger::debug</a></div><div class="ttdeci">static void debug(const std::string &amp;message)</div><div class="ttdef"><b>Определения</b> <a href="logger_8hpp_source.html#l00037">logger.hpp:37</a></div></div>
+<div class="ttc" id="aclass_message_cache_html"><div class="ttname"><a href="class_message_cache.html">MessageCache</a></div><div class="ttdef"><b>Определения</b> <a href="sqlite__cache_8hpp_source.html#l00014">sqlite_cache.hpp:15</a></div></div>
+<div class="ttc" id="aclass_message_cache_html_a50c216e984ae61005f4daf4b8c124a22"><div class="ttname"><a href="class_message_cache.html#a50c216e984ae61005f4daf4b8c124a22">MessageCache::cleanup</a></div><div class="ttdeci">void cleanup(int days=7)</div></div>
+<div class="ttc" id="aclass_message_cache_html_a699e48cdd16aaf9e8a67d25d30925a24"><div class="ttname"><a href="class_message_cache.html#a699e48cdd16aaf9e8a67d25d30925a24">MessageCache::save</a></div><div class="ttdeci">bool save(const std::string &amp;filename, const std::string &amp;topic, const std::string &amp;message, const std::string &amp;tin=&quot;&quot;, const std::string &amp;trrc=&quot;&quot;, const std::string &amp;source=&quot;&quot;)</div></div>
+<div class="ttc" id="aclass_message_cache_html_a7d8db594bd5c90375565decd61911596"><div class="ttname"><a href="class_message_cache.html#a7d8db594bd5c90375565decd61911596">MessageCache::setSourcePrefix</a></div><div class="ttdeci">void setSourcePrefix(const std::string &amp;prefix)</div><div class="ttdef"><b>Определения</b> <a href="sqlite__cache_8hpp_source.html#l00028">sqlite_cache.hpp:28</a></div></div>
+<div class="ttc" id="aclass_message_cache_html_ab3729d708193c6be1460fb7a2860e03a"><div class="ttname"><a href="class_message_cache.html#ab3729d708193c6be1460fb7a2860e03a">MessageCache::getPendingCount</a></div><div class="ttdeci">size_t getPendingCount()</div></div>
+<div class="ttc" id="aclass_message_cache_html_aba79bed3c66e3fe011ae25ed45bb9f8b"><div class="ttname"><a href="class_message_cache.html#aba79bed3c66e3fe011ae25ed45bb9f8b">MessageCache::getTotalCount</a></div><div class="ttdeci">size_t getTotalCount()</div></div>
+<div class="ttc" id="aclass_message_cache_html_abe7996aada9f77e39d9ed2d830dcddb9"><div class="ttname"><a href="class_message_cache.html#abe7996aada9f77e39d9ed2d830dcddb9">MessageCache::setReprocessDelay</a></div><div class="ttdeci">void setReprocessDelay(int seconds)</div><div class="ttdef"><b>Определения</b> <a href="sqlite__cache_8hpp_source.html#l00029">sqlite_cache.hpp:29</a></div></div>
+<div class="ttc" id="aclass_message_cache_html_ae986415d8621c4d18493379325ce04cc"><div class="ttname"><a href="class_message_cache.html#ae986415d8621c4d18493379325ce04cc">MessageCache::init</a></div><div class="ttdeci">bool init()</div></div>
+<div class="ttc" id="aclass_order_processor_html"><div class="ttname"><a href="class_order_processor.html">OrderProcessor</a></div><div class="ttdef"><b>Определения</b> <a href="order__processor_8hpp_source.html#l00011">order_processor.hpp:12</a></div></div>
+<div class="ttc" id="aclass_order_processor_html_a6f8aa8e2aeb597be492065036c2f23f5"><div class="ttname"><a href="class_order_processor.html#a6f8aa8e2aeb597be492065036c2f23f5">OrderProcessor::processMessage</a></div><div class="ttdeci">bool processMessage(const std::string &amp;key, const std::string &amp;value, int64_t timestamp)</div><div class="ttdef"><b>Определения</b> <a href="order__processor_8cpp_source.html#l00090">order_processor.cpp:90</a></div></div>
+<div class="ttc" id="aclass_order_processor_html_af7a710bdbf4bd5c4578db73437477a5f"><div class="ttname"><a href="class_order_processor.html#af7a710bdbf4bd5c4578db73437477a5f">OrderProcessor::reprocessPendingMessages</a></div><div class="ttdeci">void reprocessPendingMessages()</div><div class="ttdef"><b>Определения</b> <a href="order__processor_8cpp_source.html#l00179">order_processor.cpp:179</a></div></div>
+<div class="ttc" id="aclassdatabase_1_1_postgre_s_q_l_html"><div class="ttname"><a href="classdatabase_1_1_postgre_s_q_l.html">database::PostgreSQL</a></div><div class="ttdef"><b>Определения</b> <a href="postgresql_8hpp_source.html#l00064">postgresql.hpp:65</a></div></div>
+<div class="ttc" id="aclassdatabase_1_1_postgre_s_q_l_html_a785b7fa2f3259b5258c06bfbd9e8b2c3"><div class="ttname"><a href="classdatabase_1_1_postgre_s_q_l.html#a785b7fa2f3259b5258c06bfbd9e8b2c3">database::PostgreSQL::connect</a></div><div class="ttdeci">bool connect()</div><div class="ttdef"><b>Определения</b> <a href="postgresql_8cpp_source.html#l00032">postgresql.cpp:32</a></div></div>
+<div class="ttc" id="aconfig_8hpp_html"><div class="ttname"><a href="config_8hpp.html">config.hpp</a></div></div>
+<div class="ttc" id="aconsumer_8hpp_html"><div class="ttname"><a href="consumer_8hpp.html">consumer.hpp</a></div></div>
+<div class="ttc" id="ajson__parser_8hpp_html"><div class="ttname"><a href="json__parser_8hpp.html">json_parser.hpp</a></div></div>
+<div class="ttc" id="alogger_8hpp_html"><div class="ttname"><a href="logger_8hpp.html">logger.hpp</a></div></div>
+<div class="ttc" id="amain_8cpp_html_a046be377067f3f52c8b9516cdb1e47b5"><div class="ttname"><a href="main_8cpp.html#a046be377067f3f52c8b9516cdb1e47b5">runProducer</a></div><div class="ttdeci">void runProducer(AppConfig &amp;config, KafkaProducer &amp;producer, MessageCache &amp;cache)</div><div class="ttdef"><b>Определения</b> <a href="#l00138">main.cpp:138</a></div></div>
+<div class="ttc" id="amain_8cpp_html_a0ddf1224851353fc92bfbff6f499fa97"><div class="ttname"><a href="main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97">main</a></div><div class="ttdeci">int main(int argc, char *argv[])</div><div class="ttdef"><b>Определения</b> <a href="#l00255">main.cpp:255</a></div></div>
+<div class="ttc" id="amain_8cpp_html_a5a216c3284e0a72fe4f8101cd8b12b60"><div class="ttname"><a href="main_8cpp.html#a5a216c3284e0a72fe4f8101cd8b12b60">getJsonFiles</a></div><div class="ttdeci">std::vector&lt; std::string &gt; getJsonFiles(const std::string &amp;directory)</div><div class="ttdef"><b>Определения</b> <a href="#l00045">main.cpp:45</a></div></div>
+<div class="ttc" id="amain_8cpp_html_a5bc44c4396b63ff16c6a74bb1c394478"><div class="ttname"><a href="main_8cpp.html#a5bc44c4396b63ff16c6a74bb1c394478">processFiles</a></div><div class="ttdeci">void processFiles(const std::string &amp;directory, KafkaProducer &amp;producer, MessageCache &amp;cache, const std::string &amp;topic, std::atomic&lt; size_t &gt; &amp;next_index, const std::vector&lt; std::string &gt; &amp;files)</div><div class="ttdef"><b>Определения</b> <a href="#l00069">main.cpp:69</a></div></div>
+<div class="ttc" id="amain_8cpp_html_a658b214911501898d6087b601d6b152e"><div class="ttname"><a href="main_8cpp.html#a658b214911501898d6087b601d6b152e">producer_count</a></div><div class="ttdeci">std::atomic&lt; size_t &gt; producer_count</div><div class="ttdef"><b>Определения</b> <a href="#l00027">main.cpp:27</a></div></div>
+<div class="ttc" id="amain_8cpp_html_a77c334a9669f26a519f128b8f85765a6"><div class="ttname"><a href="main_8cpp.html#a77c334a9669f26a519f128b8f85765a6">error_count</a></div><div class="ttdeci">std::atomic&lt; size_t &gt; error_count</div><div class="ttdef"><b>Определения</b> <a href="#l00029">main.cpp:29</a></div></div>
+<div class="ttc" id="amain_8cpp_html_a8a2b3452989432f0e06d48049de87e33"><div class="ttname"><a href="main_8cpp.html#a8a2b3452989432f0e06d48049de87e33">consumer_count</a></div><div class="ttdeci">std::atomic&lt; size_t &gt; consumer_count</div><div class="ttdef"><b>Определения</b> <a href="#l00028">main.cpp:28</a></div></div>
+<div class="ttc" id="amain_8cpp_html_a9e945a592fa4a0f1706ea24ebb2ab854"><div class="ttname"><a href="main_8cpp.html#a9e945a592fa4a0f1706ea24ebb2ab854">runConsumer</a></div><div class="ttdeci">void runConsumer(AppConfig &amp;config, database::PostgreSQL &amp;db, MessageCache &amp;cache, KafkaProducer &amp;error_producer)</div><div class="ttdef"><b>Определения</b> <a href="#l00198">main.cpp:198</a></div></div>
+<div class="ttc" id="amain_8cpp_html_ad2e59c7203b3bddc1bc9a2224b52e8e7"><div class="ttname"><a href="main_8cpp.html#ad2e59c7203b3bddc1bc9a2224b52e8e7">signalHandler</a></div><div class="ttdeci">void signalHandler(int signal)</div><div class="ttdef"><b>Определения</b> <a href="#l00035">main.cpp:35</a></div></div>
+<div class="ttc" id="amain_8cpp_html_af53701aded99286de42137bffab9561a"><div class="ttname"><a href="main_8cpp.html#af53701aded99286de42137bffab9561a">running</a></div><div class="ttdeci">std::atomic&lt; bool &gt; running</div><div class="ttdef"><b>Определения</b> <a href="#l00026">main.cpp:26</a></div></div>
+<div class="ttc" id="aorder__processor_8hpp_html"><div class="ttname"><a href="order__processor_8hpp.html">order_processor.hpp</a></div></div>
+<div class="ttc" id="apostgresql_8hpp_html"><div class="ttname"><a href="postgresql_8hpp.html">postgresql.hpp</a></div></div>
+<div class="ttc" id="aproducer_8hpp_html"><div class="ttname"><a href="producer_8hpp.html">producer.hpp</a></div></div>
+<div class="ttc" id="asqlite__cache_8hpp_html"><div class="ttname"><a href="sqlite__cache_8hpp.html">sqlite_cache.hpp</a></div></div>
+<div class="ttc" id="astruct_app_config_html"><div class="ttname"><a href="struct_app_config.html">AppConfig</a></div><div class="ttdef"><b>Определения</b> <a href="config_8hpp_source.html#l00081">config.hpp:82</a></div></div>
+<div class="ttc" id="astruct_app_config_html_a278bb1ffae10e016c5355964746230f9"><div class="ttname"><a href="struct_app_config.html#a278bb1ffae10e016c5355964746230f9">AppConfig::groups</a></div><div class="ttdeci">std::vector&lt; GroupConfig &gt; groups</div><div class="ttdef"><b>Определения</b> <a href="config_8hpp_source.html#l00087">config.hpp:87</a></div></div>
+<div class="ttc" id="astruct_app_config_html_a317a75e33b14b550d5037863dc12d6a9"><div class="ttname"><a href="struct_app_config.html#a317a75e33b14b550d5037863dc12d6a9">AppConfig::processing</a></div><div class="ttdeci">ProcessingConfig processing</div><div class="ttdef"><b>Определения</b> <a href="config_8hpp_source.html#l00085">config.hpp:85</a></div></div>
+<div class="ttc" id="astruct_app_config_html_a6eabe866e9b2dded624221f90e6bec7f"><div class="ttname"><a href="struct_app_config.html#a6eabe866e9b2dded624221f90e6bec7f">AppConfig::kafka</a></div><div class="ttdeci">KafkaConfig kafka</div><div class="ttdef"><b>Определения</b> <a href="config_8hpp_source.html#l00083">config.hpp:83</a></div></div>
+<div class="ttc" id="astruct_app_config_html_a71293784add692e888b81f72d2e27a6a"><div class="ttname"><a href="struct_app_config.html#a71293784add692e888b81f72d2e27a6a">AppConfig::mode</a></div><div class="ttdeci">std::string mode</div><div class="ttdef"><b>Определения</b> <a href="config_8hpp_source.html#l00088">config.hpp:88</a></div></div>
+<div class="ttc" id="astruct_app_config_html_ab61fecf8d49e3d3eae421cfcab3a94bd"><div class="ttname"><a href="struct_app_config.html#ab61fecf8d49e3d3eae421cfcab3a94bd">AppConfig::cache</a></div><div class="ttdeci">CacheConfig cache</div><div class="ttdef"><b>Определения</b> <a href="config_8hpp_source.html#l00086">config.hpp:86</a></div></div>
+<div class="ttc" id="astruct_app_config_html_ad48b440bdfae4964ca599149729d09ec"><div class="ttname"><a href="struct_app_config.html#ad48b440bdfae4964ca599149729d09ec">AppConfig::database</a></div><div class="ttdeci">DatabaseConfig database</div><div class="ttdef"><b>Определения</b> <a href="config_8hpp_source.html#l00084">config.hpp:84</a></div></div>
+<div class="ttc" id="astruct_app_config_html_ad5f556af8ec235c8f58b14d1125b9d23"><div class="ttname"><a href="struct_app_config.html#ad5f556af8ec235c8f58b14d1125b9d23">AppConfig::load</a></div><div class="ttdeci">static AppConfig load(const std::string &amp;filename)</div></div>
+<div class="ttc" id="astruct_cache_config_html_a789469e676460aba92e45f59634c9baa"><div class="ttname"><a href="struct_cache_config.html#a789469e676460aba92e45f59634c9baa">CacheConfig::reprocess_delay_seconds</a></div><div class="ttdeci">int reprocess_delay_seconds</div><div class="ttdef"><b>Определения</b> <a href="config_8hpp_source.html#l00063">config.hpp:63</a></div></div>
+<div class="ttc" id="astruct_cache_config_html_a7e8c2d3a69fd12df4809602ec825c62e"><div class="ttname"><a href="struct_cache_config.html#a7e8c2d3a69fd12df4809602ec825c62e">CacheConfig::source_prefix</a></div><div class="ttdeci">std::string source_prefix</div><div class="ttdef"><b>Определения</b> <a href="config_8hpp_source.html#l00064">config.hpp:64</a></div></div>
+<div class="ttc" id="astruct_cache_config_html_a906e9e3cebb56102ef80e04ae332b6b8"><div class="ttname"><a href="struct_cache_config.html#a906e9e3cebb56102ef80e04ae332b6b8">CacheConfig::path</a></div><div class="ttdeci">std::string path</div><div class="ttdef"><b>Определения</b> <a href="config_8hpp_source.html#l00061">config.hpp:61</a></div></div>
+<div class="ttc" id="astruct_database_config_html_a466fbc3aae51e96a09e18a610510ddda"><div class="ttname"><a href="struct_database_config.html#a466fbc3aae51e96a09e18a610510ddda">DatabaseConfig::postgresql</a></div><div class="ttdeci">database::ConnectionParams postgresql</div><div class="ttdef"><b>Определения</b> <a href="config_8hpp_source.html#l00042">config.hpp:42</a></div></div>
+<div class="ttc" id="astruct_kafka_config_1_1_consumer_html_a038ca3598f8aca14524c11bc9e1c6730"><div class="ttname"><a href="struct_kafka_config_1_1_consumer.html#a038ca3598f8aca14524c11bc9e1c6730">KafkaConfig::Consumer::group_id</a></div><div class="ttdeci">std::string group_id</div><div class="ttdef"><b>Определения</b> <a href="config_8hpp_source.html#l00031">config.hpp:31</a></div></div>
+<div class="ttc" id="astruct_kafka_config_1_1_producer_html_a2fe3aa9fe31856c6b64ff8b2f3c0b361"><div class="ttname"><a href="struct_kafka_config_1_1_producer.html#a2fe3aa9fe31856c6b64ff8b2f3c0b361">KafkaConfig::Producer::acks</a></div><div class="ttdeci">std::string acks</div><div class="ttdef"><b>Определения</b> <a href="config_8hpp_source.html#l00024">config.hpp:24</a></div></div>
+<div class="ttc" id="astruct_kafka_config_1_1_producer_html_ad949a76f16ffbbd833c093bf6832277c"><div class="ttname"><a href="struct_kafka_config_1_1_producer.html#ad949a76f16ffbbd833c093bf6832277c">KafkaConfig::Producer::retries</a></div><div class="ttdeci">int retries</div><div class="ttdef"><b>Определения</b> <a href="config_8hpp_source.html#l00025">config.hpp:25</a></div></div>
+<div class="ttc" id="astruct_kafka_config_1_1_topics_html_a3512bb9c634bc7bb91b8adac920696d2"><div class="ttname"><a href="struct_kafka_config_1_1_topics.html#a3512bb9c634bc7bb91b8adac920696d2">KafkaConfig::Topics::input</a></div><div class="ttdeci">std::string input</div><div class="ttdef"><b>Определения</b> <a href="config_8hpp_source.html#l00018">config.hpp:18</a></div></div>
+<div class="ttc" id="astruct_kafka_config_1_1_topics_html_a58392568ff76c07a0d3b70d420089040"><div class="ttname"><a href="struct_kafka_config_1_1_topics.html#a58392568ff76c07a0d3b70d420089040">KafkaConfig::Topics::errors</a></div><div class="ttdeci">std::string errors</div><div class="ttdef"><b>Определения</b> <a href="config_8hpp_source.html#l00020">config.hpp:20</a></div></div>
+<div class="ttc" id="astruct_kafka_config_html_a2348a03b02fe3fd8603b36d0668a466d"><div class="ttname"><a href="struct_kafka_config.html#a2348a03b02fe3fd8603b36d0668a466d">KafkaConfig::bootstrap_servers</a></div><div class="ttdeci">std::string bootstrap_servers</div><div class="ttdef"><b>Определения</b> <a href="config_8hpp_source.html#l00015">config.hpp:15</a></div></div>
+<div class="ttc" id="astruct_kafka_config_html_a28fc38d804239de7371366e113fe82ea"><div class="ttname"><a href="struct_kafka_config.html#a28fc38d804239de7371366e113fe82ea">KafkaConfig::consumer</a></div><div class="ttdeci">struct KafkaConfig::Consumer consumer</div></div>
+<div class="ttc" id="astruct_kafka_config_html_a44989757e6df2b612ba641b15444030a"><div class="ttname"><a href="struct_kafka_config.html#a44989757e6df2b612ba641b15444030a">KafkaConfig::producer</a></div><div class="ttdeci">struct KafkaConfig::Producer producer</div></div>
+<div class="ttc" id="astruct_kafka_config_html_ab1be7681f0d61eb354db018745e25c1f"><div class="ttname"><a href="struct_kafka_config.html#ab1be7681f0d61eb354db018745e25c1f">KafkaConfig::topics</a></div><div class="ttdeci">struct KafkaConfig::Topics topics</div></div>
+<div class="ttc" id="astruct_processing_config_html_ad5e444469cadb6aa3f141fed824fc2fb"><div class="ttname"><a href="struct_processing_config.html#ad5e444469cadb6aa3f141fed824fc2fb">ProcessingConfig::max_workers</a></div><div class="ttdeci">int max_workers</div><div class="ttdef"><b>Определения</b> <a href="config_8hpp_source.html#l00050">config.hpp:50</a></div></div>
+<div class="ttc" id="astructdatabase_1_1_connection_params_html_a190de2967f826558a7ad5a9fdbc8f5de"><div class="ttname"><a href="structdatabase_1_1_connection_params.html#a190de2967f826558a7ad5a9fdbc8f5de">database::ConnectionParams::database</a></div><div class="ttdeci">std::string database</div><div class="ttdef"><b>Определения</b> <a href="postgresql_8hpp_source.html#l00016">postgresql.hpp:16</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+</div><!-- container -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a href="main_8cpp.html">main.cpp</a></li>
+    <li class="footer">Документация по Kafka-1C Connector. Последние изменения: <span class="timestamp"></span>. Создано системой <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.17.0 </li>
+  </ul>
+</div>
+</body>
+</html>

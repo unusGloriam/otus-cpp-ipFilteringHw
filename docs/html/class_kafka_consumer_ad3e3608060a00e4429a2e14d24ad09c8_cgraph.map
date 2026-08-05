@@ -1,0 +1,7 @@
+<map id="KafkaConsumer::init" name="KafkaConsumer::init">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,31,146,57"/>
+<area shape="rect" id="Node000002" href="$class_logger.html#aafe8b4f6ed1259fbde150ab59e0785e7" title=" " alt="" coords="194,5,288,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="146,31,181,27,176,29,147,36"/>
+<area shape="rect" id="Node000003" href="$class_logger.html#a474176e6966186566a2a321cb5cbd739" title=" " alt="" coords="196,56,286,83"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="146,52,184,60,178,60,146,57"/>
+</map>

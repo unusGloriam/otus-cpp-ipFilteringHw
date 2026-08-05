@@ -1,0 +1,611 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ru">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.17.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Kafka-1C Connector: Класс database::PostgreSQL</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="codefolding.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="module">
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+const theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'default';
+mermaid.initialize({ startOnLoad: true, theme: theme });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Kafka-1C Connector<span id="projectnumber">&#160;1.0.0</span>
+   </div>
+   <div id="projectbrief">High-performance Kafka-1C integration microservice</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Создано системой Doxygen 1.17.0 -->
+<script type="text/javascript">
+let searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', codefold.init);
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', () => {
+  initMenu('',true);
+  init_search();
+});
+</script>
+<div id="main-nav-mobile">
+<div class="sm sm-dox"><input id="main-menu-state" type="checkbox"/>
+<label class="main-menu-btn" for="main-menu-state">
+<span class="main-menu-btn-icon"></span> Toggle main menu visibility</label>
+<span id="searchBoxPos1" style="position:absolute;right:8px;top:8px;height:36px;"></span>
+</div>
+</div><!-- main-nav-mobile -->
+<div id="main-nav">
+  <ul class="sm sm-dox" id="main-menu">
+    <li id="searchBoxPos2" style="float:right">
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <span id="MSearchSelect" class="search-icon" onmouseover="return searchBox.OnSearchSelectShow()" onmouseout="return searchBox.OnSearchSelectHide()"><span class="search-icon-dropdown"></span></span>
+          <input type="text" id="MSearchField" value="" placeholder="Поиск" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><div id="MSearchCloseImg" class="close-icon"></div></a>
+          </span>
+        </div>
+    </li>
+  </ul>
+</div><!-- main-nav -->
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded',() => { initNavTree('classdatabase_1_1_postgre_s_q_l.html','','classdatabase_1_1_postgre_s_q_l-members'); });
+</script>
+<div id="container">
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Загрузка...</div>
+<div class="SRStatus" id="Searching">Поиск...</div>
+<div class="SRStatus" id="NoMatches">Не найдено</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">Класс database::PostgreSQL</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p><code>#include &lt;<a class="el" href="postgresql_8hpp_source.html">postgresql.hpp</a>&gt;</code></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-methods" class="groupheader"><a id="pub-methods" name="pub-methods"></a>
+Открытые члены</h2></td></tr>
+<tr class="memitem:afa4286fcc9ddb506fc30b9d934615b0f" id="r_afa4286fcc9ddb506fc30b9d934615b0f"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#afa4286fcc9ddb506fc30b9d934615b0f">PostgreSQL</a> ()</td></tr>
+<tr class="memitem:aa38b062a15f9d260deb2b39f8f72f8e7" id="r_aa38b062a15f9d260deb2b39f8f72f8e7"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#aa38b062a15f9d260deb2b39f8f72f8e7">PostgreSQL</a> (const <a class="el" href="structdatabase_1_1_connection_params.html">ConnectionParams</a> &amp;params)</td></tr>
+<tr class="memitem:a372a7ea6dc198d0ed42190d114980e39" id="r_a372a7ea6dc198d0ed42190d114980e39"><td class="memItemLeft">&#160;</td><td class="memItemRight"><a class="el" href="#a372a7ea6dc198d0ed42190d114980e39">~PostgreSQL</a> ()</td></tr>
+<tr class="memitem:a785b7fa2f3259b5258c06bfbd9e8b2c3" id="r_a785b7fa2f3259b5258c06bfbd9e8b2c3"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a785b7fa2f3259b5258c06bfbd9e8b2c3">connect</a> ()</td></tr>
+<tr class="memitem:af9b6445361883ff9a3dd155fc9bf1b52" id="r_af9b6445361883ff9a3dd155fc9bf1b52"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#af9b6445361883ff9a3dd155fc9bf1b52">isConnected</a> () const</td></tr>
+<tr class="memitem:af41a6c8beb9e194a4c1bdfa346d0712d" id="r_af41a6c8beb9e194a4c1bdfa346d0712d"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#af41a6c8beb9e194a4c1bdfa346d0712d">disconnect</a> ()</td></tr>
+<tr class="memitem:aae16b58e807cbaf423edb361275dc018" id="r_aae16b58e807cbaf423edb361275dc018"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#aae16b58e807cbaf423edb361275dc018">execute</a> (const std::string &amp;sql)</td></tr>
+<tr class="memitem:a1b682272e817f53fe4f0ccfcb727e253" id="r_a1b682272e817f53fe4f0ccfcb727e253"><td class="memItemLeft">bool&#160;</td><td class="memItemRight"><a class="el" href="#a1b682272e817f53fe4f0ccfcb727e253">executeParams</a> (const std::string &amp;sql, const std::vector&lt; std::string &gt; &amp;params)</td></tr>
+<tr class="memitem:a95022441d5201d81365056c401ec2474" id="r_a95022441d5201d81365056c401ec2474"><td class="memItemLeft">pqxx::result&#160;</td><td class="memItemRight"><a class="el" href="#a95022441d5201d81365056c401ec2474">query</a> (const std::string &amp;sql)</td></tr>
+<tr class="memitem:a78e26c9484a4cda19507c89600f609b6" id="r_a78e26c9484a4cda19507c89600f609b6"><td class="memItemLeft">std::optional&lt; <a class="el" href="structdatabase_1_1_client.html">Client</a> &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a78e26c9484a4cda19507c89600f609b6">findClient</a> (const std::string &amp;inn, const std::string &amp;kpp=&quot;&quot;)</td></tr>
+<tr class="memitem:ac22c54f52920ec67e8579bb70f360949" id="r_ac22c54f52920ec67e8579bb70f360949"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="#ac22c54f52920ec67e8579bb70f360949">createClient</a> (const std::string &amp;inn, const std::string &amp;kpp, const std::string &amp;name)</td></tr>
+<tr class="memitem:a4a090045c1149fcfef8b05415d41e6fb" id="r_a4a090045c1149fcfef8b05415d41e6fb"><td class="memItemLeft">std::optional&lt; <a class="el" href="structdatabase_1_1_product.html">Product</a> &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a4a090045c1149fcfef8b05415d41e6fb">findProductByArticle</a> (const std::string &amp;article)</td></tr>
+<tr class="memitem:a6773124fa34e1abd8758791867453058" id="r_a6773124fa34e1abd8758791867453058"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="#a6773124fa34e1abd8758791867453058">createOrder</a> (const std::string &amp;client_id, const std::string &amp;date, const std::string &amp;number, const std::vector&lt; <a class="el" href="struct_order_item.html">OrderItem</a> &gt; &amp;items)</td></tr>
+<tr class="memitem:af10309b83ba66fdfdbf86871653cbab7" id="r_af10309b83ba66fdfdbf86871653cbab7"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#af10309b83ba66fdfdbf86871653cbab7">logKafkaMessage</a> (long long linux_time, const std::string &amp;tin, const std::string &amp;trrc, const std::string &amp;json_data)</td></tr>
+</table>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Подробное описание</h2>
+<div class="textblock">
+<p class="definition">См. определение в файле <a class="el" href="postgresql_8hpp_source.html">postgresql.hpp</a> строка <a class="el" href="postgresql_8hpp_source.html#l00064">64</a></p>
+</div><a name="doc-constructors" id="doc-constructors"></a><h2 id="header-doc-constructors" class="groupheader">Конструктор(ы)</h2>
+<a id="afa4286fcc9ddb506fc30b9d934615b0f" name="afa4286fcc9ddb506fc30b9d934615b0f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#afa4286fcc9ddb506fc30b9d934615b0f">&#9670;&#160;</a></span>PostgreSQL() <span class="overload">[1/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">database::PostgreSQL::PostgreSQL </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="postgresql_8cpp_source.html">postgresql.cpp</a> строка <a class="el" href="postgresql_8cpp_source.html#l00017">17</a></p>
+
+</div>
+</div>
+<a id="aa38b062a15f9d260deb2b39f8f72f8e7" name="aa38b062a15f9d260deb2b39f8f72f8e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aa38b062a15f9d260deb2b39f8f72f8e7">&#9670;&#160;</a></span>PostgreSQL() <span class="overload">[2/2]</span></h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">database::PostgreSQL::PostgreSQL </td>
+          <td>(</td>
+          <td class="paramtype">const <a class="el" href="structdatabase_1_1_connection_params.html">ConnectionParams</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>params</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="postgresql_8cpp_source.html">postgresql.cpp</a> строка <a class="el" href="postgresql_8cpp_source.html#l00020">20</a></p>
+
+</div>
+</div>
+<a id="a372a7ea6dc198d0ed42190d114980e39" name="a372a7ea6dc198d0ed42190d114980e39"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a372a7ea6dc198d0ed42190d114980e39">&#9670;&#160;</a></span>~PostgreSQL()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">database::PostgreSQL::~PostgreSQL </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="postgresql_8cpp_source.html">postgresql.cpp</a> строка <a class="el" href="postgresql_8cpp_source.html#l00023">23</a></p>
+<div class="dynheader">
+Граф вызовов:</div>
+<div class="dyncontent">
+<div class="center"><img src="classdatabase_1_1_postgre_s_q_l_a372a7ea6dc198d0ed42190d114980e39_cgraph.png" border="0" usemap="#aclassdatabase_1_1_postgre_s_q_l_a372a7ea6dc198d0ed42190d114980e39_cgraph" loading="lazy" alt=""/></div>
+<map name="aclassdatabase_1_1_postgre_s_q_l_a372a7ea6dc198d0ed42190d114980e39_cgraph" id="aclassdatabase_1_1_postgre_s_q_l_a372a7ea6dc198d0ed42190d114980e39_cgraph">
+<area shape="rect" title=" " alt="" coords="5,5,159,48"/>
+<area shape="rect" href="classdatabase_1_1_postgre_s_q_l.html#af41a6c8beb9e194a4c1bdfa346d0712d" title=" " alt="" coords="207,5,360,48"/>
+<area shape="poly" title=" " alt="" coords="159,24,194,26,189,27,159,29"/>
+</map>
+</div>
+
+</div>
+</div>
+<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Методы</h2>
+<a id="a785b7fa2f3259b5258c06bfbd9e8b2c3" name="a785b7fa2f3259b5258c06bfbd9e8b2c3"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a785b7fa2f3259b5258c06bfbd9e8b2c3">&#9670;&#160;</a></span>connect()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool database::PostgreSQL::connect </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="postgresql_8cpp_source.html">postgresql.cpp</a> строка <a class="el" href="postgresql_8cpp_source.html#l00032">32</a></p>
+<div class="dynheader">
+Граф вызовов:</div>
+<div class="dyncontent">
+<div class="center"><img src="classdatabase_1_1_postgre_s_q_l_a785b7fa2f3259b5258c06bfbd9e8b2c3_cgraph.png" border="0" usemap="#aclassdatabase_1_1_postgre_s_q_l_a785b7fa2f3259b5258c06bfbd9e8b2c3_cgraph" loading="lazy" alt=""/></div>
+<map name="aclassdatabase_1_1_postgre_s_q_l_a785b7fa2f3259b5258c06bfbd9e8b2c3_cgraph" id="aclassdatabase_1_1_postgre_s_q_l_a785b7fa2f3259b5258c06bfbd9e8b2c3_cgraph">
+<area shape="rect" title=" " alt="" coords="5,23,159,65"/>
+<area shape="rect" href="class_logger.html#aafe8b4f6ed1259fbde150ab59e0785e7" title=" " alt="" coords="207,5,301,32"/>
+<area shape="poly" title=" " alt="" coords="158,30,194,27,189,29,160,35"/>
+<area shape="rect" href="class_logger.html#a474176e6966186566a2a321cb5cbd739" title=" " alt="" coords="209,56,298,83"/>
+<area shape="poly" title=" " alt="" coords="159,53,197,60,191,61,159,58"/>
+</map>
+</div>
+<div class="dynheader">
+Граф вызова функции:</div>
+<div class="dyncontent">
+<div class="center"><img src="classdatabase_1_1_postgre_s_q_l_a785b7fa2f3259b5258c06bfbd9e8b2c3_icgraph.png" border="0" usemap="#aclassdatabase_1_1_postgre_s_q_l_a785b7fa2f3259b5258c06bfbd9e8b2c3_icgraph" loading="lazy" alt=""/></div>
+<map name="aclassdatabase_1_1_postgre_s_q_l_a785b7fa2f3259b5258c06bfbd9e8b2c3_icgraph" id="aclassdatabase_1_1_postgre_s_q_l_a785b7fa2f3259b5258c06bfbd9e8b2c3_icgraph">
+<area shape="rect" title=" " alt="" coords="103,5,256,48"/>
+<area shape="rect" href="main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title=" " alt="" coords="5,13,55,40"/>
+<area shape="poly" title=" " alt="" coords="85,28,55,29,55,24,89,26"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="ac22c54f52920ec67e8579bb70f360949" name="ac22c54f52920ec67e8579bb70f360949"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac22c54f52920ec67e8579bb70f360949">&#9670;&#160;</a></span>createClient()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string database::PostgreSQL::createClient </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>inn</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>kpp</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>name</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="postgresql_8cpp_source.html">postgresql.cpp</a> строка <a class="el" href="postgresql_8cpp_source.html#l00362">362</a></p>
+
+</div>
+</div>
+<a id="a6773124fa34e1abd8758791867453058" name="a6773124fa34e1abd8758791867453058"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6773124fa34e1abd8758791867453058">&#9670;&#160;</a></span>createOrder()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string database::PostgreSQL::createOrder </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>client_id</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>date</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>number</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; <a class="el" href="struct_order_item.html">OrderItem</a> &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>items</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="postgresql_8cpp_source.html">postgresql.cpp</a> строка <a class="el" href="postgresql_8cpp_source.html#l00462">462</a></p>
+
+</div>
+</div>
+<a id="af41a6c8beb9e194a4c1bdfa346d0712d" name="af41a6c8beb9e194a4c1bdfa346d0712d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af41a6c8beb9e194a4c1bdfa346d0712d">&#9670;&#160;</a></span>disconnect()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void database::PostgreSQL::disconnect </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="postgresql_8cpp_source.html">postgresql.cpp</a> строка <a class="el" href="postgresql_8cpp_source.html#l00081">81</a></p>
+<div class="dynheader">
+Граф вызова функции:</div>
+<div class="dyncontent">
+<div class="center"><img src="classdatabase_1_1_postgre_s_q_l_af41a6c8beb9e194a4c1bdfa346d0712d_icgraph.png" border="0" usemap="#aclassdatabase_1_1_postgre_s_q_l_af41a6c8beb9e194a4c1bdfa346d0712d_icgraph" loading="lazy" alt=""/></div>
+<map name="aclassdatabase_1_1_postgre_s_q_l_af41a6c8beb9e194a4c1bdfa346d0712d_icgraph" id="aclassdatabase_1_1_postgre_s_q_l_af41a6c8beb9e194a4c1bdfa346d0712d_icgraph">
+<area shape="rect" title=" " alt="" coords="207,5,360,48"/>
+<area shape="rect" href="classdatabase_1_1_postgre_s_q_l.html#a372a7ea6dc198d0ed42190d114980e39" title=" " alt="" coords="5,5,159,48"/>
+<area shape="poly" title=" " alt="" coords="189,27,159,29,159,24,194,26"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="aae16b58e807cbaf423edb361275dc018" name="aae16b58e807cbaf423edb361275dc018"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aae16b58e807cbaf423edb361275dc018">&#9670;&#160;</a></span>execute()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool database::PostgreSQL::execute </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>sql</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="postgresql_8cpp_source.html">postgresql.cpp</a> строка <a class="el" href="postgresql_8cpp_source.html#l00095">95</a></p>
+<div class="dynheader">
+Граф вызовов:</div>
+<div class="dyncontent">
+<div class="center"><img src="classdatabase_1_1_postgre_s_q_l_aae16b58e807cbaf423edb361275dc018_cgraph.png" border="0" usemap="#aclassdatabase_1_1_postgre_s_q_l_aae16b58e807cbaf423edb361275dc018_cgraph" loading="lazy" alt=""/></div>
+<map name="aclassdatabase_1_1_postgre_s_q_l_aae16b58e807cbaf423edb361275dc018_cgraph" id="aclassdatabase_1_1_postgre_s_q_l_aae16b58e807cbaf423edb361275dc018_cgraph">
+<area shape="rect" title=" " alt="" coords="5,27,159,69"/>
+<area shape="rect" href="class_logger.html#aafe8b4f6ed1259fbde150ab59e0785e7" title=" " alt="" coords="236,5,330,32"/>
+<area shape="poly" title=" " alt="" coords="158,34,223,27,218,29,160,39"/>
+<area shape="rect" href="classdatabase_1_1_postgre_s_q_l.html#af9b6445361883ff9a3dd155fc9bf1b52" title=" " alt="" coords="207,56,360,99"/>
+<area shape="poly" title=" " alt="" coords="159,57,194,64,189,64,159,62"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a1b682272e817f53fe4f0ccfcb727e253" name="a1b682272e817f53fe4f0ccfcb727e253"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1b682272e817f53fe4f0ccfcb727e253">&#9670;&#160;</a></span>executeParams()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool database::PostgreSQL::executeParams </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>sql</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>params</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="postgresql_8cpp_source.html">postgresql.cpp</a> строка <a class="el" href="postgresql_8cpp_source.html#l00118">118</a></p>
+<div class="dynheader">
+Граф вызовов:</div>
+<div class="dyncontent">
+<div class="center"><img src="classdatabase_1_1_postgre_s_q_l_a1b682272e817f53fe4f0ccfcb727e253_cgraph.png" border="0" usemap="#aclassdatabase_1_1_postgre_s_q_l_a1b682272e817f53fe4f0ccfcb727e253_cgraph" loading="lazy" alt=""/></div>
+<map name="aclassdatabase_1_1_postgre_s_q_l_a1b682272e817f53fe4f0ccfcb727e253_cgraph" id="aclassdatabase_1_1_postgre_s_q_l_a1b682272e817f53fe4f0ccfcb727e253_cgraph">
+<area shape="rect" title=" " alt="" coords="5,27,159,69"/>
+<area shape="rect" href="class_logger.html#aafe8b4f6ed1259fbde150ab59e0785e7" title=" " alt="" coords="438,5,532,32"/>
+<area shape="poly" title=" " alt="" coords="151,24,206,12,263,7,321,6,425,12,419,13,321,11,264,12,207,17,153,29"/>
+<area shape="rect" href="classdatabase_1_1_postgre_s_q_l.html#af9b6445361883ff9a3dd155fc9bf1b52" title=" " alt="" coords="408,71,561,113"/>
+<area shape="poly" title=" " alt="" coords="154,67,207,79,303,88,395,94,390,94,302,94,206,84,154,73"/>
+<area shape="rect" href="classdatabase_1_1_postgre_s_q_l.html#a95022441d5201d81365056c401ec2474" title=" " alt="" coords="207,27,360,69"/>
+<area shape="poly" title=" " alt="" coords="159,45,194,47,189,49,159,51"/>
+<area shape="poly" title=" " alt="" coords="360,34,425,27,419,28,361,39"/>
+<area shape="poly" title=" " alt="" coords="361,62,396,72,390,72,360,67"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a78e26c9484a4cda19507c89600f609b6" name="a78e26c9484a4cda19507c89600f609b6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a78e26c9484a4cda19507c89600f609b6">&#9670;&#160;</a></span>findClient()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt; <a class="el" href="structdatabase_1_1_client.html">Client</a> &gt; database::PostgreSQL::findClient </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>inn</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>kpp</em></span><span class="paramdefsep"> = </span><span class="paramdefval">&quot;&quot;</span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="postgresql_8cpp_source.html">postgresql.cpp</a> строка <a class="el" href="postgresql_8cpp_source.html#l00307">307</a></p>
+<div class="dynheader">
+Граф вызовов:</div>
+<div class="dyncontent">
+<div class="center"><img src="classdatabase_1_1_postgre_s_q_l_a78e26c9484a4cda19507c89600f609b6_cgraph.png" border="0" usemap="#aclassdatabase_1_1_postgre_s_q_l_a78e26c9484a4cda19507c89600f609b6_cgraph" loading="lazy" alt=""/></div>
+<map name="aclassdatabase_1_1_postgre_s_q_l_a78e26c9484a4cda19507c89600f609b6_cgraph" id="aclassdatabase_1_1_postgre_s_q_l_a78e26c9484a4cda19507c89600f609b6_cgraph">
+<area shape="rect" title=" " alt="" coords="5,77,159,120"/>
+<area shape="rect" href="class_logger.html#aed78385ee0ad9d124521735894abab46" title=" " alt="" coords="232,5,335,32"/>
+<area shape="poly" title=" " alt="" coords="128,75,206,42,226,36,222,39,208,46,131,79"/>
+<area shape="rect" href="class_logger.html#a474176e6966186566a2a321cb5cbd739" title=" " alt="" coords="239,56,328,83"/>
+<area shape="poly" title=" " alt="" coords="158,85,226,77,221,79,160,90"/>
+<area shape="rect" href="classdatabase_1_1_postgre_s_q_l.html#a95022441d5201d81365056c401ec2474" title=" " alt="" coords="207,107,360,149"/>
+<area shape="poly" title=" " alt="" coords="159,107,194,114,189,115,159,112"/>
+<area shape="rect" href="class_logger.html#a5025d14c1f40cc23e9cbb48f98f0d9a6" title=" " alt="" coords="227,173,340,200"/>
+<area shape="poly" title=" " alt="" coords="123,118,208,159,225,168,220,167,206,164,122,123"/>
+<area shape="rect" href="class_logger.html#aafe8b4f6ed1259fbde150ab59e0785e7" title=" " alt="" coords="438,85,532,112"/>
+<area shape="poly" title=" " alt="" coords="360,114,425,107,420,108,361,119"/>
+<area shape="rect" href="classdatabase_1_1_postgre_s_q_l.html#af9b6445361883ff9a3dd155fc9bf1b52" title=" " alt="" coords="408,136,561,179"/>
+<area shape="poly" title=" " alt="" coords="360,137,395,144,390,144,360,142"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a4a090045c1149fcfef8b05415d41e6fb" name="a4a090045c1149fcfef8b05415d41e6fb"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a4a090045c1149fcfef8b05415d41e6fb">&#9670;&#160;</a></span>findProductByArticle()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::optional&lt; <a class="el" href="structdatabase_1_1_product.html">Product</a> &gt; database::PostgreSQL::findProductByArticle </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>article</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="postgresql_8cpp_source.html">postgresql.cpp</a> строка <a class="el" href="postgresql_8cpp_source.html#l00420">420</a></p>
+
+</div>
+</div>
+<a id="af9b6445361883ff9a3dd155fc9bf1b52" name="af9b6445361883ff9a3dd155fc9bf1b52"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af9b6445361883ff9a3dd155fc9bf1b52">&#9670;&#160;</a></span>isConnected()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">bool database::PostgreSQL::isConnected </td>
+          <td>(</td>
+          <td class="paramname"><span class="paramname"><em></em></span></td><td>)</td>
+          <td> const</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="postgresql_8cpp_source.html">postgresql.cpp</a> строка <a class="el" href="postgresql_8cpp_source.html#l00076">76</a></p>
+<div class="dynheader">
+Граф вызова функции:</div>
+<div class="dyncontent">
+<div class="center"><img src="classdatabase_1_1_postgre_s_q_l_af9b6445361883ff9a3dd155fc9bf1b52_icgraph.png" border="0" usemap="#aclassdatabase_1_1_postgre_s_q_l_af9b6445361883ff9a3dd155fc9bf1b52_icgraph" loading="lazy" alt=""/></div>
+<map name="aclassdatabase_1_1_postgre_s_q_l_af9b6445361883ff9a3dd155fc9bf1b52_icgraph" id="aclassdatabase_1_1_postgre_s_q_l_af9b6445361883ff9a3dd155fc9bf1b52_icgraph">
+<area shape="rect" title=" " alt="" coords="408,64,561,107"/>
+<area shape="rect" href="classdatabase_1_1_postgre_s_q_l.html#aae16b58e807cbaf423edb361275dc018" title=" " alt="" coords="207,5,360,48"/>
+<area shape="poly" title=" " alt="" coords="392,59,359,51,359,46,397,59"/>
+<area shape="rect" href="classdatabase_1_1_postgre_s_q_l.html#a1b682272e817f53fe4f0ccfcb727e253" title=" " alt="" coords="5,64,159,107"/>
+<area shape="poly" title=" " alt="" coords="391,88,159,88,159,83,394,83"/>
+<area shape="rect" href="classdatabase_1_1_postgre_s_q_l.html#a95022441d5201d81365056c401ec2474" title=" " alt="" coords="207,123,360,165"/>
+<area shape="poly" title=" " alt="" coords="397,111,359,125,358,120,392,112"/>
+<area shape="poly" title=" " alt="" coords="191,118,157,110,157,105,196,117"/>
+<area shape="rect" href="classdatabase_1_1_postgre_s_q_l.html#a78e26c9484a4cda19507c89600f609b6" title=" " alt="" coords="5,131,159,173"/>
+<area shape="poly" title=" " alt="" coords="189,148,159,152,159,146,194,147"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="af10309b83ba66fdfdbf86871653cbab7" name="af10309b83ba66fdfdbf86871653cbab7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af10309b83ba66fdfdbf86871653cbab7">&#9670;&#160;</a></span>logKafkaMessage()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void database::PostgreSQL::logKafkaMessage </td>
+          <td>(</td>
+          <td class="paramtype">long long</td>          <td class="paramname"><span class="paramname"><em>linux_time</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>tin</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>trrc</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>json_data</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="postgresql_8cpp_source.html">postgresql.cpp</a> строка <a class="el" href="postgresql_8cpp_source.html#l00537">537</a></p>
+
+</div>
+</div>
+<a id="a95022441d5201d81365056c401ec2474" name="a95022441d5201d81365056c401ec2474"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a95022441d5201d81365056c401ec2474">&#9670;&#160;</a></span>query()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">pqxx::result database::PostgreSQL::query </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>sql</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="postgresql_8cpp_source.html">postgresql.cpp</a> строка <a class="el" href="postgresql_8cpp_source.html#l00153">153</a></p>
+<div class="dynheader">
+Граф вызовов:</div>
+<div class="dyncontent">
+<div class="center"><img src="classdatabase_1_1_postgre_s_q_l_a95022441d5201d81365056c401ec2474_cgraph.png" border="0" usemap="#aclassdatabase_1_1_postgre_s_q_l_a95022441d5201d81365056c401ec2474_cgraph" loading="lazy" alt=""/></div>
+<map name="aclassdatabase_1_1_postgre_s_q_l_a95022441d5201d81365056c401ec2474_cgraph" id="aclassdatabase_1_1_postgre_s_q_l_a95022441d5201d81365056c401ec2474_cgraph">
+<area shape="rect" title=" " alt="" coords="5,27,159,69"/>
+<area shape="rect" href="class_logger.html#aafe8b4f6ed1259fbde150ab59e0785e7" title=" " alt="" coords="236,5,330,32"/>
+<area shape="poly" title=" " alt="" coords="158,34,223,27,218,29,160,39"/>
+<area shape="rect" href="classdatabase_1_1_postgre_s_q_l.html#af9b6445361883ff9a3dd155fc9bf1b52" title=" " alt="" coords="207,56,360,99"/>
+<area shape="poly" title=" " alt="" coords="159,57,194,64,189,64,159,62"/>
+</map>
+</div>
+<div class="dynheader">
+Граф вызова функции:</div>
+<div class="dyncontent">
+<div class="center"><img src="classdatabase_1_1_postgre_s_q_l_a95022441d5201d81365056c401ec2474_icgraph.png" border="0" usemap="#aclassdatabase_1_1_postgre_s_q_l_a95022441d5201d81365056c401ec2474_icgraph" loading="lazy" alt=""/></div>
+<map name="aclassdatabase_1_1_postgre_s_q_l_a95022441d5201d81365056c401ec2474_icgraph" id="aclassdatabase_1_1_postgre_s_q_l_a95022441d5201d81365056c401ec2474_icgraph">
+<area shape="rect" title=" " alt="" coords="207,39,360,81"/>
+<area shape="rect" href="classdatabase_1_1_postgre_s_q_l.html#a1b682272e817f53fe4f0ccfcb727e253" title=" " alt="" coords="5,5,159,48"/>
+<area shape="poly" title=" " alt="" coords="189,45,159,42,159,37,194,44"/>
+<area shape="rect" href="classdatabase_1_1_postgre_s_q_l.html#a78e26c9484a4cda19507c89600f609b6" title=" " alt="" coords="5,72,159,115"/>
+<area shape="poly" title=" " alt="" coords="189,76,159,83,158,78,194,75"/>
+</map>
+</div>
+
+</div>
+</div>
+<hr/>Объявления и описания членов классов находятся в файлах:<ul>
+<li>src/database/<a class="el" href="postgresql_8hpp_source.html">postgresql.hpp</a></li>
+<li>src/database/<a class="el" href="postgresql_8cpp_source.html">postgresql.cpp</a></li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<div id="page-nav" class="page-nav-panel">
+<div id="page-nav-resize-handle"></div>
+<div id="page-nav-tree">
+<div id="page-nav-contents">
+</div><!-- page-nav-contents -->
+</div><!-- page-nav-tree -->
+</div><!-- page-nav -->
+</div><!-- container -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a href="namespacedatabase.html">database</a></li><li class="navelem"><a href="classdatabase_1_1_postgre_s_q_l.html">PostgreSQL</a></li>
+    <li class="footer">Документация по Kafka-1C Connector. Последние изменения: <span class="timestamp"></span>. Создано системой <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.17.0 </li>
+  </ul>
+</div>
+</body>
+</html>

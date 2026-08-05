@@ -1,0 +1,15 @@
+<map id="database::PostgreSQL::findClient" name="database::PostgreSQL::findClient">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,77,159,120"/>
+<area shape="rect" id="Node000002" href="$class_logger.html#aed78385ee0ad9d124521735894abab46" title=" " alt="" coords="232,5,335,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="128,75,206,42,226,36,222,39,208,46,131,79"/>
+<area shape="rect" id="Node000003" href="$class_logger.html#a474176e6966186566a2a321cb5cbd739" title=" " alt="" coords="239,56,328,83"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="158,85,226,77,221,79,160,90"/>
+<area shape="rect" id="Node000004" href="$classdatabase_1_1_postgre_s_q_l.html#a95022441d5201d81365056c401ec2474" title=" " alt="" coords="207,107,360,149"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="159,107,194,114,189,115,159,112"/>
+<area shape="rect" id="Node000007" href="$class_logger.html#a5025d14c1f40cc23e9cbb48f98f0d9a6" title=" " alt="" coords="227,173,340,200"/>
+<area shape="poly" id="edge6_Node000001_Node000007" title=" " alt="" coords="123,118,208,159,225,168,220,167,206,164,122,123"/>
+<area shape="rect" id="Node000005" href="$class_logger.html#aafe8b4f6ed1259fbde150ab59e0785e7" title=" " alt="" coords="438,85,532,112"/>
+<area shape="poly" id="edge4_Node000004_Node000005" title=" " alt="" coords="360,114,425,107,420,108,361,119"/>
+<area shape="rect" id="Node000006" href="$classdatabase_1_1_postgre_s_q_l.html#af9b6445361883ff9a3dd155fc9bf1b52" title=" " alt="" coords="408,136,561,179"/>
+<area shape="poly" id="edge5_Node000004_Node000006" title=" " alt="" coords="360,137,395,144,390,144,360,142"/>
+</map>

@@ -1,0 +1,765 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ru">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.17.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Kafka-1C Connector: Файл src/main.cpp</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="codefolding.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="module">
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+const theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'default';
+mermaid.initialize({ startOnLoad: true, theme: theme });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Kafka-1C Connector<span id="projectnumber">&#160;1.0.0</span>
+   </div>
+   <div id="projectbrief">High-performance Kafka-1C integration microservice</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Создано системой Doxygen 1.17.0 -->
+<script type="text/javascript">
+let searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', codefold.init);
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', () => {
+  initMenu('',true);
+  init_search();
+});
+</script>
+<div id="main-nav-mobile">
+<div class="sm sm-dox"><input id="main-menu-state" type="checkbox"/>
+<label class="main-menu-btn" for="main-menu-state">
+<span class="main-menu-btn-icon"></span> Toggle main menu visibility</label>
+<span id="searchBoxPos1" style="position:absolute;right:8px;top:8px;height:36px;"></span>
+</div>
+</div><!-- main-nav-mobile -->
+<div id="main-nav">
+  <ul class="sm sm-dox" id="main-menu">
+    <li id="searchBoxPos2" style="float:right">
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <span id="MSearchSelect" class="search-icon" onmouseover="return searchBox.OnSearchSelectShow()" onmouseout="return searchBox.OnSearchSelectHide()"><span class="search-icon-dropdown"></span></span>
+          <input type="text" id="MSearchField" value="" placeholder="Поиск" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><div id="MSearchCloseImg" class="close-icon"></div></a>
+          </span>
+        </div>
+    </li>
+  </ul>
+</div><!-- main-nav -->
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded',() => { initNavTree('main_8cpp.html','',''); });
+</script>
+<div id="container">
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Загрузка...</div>
+<div class="SRStatus" id="Searching">Поиск...</div>
+<div class="SRStatus" id="NoMatches">Не найдено</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">Файл main.cpp</div></div>
+</div><!--header-->
+<div class="contents">
+<div class="textblock"><code>#include &lt;iostream&gt;</code><br />
+<code>#include &lt;string&gt;</code><br />
+<code>#include &lt;thread&gt;</code><br />
+<code>#include &lt;vector&gt;</code><br />
+<code>#include &lt;atomic&gt;</code><br />
+<code>#include &lt;chrono&gt;</code><br />
+<code>#include &lt;filesystem&gt;</code><br />
+<code>#include &lt;csignal&gt;</code><br />
+<code>#include &lt;iomanip&gt;</code><br />
+<code>#include &quot;<a class="el" href="config_8hpp_source.html">config/config.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="producer_8hpp_source.html">kafka/producer.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="consumer_8hpp_source.html">kafka/consumer.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="json__parser_8hpp_source.html">parser/json_parser.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="sqlite__cache_8hpp_source.html">cache/sqlite_cache.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="postgresql_8hpp_source.html">database/postgresql.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="order__processor_8hpp_source.html">processor/order_processor.hpp</a>&quot;</code><br />
+<code>#include &quot;<a class="el" href="logger_8hpp_source.html">utils/logger.hpp</a>&quot;</code><br />
+</div><div class="textblock"><div class="dynheader">
+Граф включаемых заголовочных файлов для main.cpp:</div>
+<div class="dyncontent">
+<div class="center"><img src="main_8cpp__incl.png" border="0" usemap="#asrc_2main_8cpp" loading="lazy" alt=""/></div>
+<map name="asrc_2main_8cpp" id="asrc_2main_8cpp">
+<area shape="rect" title=" " alt="" coords="1062,5,1159,32"/>
+<area shape="rect" title=" " alt="" coords="1084,155,1156,181"/>
+<area shape="poly" title=" " alt="" coords="1113,31,1120,141,1116,138,1109,34"/>
+<area shape="rect" title=" " alt="" coords="632,229,685,256"/>
+<area shape="poly" title=" " alt="" coords="1059,24,985,36,888,59,838,76,788,97,741,124,699,157,679,185,666,217,663,212,674,182,695,153,738,120,786,93,836,71,887,54,984,31,1064,23"/>
+<area shape="rect" title=" " alt="" coords="1659,229,1716,256"/>
+<area shape="poly" title=" " alt="" coords="1159,17,1237,20,1338,28,1448,47,1504,60,1557,77,1623,104,1648,123,1673,153,1686,183,1690,216,1686,212,1681,185,1668,156,1644,127,1620,109,1555,83,1502,65,1447,52,1337,34,1237,25,1159,22"/>
+<area shape="rect" title=" " alt="" coords="183,229,240,256"/>
+<area shape="poly" title=" " alt="" coords="1059,20,873,24,610,31,473,39,346,49,237,64,157,83,106,100,61,120,45,132,36,146,35,161,43,180,62,194,94,208,170,231,166,233,92,213,60,199,39,183,30,162,31,144,41,129,58,116,104,95,155,77,236,59,345,44,473,33,609,26,873,19,1065,19"/>
+<area shape="rect" title=" " alt="" coords="1538,229,1598,256"/>
+<area shape="poly" title=" " alt="" coords="1159,22,1279,36,1428,62,1501,79,1566,100,1618,124,1637,138,1651,153,1657,173,1649,192,1631,209,1609,224,1608,219,1628,205,1644,189,1652,173,1647,156,1634,142,1615,129,1564,105,1499,84,1427,67,1278,41,1159,27"/>
+<area shape="rect" title=" " alt="" coords="1323,155,1383,181"/>
+<area shape="poly" title=" " alt="" coords="1160,30,1215,49,1271,78,1308,108,1337,143,1332,142,1304,112,1268,82,1213,54,1159,35"/>
+<area shape="rect" title=" " alt="" coords="1763,80,1844,107"/>
+<area shape="poly" title=" " alt="" coords="1159,20,1410,39,1576,56,1744,77,1751,81,1745,81,1743,83,1576,61,1410,45,1159,26"/>
+<area shape="rect" title=" " alt="" coords="1869,80,1931,107"/>
+<area shape="poly" title=" " alt="" coords="1159,18,1279,22,1450,31,1649,48,1856,80,1851,80,1648,54,1449,36,1279,27,1159,23"/>
+<area shape="rect" title=" " alt="" coords="1408,155,1474,181"/>
+<area shape="poly" title=" " alt="" coords="1159,29,1229,49,1305,78,1364,110,1415,146,1410,145,1361,115,1303,82,1228,54,1159,34"/>
+<area shape="rect" href="config_8hpp.html" title=" " alt="" coords="196,80,316,107"/>
+<area shape="poly" title=" " alt="" coords="1062,27,332,88,331,83,1062,21"/>
+<area shape="rect" href="postgresql_8hpp.html" title=" " alt="" coords="344,155,520,181"/>
+<area shape="poly" title=" " alt="" coords="1059,21,910,28,716,39,540,56,479,68,447,82,438,94,433,109,430,141,426,138,428,107,433,92,444,78,478,63,539,51,715,33,910,23,1064,21"/>
+<area shape="rect" href="producer_8hpp.html" title=" " alt="" coords="928,155,1061,181"/>
+<area shape="poly" title=" " alt="" coords="1103,31,1015,144,1012,140,1098,34"/>
+<area shape="rect" href="consumer_8hpp.html" title=" " alt="" coords="1498,155,1638,181"/>
+<area shape="poly" title=" " alt="" coords="1159,28,1247,49,1347,77,1444,112,1528,149,1523,148,1442,117,1346,83,1246,54,1159,33"/>
+<area shape="rect" href="json__parser_8hpp.html" title=" " alt="" coords="64,155,218,181"/>
+<area shape="poly" title=" " alt="" coords="1059,21,859,26,583,35,447,43,327,53,236,66,205,74,185,82,172,94,162,109,149,141,145,138,158,106,168,90,182,78,203,69,235,61,326,48,446,37,583,30,859,21,1065,20"/>
+<area shape="rect" href="sqlite__cache_8hpp.html" title=" " alt="" coords="746,155,904,181"/>
+<area shape="poly" title=" " alt="" coords="1089,32,864,150,862,145,1084,33"/>
+<area shape="rect" href="order__processor_8hpp.html" title=" " alt="" coords="457,80,657,107"/>
+<area shape="poly" title=" " alt="" coords="1059,27,670,80,669,75,1064,26"/>
+<area shape="rect" href="logger_8hpp.html" title=" " alt="" coords="1148,80,1257,107"/>
+<area shape="poly" title=" " alt="" coords="1127,30,1178,71,1172,70,1126,35"/>
+<area shape="poly" title=" " alt="" coords="264,105,292,143,311,163,333,179,619,233,614,235,331,184,307,167,288,146,262,110"/>
+<area shape="poly" title=" " alt="" coords="193,106,111,127,75,141,54,156,49,168,54,180,71,194,100,207,170,230,165,232,98,212,68,198,50,183,44,168,50,153,73,136,109,122,197,102"/>
+<area shape="rect" title=" " alt="" coords="5,229,136,256"/>
+<area shape="poly" title=" " alt="" coords="194,105,105,126,66,140,43,156,38,170,39,185,53,216,48,217,34,186,32,169,39,153,64,135,103,121,197,101"/>
+<area shape="poly" title=" " alt="" coords="287,105,389,148,384,149,286,110"/>
+<area shape="poly" title=" " alt="" coords="472,179,620,228,615,228,471,185"/>
+<area shape="poly" title=" " alt="" coords="396,182,256,230,254,225,391,182"/>
+<area shape="rect" title=" " alt="" coords="391,229,472,256"/>
+<area shape="poly" title=" " alt="" coords="434,180,434,215,430,212,430,184"/>
+<area shape="rect" title=" " alt="" coords="923,229,991,256"/>
+<area shape="poly" title=" " alt="" coords="520,177,692,198,891,227,910,232,905,232,890,232,691,204,520,182"/>
+<area shape="rect" title=" " alt="" coords="511,229,577,256"/>
+<area shape="poly" title=" " alt="" coords="452,179,514,221,509,220,451,184"/>
+<area shape="poly" title=" " alt="" coords="938,182,701,235,700,230,933,182"/>
+<area shape="poly" title=" " alt="" coords="1061,177,1072,179,1525,236,1519,236,1071,184,1061,182"/>
+<area shape="poly" title=" " alt="" coords="990,180,972,218,969,213,986,183"/>
+<area shape="rect" title=" " alt="" coords="1279,229,1435,256"/>
+<area shape="poly" title=" " alt="" coords="1058,179,1281,226,1276,226,1058,185"/>
+<area shape="rect" title=" " alt="" coords="1097,229,1174,256"/>
+<area shape="poly" title=" " alt="" coords="1020,179,1100,222,1095,221,1018,184"/>
+<area shape="poly" title=" " alt="" coords="1500,180,1487,184,1272,201,1105,206,938,212,724,232,701,235,701,230,724,227,938,207,1105,200,1272,195,1486,179,1495,180"/>
+<area shape="poly" title=" " alt="" coords="1589,179,1656,222,1651,220,1588,184"/>
+<area shape="poly" title=" " alt="" coords="1570,180,1570,216,1566,212,1566,184"/>
+<area shape="poly" title=" " alt="" coords="1500,180,1487,184,1353,197,1248,204,1142,212,1007,232,1006,227,1141,207,1247,198,1353,192,1486,179,1495,180"/>
+<area shape="poly" title=" " alt="" coords="1534,181,1409,226,1408,221,1529,182"/>
+<area shape="poly" title=" " alt="" coords="1501,181,1190,235,1189,230,1495,181"/>
+<area shape="poly" title=" " alt="" coords="218,177,590,227,620,234,614,234,589,232,218,182"/>
+<area shape="poly" title=" " alt="" coords="155,179,192,218,187,218,152,184"/>
+<area shape="poly" title=" " alt="" coords="131,181,95,220,91,216,126,183"/>
+<area shape="poly" title=" " alt="" coords="799,181,700,226,699,221,794,182"/>
+<area shape="poly" title=" " alt="" coords="746,181,256,239,256,233,745,176"/>
+<area shape="poly" title=" " alt="" coords="881,179,1084,229,1079,228,880,185"/>
+<area shape="rect" title=" " alt="" coords="809,229,879,256"/>
+<area shape="poly" title=" " alt="" coords="830,180,839,216,835,213,827,184"/>
+<area shape="rect" title=" " alt="" coords="735,229,784,256"/>
+<area shape="poly" title=" " alt="" coords="816,181,782,220,780,216,811,183"/>
+<area shape="rect" title=" " alt="" coords="1015,229,1072,256"/>
+<area shape="poly" title=" " alt="" coords="864,179,1003,227,998,227,863,185"/>
+<area shape="poly" title=" " alt="" coords="567,105,644,217,639,216,564,109"/>
+<area shape="poly" title=" " alt="" coords="481,108,409,128,333,157,281,188,238,221,236,217,278,184,331,152,408,123,486,106"/>
+<area shape="poly" title=" " alt="" coords="538,106,468,149,466,144,533,108"/>
+<area shape="poly" title=" " alt="" coords="558,105,549,215,544,212,554,109"/>
+<area shape="poly" title=" " alt="" coords="634,105,916,153,910,154,634,110"/>
+<area shape="poly" title=" " alt="" coords="483,110,229,154,228,149,485,105"/>
+<area shape="poly" title=" " alt="" coords="604,105,766,150,761,150,604,110"/>
+<area shape="poly" title=" " alt="" coords="1191,106,1147,147,1144,142,1186,108"/>
+<area shape="poly" title=" " alt="" coords="1145,97,1048,105,927,116,814,133,769,144,736,157,717,169,701,185,675,218,672,214,697,181,714,165,733,152,767,139,813,128,927,111,1047,100,1150,97"/>
+<area shape="poly" title=" " alt="" coords="1229,105,1316,148,1311,147,1228,110"/>
+<area shape="poly" title=" " alt="" coords="1244,105,1396,152,1390,152,1244,110"/>
+<area shape="poly" title=" " alt="" coords="1203,105,1193,144,1183,165,1170,183,1136,205,1088,227,1086,222,1133,200,1166,179,1179,162,1188,142,1198,108"/>
+<area shape="rect" title=" " alt="" coords="1231,155,1299,181"/>
+<area shape="poly" title=" " alt="" coords="1214,105,1247,144,1242,142,1212,110"/>
+</map>
+</div>
+</div>
+<p><a href="main_8cpp_source.html">См. исходные тексты.</a></p>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-func-members" class="groupheader"><a id="func-members" name="func-members"></a>
+Функции</h2></td></tr>
+<tr class="memitem:ad2e59c7203b3bddc1bc9a2224b52e8e7" id="r_ad2e59c7203b3bddc1bc9a2224b52e8e7"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#ad2e59c7203b3bddc1bc9a2224b52e8e7">signalHandler</a> (int signal)</td></tr>
+<tr class="memitem:a5a216c3284e0a72fe4f8101cd8b12b60" id="r_a5a216c3284e0a72fe4f8101cd8b12b60"><td class="memItemLeft">std::vector&lt; std::string &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a5a216c3284e0a72fe4f8101cd8b12b60">getJsonFiles</a> (const std::string &amp;directory)</td></tr>
+<tr class="memitem:a5bc44c4396b63ff16c6a74bb1c394478" id="r_a5bc44c4396b63ff16c6a74bb1c394478"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a5bc44c4396b63ff16c6a74bb1c394478">processFiles</a> (const std::string &amp;directory, <a class="el" href="class_kafka_producer.html">KafkaProducer</a> &amp;producer, <a class="el" href="class_message_cache.html">MessageCache</a> &amp;cache, const std::string &amp;topic, std::atomic&lt; size_t &gt; &amp;next_index, const std::vector&lt; std::string &gt; &amp;files)</td></tr>
+<tr class="memitem:a046be377067f3f52c8b9516cdb1e47b5" id="r_a046be377067f3f52c8b9516cdb1e47b5"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a046be377067f3f52c8b9516cdb1e47b5">runProducer</a> (<a class="el" href="struct_app_config.html">AppConfig</a> &amp;config, <a class="el" href="class_kafka_producer.html">KafkaProducer</a> &amp;producer, <a class="el" href="class_message_cache.html">MessageCache</a> &amp;cache)</td></tr>
+<tr class="memitem:a9e945a592fa4a0f1706ea24ebb2ab854" id="r_a9e945a592fa4a0f1706ea24ebb2ab854"><td class="memItemLeft">void&#160;</td><td class="memItemRight"><a class="el" href="#a9e945a592fa4a0f1706ea24ebb2ab854">runConsumer</a> (<a class="el" href="struct_app_config.html">AppConfig</a> &amp;config, <a class="el" href="classdatabase_1_1_postgre_s_q_l.html">database::PostgreSQL</a> &amp;db, <a class="el" href="class_message_cache.html">MessageCache</a> &amp;cache, <a class="el" href="class_kafka_producer.html">KafkaProducer</a> &amp;error_producer)</td></tr>
+<tr class="memitem:a0ddf1224851353fc92bfbff6f499fa97" id="r_a0ddf1224851353fc92bfbff6f499fa97"><td class="memItemLeft">int&#160;</td><td class="memItemRight"><a class="el" href="#a0ddf1224851353fc92bfbff6f499fa97">main</a> (int argc, char *argv[])</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-var-members" class="groupheader"><a id="var-members" name="var-members"></a>
+Переменные</h2></td></tr>
+<tr class="memitem:af53701aded99286de42137bffab9561a" id="r_af53701aded99286de42137bffab9561a"><td class="memItemLeft">std::atomic&lt; bool &gt;&#160;</td><td class="memItemRight"><a class="el" href="#af53701aded99286de42137bffab9561a">running</a> {true}</td></tr>
+<tr class="memitem:a658b214911501898d6087b601d6b152e" id="r_a658b214911501898d6087b601d6b152e"><td class="memItemLeft">std::atomic&lt; size_t &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a658b214911501898d6087b601d6b152e">producer_count</a> {0}</td></tr>
+<tr class="memitem:a8a2b3452989432f0e06d48049de87e33" id="r_a8a2b3452989432f0e06d48049de87e33"><td class="memItemLeft">std::atomic&lt; size_t &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a8a2b3452989432f0e06d48049de87e33">consumer_count</a> {0}</td></tr>
+<tr class="memitem:a77c334a9669f26a519f128b8f85765a6" id="r_a77c334a9669f26a519f128b8f85765a6"><td class="memItemLeft">std::atomic&lt; size_t &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a77c334a9669f26a519f128b8f85765a6">error_count</a> {0}</td></tr>
+</table>
+<a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Функции</h2>
+<a id="a5a216c3284e0a72fe4f8101cd8b12b60" name="a5a216c3284e0a72fe4f8101cd8b12b60"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5a216c3284e0a72fe4f8101cd8b12b60">&#9670;&#160;</a></span>getJsonFiles()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt; std::string &gt; getJsonFiles </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>directory</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="main_8cpp_source.html">main.cpp</a> строка <a class="el" href="main_8cpp_source.html#l00045">45</a></p>
+<div class="dynheader">
+Граф вызовов:</div>
+<div class="dyncontent">
+<div class="center"><img src="main_8cpp_a5a216c3284e0a72fe4f8101cd8b12b60_cgraph.png" border="0" usemap="#amain_8cpp_a5a216c3284e0a72fe4f8101cd8b12b60_cgraph" loading="lazy" alt=""/></div>
+<map name="amain_8cpp_a5a216c3284e0a72fe4f8101cd8b12b60_cgraph" id="amain_8cpp_a5a216c3284e0a72fe4f8101cd8b12b60_cgraph">
+<area shape="rect" title=" " alt="" coords="5,5,101,32"/>
+<area shape="rect" href="class_logger.html#aafe8b4f6ed1259fbde150ab59e0785e7" title=" " alt="" coords="149,5,243,32"/>
+<area shape="poly" title=" " alt="" coords="101,16,135,18,130,19,101,21"/>
+</map>
+</div>
+<div class="dynheader">
+Граф вызова функции:</div>
+<div class="dyncontent">
+<div class="center"><img src="main_8cpp_a5a216c3284e0a72fe4f8101cd8b12b60_icgraph.png" border="0" usemap="#amain_8cpp_a5a216c3284e0a72fe4f8101cd8b12b60_icgraph" loading="lazy" alt=""/></div>
+<map name="amain_8cpp_a5a216c3284e0a72fe4f8101cd8b12b60_icgraph" id="amain_8cpp_a5a216c3284e0a72fe4f8101cd8b12b60_icgraph">
+<area shape="rect" title=" " alt="" coords="242,5,337,32"/>
+<area shape="rect" href="main_8cpp.html#a046be377067f3f52c8b9516cdb1e47b5" title=" " alt="" coords="103,5,194,32"/>
+<area shape="poly" title=" " alt="" coords="224,19,194,21,194,16,229,19"/>
+<area shape="rect" href="main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title=" " alt="" coords="5,5,55,32"/>
+<area shape="poly" title=" " alt="" coords="85,20,55,21,55,16,90,18"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a0ddf1224851353fc92bfbff6f499fa97" name="a0ddf1224851353fc92bfbff6f499fa97"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a0ddf1224851353fc92bfbff6f499fa97">&#9670;&#160;</a></span>main()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int main </td>
+          <td>(</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>argc</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">char *</td>          <td class="paramname"><span class="paramname"><em>argv</em></span>[]&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="main_8cpp_source.html">main.cpp</a> строка <a class="el" href="main_8cpp_source.html#l00255">255</a></p>
+<div class="dynheader">
+Граф вызовов:</div>
+<div class="dyncontent">
+<div class="center"><img src="main_8cpp_a0ddf1224851353fc92bfbff6f499fa97_cgraph.png" border="0" usemap="#amain_8cpp_a0ddf1224851353fc92bfbff6f499fa97_cgraph" loading="lazy" alt=""/></div>
+<map name="amain_8cpp_a0ddf1224851353fc92bfbff6f499fa97_cgraph" id="amain_8cpp_a0ddf1224851353fc92bfbff6f499fa97_cgraph">
+<area shape="rect" title=" " alt="" coords="5,544,55,571"/>
+<area shape="rect" href="class_message_cache.html#a50c216e984ae61005f4daf4b8c124a22" title=" " alt="" coords="127,5,292,32"/>
+<area shape="poly" title=" " alt="" coords="29,544,31,447,40,299,49,221,61,149,78,90,101,49,115,38,113,43,105,52,83,92,66,151,54,222,45,299,36,447,34,544"/>
+<area shape="rect" href="classdatabase_1_1_postgre_s_q_l.html#a785b7fa2f3259b5258c06bfbd9e8b2c3" title=" " alt="" coords="397,477,550,520"/>
+<area shape="poly" title=" " alt="" coords="28,543,30,501,38,444,47,414,60,385,78,358,101,337,129,318,156,306,182,299,207,298,233,301,259,309,317,336,337,353,346,372,352,392,366,413,396,441,428,468,423,469,392,445,362,416,348,394,341,374,332,356,315,341,257,314,232,306,207,303,182,305,158,311,132,323,104,341,82,362,65,387,52,415,44,445,35,502,34,544"/>
+<area shape="rect" href="class_logger.html#aafe8b4f6ed1259fbde150ab59e0785e7" title=" " alt="" coords="664,599,758,625"/>
+<area shape="poly" title=" " alt="" coords="33,568,41,601,53,639,74,677,88,694,104,707,132,712,188,714,348,712,505,705,582,698,598,686,606,672,614,656,630,641,652,631,647,633,633,645,619,659,611,674,602,689,584,702,506,710,348,718,188,720,131,717,102,712,84,698,69,680,48,641,36,602,33,574"/>
+<area shape="rect" href="class_logger.html#a474176e6966186566a2a321cb5cbd739" title=" " alt="" coords="666,376,756,403"/>
+<area shape="poly" title=" " alt="" coords="29,543,34,466,46,353,67,240,82,196,101,165,131,137,160,118,189,107,219,101,284,98,364,92,427,79,479,67,504,65,529,68,556,76,585,92,617,119,643,152,664,188,680,226,701,301,710,361,705,360,696,302,675,228,659,190,638,155,613,123,582,97,553,81,528,73,504,70,480,72,428,84,364,97,284,103,219,106,190,112,162,123,134,141,105,168,87,198,73,242,51,354,40,467,35,544"/>
+<area shape="rect" href="class_logger.html#aed78385ee0ad9d124521735894abab46" title=" " alt="" coords="659,912,763,939"/>
+<area shape="poly" title=" " alt="" coords="31,569,36,658,45,787,54,853,66,914,83,962,93,980,104,993,122,1003,144,1011,203,1018,274,1016,354,1007,515,975,645,944,650,943,517,980,354,1012,275,1022,203,1024,143,1016,119,1008,101,997,89,983,78,964,61,915,48,854,40,788,31,658,31,574"/>
+<area shape="rect" href="class_kafka_producer.html#a6266bb25d0bbec95a32243d88006ea55" title=" " alt="" coords="138,351,281,377"/>
+<area shape="poly" title=" " alt="" coords="30,543,36,511,49,469,70,425,84,405,101,387,125,374,122,379,104,391,88,408,74,428,54,471,42,512,36,544"/>
+<area shape="rect" href="class_message_cache.html#ab3729d708193c6be1460fb7a2860e03a" title=" " alt="" coords="117,401,302,444"/>
+<area shape="poly" title=" " alt="" coords="35,542,60,499,79,475,101,454,110,450,107,454,104,458,82,478,64,502,40,544"/>
+<area shape="rect" href="class_message_cache.html#aba79bed3c66e3fe011ae25ed45bb9f8b" title=" " alt="" coords="109,468,310,495"/>
+<area shape="poly" title=" " alt="" coords="44,542,70,522,102,504,122,498,118,502,104,509,73,527,49,545"/>
+<area shape="rect" href="class_kafka_producer.html#a6012cf74b1de379e1110c0db1690b64c" title=" " alt="" coords="143,519,276,545"/>
+<area shape="poly" title=" " alt="" coords="54,552,130,541,126,546,57,556"/>
+<area shape="rect" href="class_message_cache.html#ae986415d8621c4d18493379325ce04cc" title=" " alt="" coords="141,569,278,596"/>
+<area shape="poly" title=" " alt="" coords="54,558,127,569,123,573,56,563"/>
+<area shape="rect" href="struct_app_config.html#ad5f556af8ec235c8f58b14d1125b9d23" title=" " alt="" coords="152,620,266,647"/>
+<area shape="poly" title=" " alt="" coords="46,568,73,588,104,606,139,619,135,622,102,610,70,592,48,573"/>
+<area shape="rect" href="main_8cpp.html#a9e945a592fa4a0f1706ea24ebb2ab854" title=" " alt="" coords="160,249,259,276"/>
+<area shape="poly" title=" " alt="" coords="28,544,29,497,37,430,46,393,59,357,77,323,101,293,121,278,146,269,143,273,123,283,105,297,82,326,64,359,51,395,43,431,34,497,33,544"/>
+<area shape="rect" href="class_logger.html#a5025d14c1f40cc23e9cbb48f98f0d9a6" title=" " alt="" coords="654,861,768,888"/>
+<area shape="poly" title=" " alt="" coords="34,569,43,601,56,641,76,684,105,721,131,743,156,757,205,771,257,782,286,792,317,808,332,820,341,831,351,841,365,850,435,870,508,880,578,883,641,882,636,883,578,888,508,886,434,876,363,854,347,845,337,835,328,824,315,813,284,797,255,787,203,776,154,762,128,747,101,725,72,686,51,643,38,603,34,574"/>
+<area shape="rect" href="main_8cpp.html#a046be377067f3f52c8b9516cdb1e47b5" title=" " alt="" coords="164,671,255,697"/>
+<area shape="poly" title=" " alt="" coords="37,569,64,613,82,637,104,656,126,668,151,676,146,679,124,673,101,661,78,641,59,616,38,574"/>
+<area shape="rect" href="class_kafka_producer.html#a848df41ef97ff523fc21c3b12285c26c" title=" " alt="" coords="119,823,300,865"/>
+<area shape="poly" title=" " alt="" coords="31,568,36,615,46,676,67,743,84,774,105,802,116,813,111,815,101,806,79,777,62,745,41,678,31,615,31,574"/>
+<area shape="rect" href="class_message_cache.html#abe7996aada9f77e39d9ed2d830dcddb9" title=" " alt="" coords="109,889,310,932"/>
+<area shape="poly" title=" " alt="" coords="33,568,42,635,56,727,77,817,90,852,105,876,107,879,102,880,101,879,85,854,72,818,51,728,37,636,33,574"/>
+<area shape="rect" href="class_message_cache.html#a7d8db594bd5c90375565decd61911596" title=" " alt="" coords="103,956,316,983"/>
+<area shape="poly" title=" " alt="" coords="32,568,39,647,51,759,72,870,87,913,105,942,108,947,102,946,101,946,82,916,67,872,46,760,34,648,32,574"/>
+<area shape="rect" href="main_8cpp.html#ad2e59c7203b3bddc1bc9a2224b52e8e7" title=" " alt="" coords="424,107,524,133"/>
+<area shape="poly" title=" " alt="" coords="30,543,37,479,51,387,72,296,85,260,101,236,133,206,171,181,211,162,253,147,336,128,410,120,406,123,337,133,254,152,213,167,173,186,137,210,105,239,90,263,77,298,56,388,42,479,35,544"/>
+<area shape="poly" title=" " alt="" coords="540,518,584,536,678,590,673,591,582,541,540,523"/>
+<area shape="poly" title=" " alt="" coords="538,474,582,456,676,409,672,413,584,461,541,479"/>
+<area shape="poly" title=" " alt="" coords="239,274,282,300,301,317,318,337,332,365,338,391,338,440,337,463,339,485,348,508,366,530,391,551,416,564,440,570,464,573,518,572,549,574,584,580,651,597,646,599,583,585,549,580,518,578,464,578,439,576,414,569,388,556,362,534,344,510,334,487,331,463,332,439,333,391,327,366,314,340,298,321,278,304,241,279"/>
+<area shape="poly" title=" " alt="" coords="232,247,296,215,339,197,386,183,436,173,487,169,537,176,585,194,608,209,629,229,663,274,688,321,704,362,698,361,683,323,659,277,625,232,605,214,582,198,536,181,487,175,437,178,387,188,341,202,298,219,236,251"/>
+<area shape="rect" href="class_kafka_consumer.html#ad3e3608060a00e4429a2e14d24ad09c8" title=" " alt="" coords="404,376,544,403"/>
+<area shape="poly" title=" " alt="" coords="258,268,290,277,318,293,334,310,342,329,350,346,366,362,392,376,387,377,362,366,345,349,337,331,330,313,314,297,288,282,260,273"/>
+<area shape="rect" href="class_order_processor.html#a6f8aa8e2aeb597be492065036c2f23f5" title=" " alt="" coords="364,763,583,789"/>
+<area shape="poly" title=" " alt="" coords="241,274,283,299,303,317,318,337,341,388,349,434,348,478,342,520,336,562,335,604,344,650,366,699,394,730,429,755,424,755,390,734,362,701,339,651,330,605,331,561,337,519,343,477,344,435,336,389,314,340,299,320,280,304,243,279"/>
+<area shape="rect" href="class_order_processor.html#af7a710bdbf4bd5c4578db73437477a5f" title=" " alt="" coords="385,645,562,688"/>
+<area shape="poly" title=" " alt="" coords="240,274,283,299,302,317,318,337,337,379,343,418,342,455,336,491,332,526,332,561,342,595,366,632,375,641,370,641,362,635,337,598,327,561,326,526,331,490,336,455,338,418,332,380,314,340,298,320,280,304,242,279"/>
+<area shape="rect" href="class_kafka_consumer.html#a21535be303ced919722a21c8a10646ba" title=" " alt="" coords="376,309,571,352"/>
+<area shape="poly" title=" " alt="" coords="258,273,375,303,371,306,260,278"/>
+<area shape="rect" href="class_kafka_consumer.html#a56ee2ca2d7d35993b23f95d1dee846c1" title=" " alt="" coords="399,208,548,235"/>
+<area shape="poly" title=" " alt="" coords="258,253,386,233,382,237,261,257"/>
+<area shape="rect" href="class_kafka_consumer.html#a4b681b6d27e4cb550a35f61c7acf279a" title=" " alt="" coords="400,259,548,285"/>
+<area shape="poly" title=" " alt="" coords="258,262,386,267,382,271,260,267"/>
+<area shape="poly" title=" " alt="" coords="498,401,541,428,585,463,646,527,693,586,688,586,642,530,582,467,538,433,498,406"/>
+<area shape="poly" title=" " alt="" coords="543,387,653,388,648,391,545,392"/>
+<area shape="poly" title=" " alt="" coords="551,760,582,742,593,730,599,718,605,693,611,667,618,654,630,641,647,631,652,629,633,645,623,657,616,669,610,695,604,720,597,733,585,746,553,764"/>
+<area shape="poly" title=" " alt="" coords="502,760,543,734,581,698,696,419,701,416,586,702,546,738,505,764"/>
+<area shape="poly" title=" " alt="" coords="565,787,585,799,597,811,604,824,610,849,616,874,622,886,633,898,648,910,643,909,630,902,618,889,611,876,605,851,599,826,593,815,582,803,564,793"/>
+<area shape="rect" href="struct_order_data.html#a3e88570de45cee6e214655aa12ed42f3" title=" " alt="" coords="639,655,783,681"/>
+<area shape="poly" title=" " alt="" coords="540,760,582,742,596,731,605,719,615,707,630,695,647,689,652,686,633,700,619,711,610,723,600,735,585,746,542,765"/>
+<area shape="rect" href="class_json_parser.html#a1d6b83be5c0757b3a628a7c1737e4628" title=" " alt="" coords="641,709,781,736"/>
+<area shape="poly" title=" " alt="" coords="535,760,636,739,631,741,537,765"/>
+<area shape="poly" title=" " alt="" coords="557,787,585,799,600,811,610,823,619,835,633,847,644,855,639,855,630,852,615,839,605,827,596,815,582,804,557,793"/>
+<area shape="poly" title=" " alt="" coords="562,644,651,625,646,627,564,649"/>
+<area shape="poly" title=" " alt="" coords="561,644,582,631,606,608,627,581,662,522,686,464,701,420,704,416,691,466,666,524,632,584,610,611,585,635,564,649"/>
+<area shape="poly" title=" " alt="" coords="562,665,626,667,621,668,563,670"/>
+<area shape="poly" title=" " alt="" coords="562,685,639,705,634,706,563,690"/>
+<area shape="poly" title=" " alt="" coords="548,229,585,244,620,270,651,302,696,363,691,363,647,305,616,274,582,249,549,235"/>
+<area shape="poly" title=" " alt="" coords="547,282,584,295,640,328,686,365,681,366,637,332,582,300,549,287"/>
+<area shape="poly" title=" " alt="" coords="254,681,287,674,314,657,331,634,338,610,339,586,337,562,335,537,336,512,344,488,363,463,473,436,653,400,649,403,474,442,365,468,349,490,341,513,340,537,342,562,345,586,344,611,336,636,318,661,289,679,257,686"/>
+<area shape="rect" href="main_8cpp.html#a5a216c3284e0a72fe4f8101cd8b12b60" title=" " alt="" coords="426,595,521,621"/>
+<area shape="poly" title=" " alt="" coords="254,674,315,656,339,644,363,631,413,618,409,621,365,636,341,648,317,661,257,678"/>
+<area shape="rect" href="main_8cpp.html#a5bc44c4396b63ff16c6a74bb1c394478" title=" " alt="" coords="426,813,521,840"/>
+<area shape="poly" title=" " alt="" coords="229,695,365,799,413,817,408,817,363,804,228,700"/>
+<area shape="poly" title=" " alt="" coords="521,606,651,610,646,612,523,611"/>
+<area shape="poly" title=" " alt="" coords="521,823,553,816,582,799,596,781,604,762,606,723,608,683,615,662,629,641,647,630,652,627,633,645,620,664,613,684,611,724,609,763,601,784,585,803,555,821,522,829"/>
+<area shape="poly" title=" " alt="" coords="521,824,554,817,569,810,581,799,602,775,613,751,619,727,620,703,619,650,621,619,629,586,663,491,696,419,699,414,668,493,634,587,626,620,624,650,625,703,624,728,618,753,606,777,585,803,571,814,555,822,522,829"/>
+<area shape="poly" title=" " alt="" coords="502,838,562,867,632,898,652,907,647,906,630,902,559,872,501,843"/>
+<area shape="poly" title=" " alt="" coords="521,820,552,812,582,799,597,787,605,774,614,760,630,746,638,744,643,742,633,750,618,763,610,777,601,790,585,804,554,817,522,825"/>
+<area shape="poly" title=" " alt="" coords="522,834,642,860,636,861,522,839"/>
+<area shape="rect" href="class_json_parser.html#af18e9188a3948e4c5b3d9c17a76bcd74" title=" " alt="" coords="631,963,791,989"/>
+<area shape="poly" title=" " alt="" coords="490,838,550,891,590,922,633,948,646,957,641,956,630,953,587,926,546,895,488,843"/>
+<area shape="rect" href="class_message_cache.html#a699e48cdd16aaf9e8a67d25d30925a24" title=" " alt="" coords="637,760,785,787"/>
+<area shape="poly" title=" " alt="" coords="521,813,636,790,631,792,523,819"/>
+<area shape="rect" href="class_kafka_producer.html#a5c01eb2a998310bbfe16ebc77666af8f" title=" " alt="" coords="639,811,783,837"/>
+<area shape="poly" title=" " alt="" coords="522,823,626,824,621,826,522,829"/>
+<area shape="poly" title=" " alt="" coords="523,124,556,133,585,150,610,173,631,200,666,258,690,314,705,362,700,360,685,316,661,260,627,203,606,177,582,154,554,138,525,129"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a5bc44c4396b63ff16c6a74bb1c394478" name="a5bc44c4396b63ff16c6a74bb1c394478"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a5bc44c4396b63ff16c6a74bb1c394478">&#9670;&#160;</a></span>processFiles()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void processFiles </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>directory</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_kafka_producer.html">KafkaProducer</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>producer</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_message_cache.html">MessageCache</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>cache</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>topic</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">std::atomic&lt; size_t &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>next_index</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">const std::vector&lt; std::string &gt; &amp;</td>          <td class="paramname"><span class="paramname"><em>files</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="main_8cpp_source.html">main.cpp</a> строка <a class="el" href="main_8cpp_source.html#l00069">69</a></p>
+<div class="dynheader">
+Граф вызовов:</div>
+<div class="dyncontent">
+<div class="center"><img src="main_8cpp_a5bc44c4396b63ff16c6a74bb1c394478_cgraph.png" border="0" usemap="#amain_8cpp_a5bc44c4396b63ff16c6a74bb1c394478_cgraph" loading="lazy" alt=""/></div>
+<map name="amain_8cpp_a5bc44c4396b63ff16c6a74bb1c394478_cgraph" id="amain_8cpp_a5bc44c4396b63ff16c6a74bb1c394478_cgraph">
+<area shape="rect" title=" " alt="" coords="5,183,101,209"/>
+<area shape="rect" href="class_logger.html#aed78385ee0ad9d124521735894abab46" title=" " alt="" coords="177,5,280,32"/>
+<area shape="poly" title=" " alt="" coords="57,181,87,115,114,76,147,42,164,33,161,37,150,46,118,79,92,118,62,183"/>
+<area shape="rect" href="class_logger.html#aafe8b4f6ed1259fbde150ab59e0785e7" title=" " alt="" coords="181,56,276,83"/>
+<area shape="poly" title=" " alt="" coords="61,181,96,137,120,113,147,92,168,83,165,87,150,97,124,117,100,141,66,183"/>
+<area shape="rect" href="class_logger.html#a474176e6966186566a2a321cb5cbd739" title=" " alt="" coords="184,107,273,133"/>
+<area shape="poly" title=" " alt="" coords="76,180,148,143,171,136,167,139,150,148,79,184"/>
+<area shape="rect" href="class_json_parser.html#af18e9188a3948e4c5b3d9c17a76bcd74" title=" " alt="" coords="149,157,308,184"/>
+<area shape="poly" title=" " alt="" coords="100,187,135,183,131,186,102,191"/>
+<area shape="rect" href="class_message_cache.html#a699e48cdd16aaf9e8a67d25d30925a24" title=" " alt="" coords="154,208,302,235"/>
+<area shape="poly" title=" " alt="" coords="100,200,141,207,136,210,102,205"/>
+<area shape="rect" href="class_kafka_producer.html#a5c01eb2a998310bbfe16ebc77666af8f" title=" " alt="" coords="157,259,300,285"/>
+<area shape="poly" title=" " alt="" coords="77,207,150,244,168,253,163,254,148,249,77,213"/>
+<area shape="rect" href="class_json_parser.html#a1d6b83be5c0757b3a628a7c1737e4628" title=" " alt="" coords="158,309,298,336"/>
+<area shape="poly" title=" " alt="" coords="64,207,100,251,124,275,150,295,161,303,155,303,147,300,120,279,96,255,63,213"/>
+<area shape="rect" href="class_logger.html#a5025d14c1f40cc23e9cbb48f98f0d9a6" title=" " alt="" coords="172,360,285,387"/>
+<area shape="poly" title=" " alt="" coords="60,207,92,274,118,313,150,346,160,354,155,354,147,350,114,316,87,277,58,212"/>
+</map>
+</div>
+<div class="dynheader">
+Граф вызова функции:</div>
+<div class="dyncontent">
+<div class="center"><img src="main_8cpp_a5bc44c4396b63ff16c6a74bb1c394478_icgraph.png" border="0" usemap="#amain_8cpp_a5bc44c4396b63ff16c6a74bb1c394478_icgraph" loading="lazy" alt=""/></div>
+<map name="amain_8cpp_a5bc44c4396b63ff16c6a74bb1c394478_icgraph" id="amain_8cpp_a5bc44c4396b63ff16c6a74bb1c394478_icgraph">
+<area shape="rect" title=" " alt="" coords="242,5,337,32"/>
+<area shape="rect" href="main_8cpp.html#a046be377067f3f52c8b9516cdb1e47b5" title=" " alt="" coords="103,5,194,32"/>
+<area shape="poly" title=" " alt="" coords="224,19,194,21,194,16,229,19"/>
+<area shape="rect" href="main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title=" " alt="" coords="5,5,55,32"/>
+<area shape="poly" title=" " alt="" coords="85,20,55,21,55,16,90,18"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a9e945a592fa4a0f1706ea24ebb2ab854" name="a9e945a592fa4a0f1706ea24ebb2ab854"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9e945a592fa4a0f1706ea24ebb2ab854">&#9670;&#160;</a></span>runConsumer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void runConsumer </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_app_config.html">AppConfig</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>config</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="classdatabase_1_1_postgre_s_q_l.html">database::PostgreSQL</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>db</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_message_cache.html">MessageCache</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>cache</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_kafka_producer.html">KafkaProducer</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>error_producer</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="main_8cpp_source.html">main.cpp</a> строка <a class="el" href="main_8cpp_source.html#l00198">198</a></p>
+<div class="dynheader">
+Граф вызовов:</div>
+<div class="dyncontent">
+<div class="center"><img src="main_8cpp_a9e945a592fa4a0f1706ea24ebb2ab854_cgraph.png" border="0" usemap="#amain_8cpp_a9e945a592fa4a0f1706ea24ebb2ab854_cgraph" loading="lazy" alt=""/></div>
+<map name="amain_8cpp_a9e945a592fa4a0f1706ea24ebb2ab854_cgraph" id="amain_8cpp_a9e945a592fa4a0f1706ea24ebb2ab854_cgraph">
+<area shape="rect" title=" " alt="" coords="5,176,105,202"/>
+<area shape="rect" href="class_logger.html#aafe8b4f6ed1259fbde150ab59e0785e7" title=" " alt="" coords="444,213,539,240"/>
+<area shape="poly" title=" " alt="" coords="105,190,431,219,428,223,106,196"/>
+<area shape="rect" href="class_logger.html#a474176e6966186566a2a321cb5cbd739" title=" " alt="" coords="447,137,536,164"/>
+<area shape="poly" title=" " alt="" coords="58,174,68,143,87,104,114,65,132,48,151,35,209,9,235,4,261,3,312,12,373,34,405,52,433,75,475,124,470,124,429,79,402,56,371,39,311,18,260,8,236,9,211,15,154,39,135,52,118,69,92,107,73,145,63,176"/>
+<area shape="rect" href="class_kafka_consumer.html#ad3e3608060a00e4429a2e14d24ad09c8" title=" " alt="" coords="192,150,332,177"/>
+<area shape="poly" title=" " alt="" coords="104,181,178,172,175,176,106,185"/>
+<area shape="rect" href="class_order_processor.html#a6f8aa8e2aeb597be492065036c2f23f5" title=" " alt="" coords="153,385,372,412"/>
+<area shape="poly" title=" " alt="" coords="59,200,72,236,90,282,117,331,134,352,154,371,162,377,156,377,151,375,130,356,112,334,85,285,67,238,59,205"/>
+<area shape="rect" href="class_order_processor.html#af7a710bdbf4bd5c4578db73437477a5f" title=" " alt="" coords="174,318,351,361"/>
+<area shape="poly" title=" " alt="" coords="64,200,100,252,125,280,154,304,163,310,158,311,151,308,121,284,96,255,64,205"/>
+<area shape="rect" href="class_kafka_consumer.html#a21535be303ced919722a21c8a10646ba" title=" " alt="" coords="165,252,360,294"/>
+<area shape="poly" title=" " alt="" coords="85,200,154,230,188,245,183,247,152,235,86,205"/>
+<area shape="rect" href="class_kafka_consumer.html#a56ee2ca2d7d35993b23f95d1dee846c1" title=" " alt="" coords="188,49,337,76"/>
+<area shape="poly" title=" " alt="" coords="63,174,98,130,123,105,151,85,174,76,171,80,154,90,126,110,102,133,68,176"/>
+<area shape="rect" href="class_kafka_consumer.html#a4b681b6d27e4cb550a35f61c7acf279a" title=" " alt="" coords="188,100,336,126"/>
+<area shape="poly" title=" " alt="" coords="77,173,112,154,152,136,177,129,173,133,154,141,114,158,81,177"/>
+<area shape="poly" title=" " alt="" coords="314,175,432,208,427,210,314,180"/>
+<area shape="poly" title=" " alt="" coords="332,157,434,152,429,155,334,162"/>
+<area shape="poly" title=" " alt="" coords="351,382,370,371,388,353,396,335,404,314,418,291,460,251,464,248,422,295,409,317,401,337,392,356,374,375,353,387"/>
+<area shape="poly" title=" " alt="" coords="355,382,370,371,386,351,395,331,398,291,399,247,405,224,418,199,432,183,448,174,452,171,436,187,422,202,410,226,404,248,403,291,400,333,391,354,374,375,357,387"/>
+<area shape="rect" href="class_logger.html#aed78385ee0ad9d124521735894abab46" title=" " alt="" coords="440,406,543,433"/>
+<area shape="poly" title=" " alt="" coords="372,406,427,413,422,414,372,411"/>
+<area shape="rect" href="struct_order_data.html#a3e88570de45cee6e214655aa12ed42f3" title=" " alt="" coords="420,305,563,332"/>
+<area shape="poly" title=" " alt="" coords="337,382,371,370,395,356,419,341,431,339,436,337,421,346,398,361,373,375,338,387"/>
+<area shape="rect" href="class_json_parser.html#a1d6b83be5c0757b3a628a7c1737e4628" title=" " alt="" coords="422,356,562,382"/>
+<area shape="poly" title=" " alt="" coords="371,382,409,379,404,380,372,387"/>
+<area shape="rect" href="class_logger.html#a5025d14c1f40cc23e9cbb48f98f0d9a6" title=" " alt="" coords="435,457,548,484"/>
+<area shape="poly" title=" " alt="" coords="308,409,435,451,429,452,307,415"/>
+<area shape="poly" title=" " alt="" coords="343,315,371,304,419,276,459,251,464,248,422,281,373,309,346,320"/>
+<area shape="poly" title=" " alt="" coords="350,318,370,304,389,280,396,255,402,228,418,199,450,174,454,171,422,203,407,230,401,256,394,282,374,308,353,322"/>
+<area shape="poly" title=" " alt="" coords="351,329,407,326,402,327,352,334"/>
+<area shape="poly" title=" " alt="" coords="351,348,409,358,403,358,351,354"/>
+<area shape="poly" title=" " alt="" coords="334,74,373,85,417,105,458,128,453,129,415,110,371,90,336,79"/>
+<area shape="poly" title=" " alt="" coords="336,122,434,139,429,142,337,128"/>
+</map>
+</div>
+<div class="dynheader">
+Граф вызова функции:</div>
+<div class="dyncontent">
+<div class="center"><img src="main_8cpp_a9e945a592fa4a0f1706ea24ebb2ab854_icgraph.png" border="0" usemap="#amain_8cpp_a9e945a592fa4a0f1706ea24ebb2ab854_icgraph" loading="lazy" alt=""/></div>
+<map name="amain_8cpp_a9e945a592fa4a0f1706ea24ebb2ab854_icgraph" id="amain_8cpp_a9e945a592fa4a0f1706ea24ebb2ab854_icgraph">
+<area shape="rect" title=" " alt="" coords="103,5,202,32"/>
+<area shape="rect" href="main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title=" " alt="" coords="5,5,55,32"/>
+<area shape="poly" title=" " alt="" coords="85,20,55,21,55,16,90,18"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="a046be377067f3f52c8b9516cdb1e47b5" name="a046be377067f3f52c8b9516cdb1e47b5"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a046be377067f3f52c8b9516cdb1e47b5">&#9670;&#160;</a></span>runProducer()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void runProducer </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="struct_app_config.html">AppConfig</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>config</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_kafka_producer.html">KafkaProducer</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>producer</em></span>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype"><a class="el" href="class_message_cache.html">MessageCache</a> &amp;</td>          <td class="paramname"><span class="paramname"><em>cache</em></span>&#160;)</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="main_8cpp_source.html">main.cpp</a> строка <a class="el" href="main_8cpp_source.html#l00138">138</a></p>
+<div class="dynheader">
+Граф вызовов:</div>
+<div class="dyncontent">
+<div class="center"><img src="main_8cpp_a046be377067f3f52c8b9516cdb1e47b5_cgraph.png" border="0" usemap="#amain_8cpp_a046be377067f3f52c8b9516cdb1e47b5_cgraph" loading="lazy" alt=""/></div>
+<map name="amain_8cpp_a046be377067f3f52c8b9516cdb1e47b5_cgraph" id="amain_8cpp_a046be377067f3f52c8b9516cdb1e47b5_cgraph">
+<area shape="rect" title=" " alt="" coords="5,56,97,83"/>
+<area shape="rect" href="main_8cpp.html#a5a216c3284e0a72fe4f8101cd8b12b60" title=" " alt="" coords="145,5,240,32"/>
+<area shape="poly" title=" " alt="" coords="89,53,140,36,137,40,92,57"/>
+<area shape="rect" href="class_logger.html#a474176e6966186566a2a321cb5cbd739" title=" " alt="" coords="323,56,412,83"/>
+<area shape="poly" title=" " alt="" coords="97,67,309,67,306,72,98,72"/>
+<area shape="rect" href="main_8cpp.html#a5bc44c4396b63ff16c6a74bb1c394478" title=" " alt="" coords="145,157,240,184"/>
+<area shape="poly" title=" " alt="" coords="71,80,162,147,157,149,71,86"/>
+<area shape="rect" href="class_logger.html#aafe8b4f6ed1259fbde150ab59e0785e7" title=" " alt="" coords="320,5,415,32"/>
+<area shape="poly" title=" " alt="" coords="239,16,307,17,303,20,241,21"/>
+<area shape="poly" title=" " alt="" coords="198,156,231,101,256,69,286,42,308,32,304,36,290,46,260,73,235,104,202,159"/>
+<area shape="poly" title=" " alt="" coords="205,155,241,124,287,92,310,84,306,87,289,97,244,128,209,159"/>
+<area shape="rect" href="class_logger.html#aed78385ee0ad9d124521735894abab46" title=" " alt="" coords="316,107,419,133"/>
+<area shape="poly" title=" " alt="" coords="239,155,307,137,303,140,242,159"/>
+<area shape="rect" href="class_json_parser.html#af18e9188a3948e4c5b3d9c17a76bcd74" title=" " alt="" coords="288,157,447,184"/>
+<area shape="poly" title=" " alt="" coords="240,168,275,170,270,172,241,173"/>
+<area shape="rect" href="class_message_cache.html#a699e48cdd16aaf9e8a67d25d30925a24" title=" " alt="" coords="294,208,442,235"/>
+<area shape="poly" title=" " alt="" coords="240,182,307,202,302,204,241,187"/>
+<area shape="rect" href="class_kafka_producer.html#a5c01eb2a998310bbfe16ebc77666af8f" title=" " alt="" coords="296,259,439,285"/>
+<area shape="poly" title=" " alt="" coords="208,182,244,213,289,244,303,252,297,253,287,249,241,217,207,187"/>
+<area shape="rect" href="class_json_parser.html#a1d6b83be5c0757b3a628a7c1737e4628" title=" " alt="" coords="298,309,438,336"/>
+<area shape="poly" title=" " alt="" coords="201,182,235,237,260,268,290,295,298,302,293,302,286,299,256,272,231,240,199,187"/>
+<area shape="rect" href="class_logger.html#a5025d14c1f40cc23e9cbb48f98f0d9a6" title=" " alt="" coords="311,360,424,387"/>
+<area shape="poly" title=" " alt="" coords="198,182,210,217,228,260,254,306,290,346,299,355,294,354,286,350,250,309,223,263,205,219,196,187"/>
+</map>
+</div>
+<div class="dynheader">
+Граф вызова функции:</div>
+<div class="dyncontent">
+<div class="center"><img src="main_8cpp_a046be377067f3f52c8b9516cdb1e47b5_icgraph.png" border="0" usemap="#amain_8cpp_a046be377067f3f52c8b9516cdb1e47b5_icgraph" loading="lazy" alt=""/></div>
+<map name="amain_8cpp_a046be377067f3f52c8b9516cdb1e47b5_icgraph" id="amain_8cpp_a046be377067f3f52c8b9516cdb1e47b5_icgraph">
+<area shape="rect" title=" " alt="" coords="103,5,194,32"/>
+<area shape="rect" href="main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title=" " alt="" coords="5,5,55,32"/>
+<area shape="poly" title=" " alt="" coords="85,20,55,21,55,16,90,18"/>
+</map>
+</div>
+
+</div>
+</div>
+<a id="ad2e59c7203b3bddc1bc9a2224b52e8e7" name="ad2e59c7203b3bddc1bc9a2224b52e8e7"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad2e59c7203b3bddc1bc9a2224b52e8e7">&#9670;&#160;</a></span>signalHandler()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void signalHandler </td>
+          <td>(</td>
+          <td class="paramtype">int</td>          <td class="paramname"><span class="paramname"><em>signal</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="main_8cpp_source.html">main.cpp</a> строка <a class="el" href="main_8cpp_source.html#l00035">35</a></p>
+<div class="dynheader">
+Граф вызовов:</div>
+<div class="dyncontent">
+<div class="center"><img src="main_8cpp_ad2e59c7203b3bddc1bc9a2224b52e8e7_cgraph.png" border="0" usemap="#amain_8cpp_ad2e59c7203b3bddc1bc9a2224b52e8e7_cgraph" loading="lazy" alt=""/></div>
+<map name="amain_8cpp_ad2e59c7203b3bddc1bc9a2224b52e8e7_cgraph" id="amain_8cpp_ad2e59c7203b3bddc1bc9a2224b52e8e7_cgraph">
+<area shape="rect" title=" " alt="" coords="5,5,106,32"/>
+<area shape="rect" href="class_logger.html#a474176e6966186566a2a321cb5cbd739" title=" " alt="" coords="154,5,243,32"/>
+<area shape="poly" title=" " alt="" coords="106,16,141,18,135,19,106,21"/>
+</map>
+</div>
+<div class="dynheader">
+Граф вызова функции:</div>
+<div class="dyncontent">
+<div class="center"><img src="main_8cpp_ad2e59c7203b3bddc1bc9a2224b52e8e7_icgraph.png" border="0" usemap="#amain_8cpp_ad2e59c7203b3bddc1bc9a2224b52e8e7_icgraph" loading="lazy" alt=""/></div>
+<map name="amain_8cpp_ad2e59c7203b3bddc1bc9a2224b52e8e7_icgraph" id="amain_8cpp_ad2e59c7203b3bddc1bc9a2224b52e8e7_icgraph">
+<area shape="rect" title=" " alt="" coords="103,5,203,32"/>
+<area shape="rect" href="main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title=" " alt="" coords="5,5,55,32"/>
+<area shape="poly" title=" " alt="" coords="85,20,55,21,55,16,90,18"/>
+</map>
+</div>
+
+</div>
+</div>
+<a name="doc-var-members" id="doc-var-members"></a><h2 id="header-doc-var-members" class="groupheader">Переменные</h2>
+<a id="a8a2b3452989432f0e06d48049de87e33" name="a8a2b3452989432f0e06d48049de87e33"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a8a2b3452989432f0e06d48049de87e33">&#9670;&#160;</a></span>consumer_count</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::atomic&lt;size_t&gt; consumer_count {0}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="main_8cpp_source.html">main.cpp</a> строка <a class="el" href="main_8cpp_source.html#l00028">28</a></p>
+
+</div>
+</div>
+<a id="a77c334a9669f26a519f128b8f85765a6" name="a77c334a9669f26a519f128b8f85765a6"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a77c334a9669f26a519f128b8f85765a6">&#9670;&#160;</a></span>error_count</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::atomic&lt;size_t&gt; error_count {0}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="main_8cpp_source.html">main.cpp</a> строка <a class="el" href="main_8cpp_source.html#l00029">29</a></p>
+
+</div>
+</div>
+<a id="a658b214911501898d6087b601d6b152e" name="a658b214911501898d6087b601d6b152e"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a658b214911501898d6087b601d6b152e">&#9670;&#160;</a></span>producer_count</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::atomic&lt;size_t&gt; producer_count {0}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="main_8cpp_source.html">main.cpp</a> строка <a class="el" href="main_8cpp_source.html#l00027">27</a></p>
+
+</div>
+</div>
+<a id="af53701aded99286de42137bffab9561a" name="af53701aded99286de42137bffab9561a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af53701aded99286de42137bffab9561a">&#9670;&#160;</a></span>running</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::atomic&lt;bool&gt; running {true}</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="main_8cpp_source.html">main.cpp</a> строка <a class="el" href="main_8cpp_source.html#l00026">26</a></p>
+
+</div>
+</div>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<div id="page-nav" class="page-nav-panel">
+<div id="page-nav-resize-handle"></div>
+<div id="page-nav-tree">
+<div id="page-nav-contents">
+</div><!-- page-nav-contents -->
+</div><!-- page-nav-tree -->
+</div><!-- page-nav -->
+</div><!-- container -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a href="main_8cpp.html">main.cpp</a></li>
+    <li class="footer">Документация по Kafka-1C Connector. Последние изменения: <span class="timestamp"></span>. Создано системой <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.17.0 </li>
+  </ul>
+</div>
+</body>
+</html>

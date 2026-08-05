@@ -1,0 +1,7 @@
+<map id="database::PostgreSQL::connect" name="database::PostgreSQL::connect">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,23,159,65"/>
+<area shape="rect" id="Node000002" href="$class_logger.html#aafe8b4f6ed1259fbde150ab59e0785e7" title=" " alt="" coords="207,5,301,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="158,30,194,27,189,29,160,35"/>
+<area shape="rect" id="Node000003" href="$class_logger.html#a474176e6966186566a2a321cb5cbd739" title=" " alt="" coords="209,56,298,83"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="159,53,197,60,191,61,159,58"/>
+</map>

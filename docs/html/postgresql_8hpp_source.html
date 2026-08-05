@@ -1,0 +1,307 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ru">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.17.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Kafka-1C Connector: Исходный файл src/database/postgresql.hpp</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="codefolding.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="module">
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+const theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'default';
+mermaid.initialize({ startOnLoad: true, theme: theme });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Kafka-1C Connector<span id="projectnumber">&#160;1.0.0</span>
+   </div>
+   <div id="projectbrief">High-performance Kafka-1C integration microservice</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Создано системой Doxygen 1.17.0 -->
+<script type="text/javascript">
+let searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', codefold.init);
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', () => {
+  initMenu('',true);
+  init_search();
+});
+</script>
+<div id="main-nav-mobile">
+<div class="sm sm-dox"><input id="main-menu-state" type="checkbox"/>
+<label class="main-menu-btn" for="main-menu-state">
+<span class="main-menu-btn-icon"></span> Toggle main menu visibility</label>
+<span id="searchBoxPos1" style="position:absolute;right:8px;top:8px;height:36px;"></span>
+</div>
+</div><!-- main-nav-mobile -->
+<div id="main-nav">
+  <ul class="sm sm-dox" id="main-menu">
+    <li id="searchBoxPos2" style="float:right">
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <span id="MSearchSelect" class="search-icon" onmouseover="return searchBox.OnSearchSelectShow()" onmouseout="return searchBox.OnSearchSelectHide()"><span class="search-icon-dropdown"></span></span>
+          <input type="text" id="MSearchField" value="" placeholder="Поиск" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><div id="MSearchCloseImg" class="close-icon"></div></a>
+          </span>
+        </div>
+    </li>
+  </ul>
+</div><!-- main-nav -->
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded',() => { initNavTree('postgresql_8hpp_source.html','',''); });
+</script>
+<div id="container">
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Загрузка...</div>
+<div class="SRStatus" id="Searching">Поиск...</div>
+<div class="SRStatus" id="NoMatches">Не найдено</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">postgresql.hpp</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="postgresql_8hpp.html">См. документацию.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;pqxx/pqxx&gt;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;memory&gt;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &lt;optional&gt;</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno">    8</span> </div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span><span class="keyword">namespace </span><a class="code hl_namespace" href="namespacedatabase.html">database</a></div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span>{</div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span> </div>
+<div class="foldopen" id="foldopen00012" data-start="{" data-end="};">
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno"><a class="line" href="structdatabase_1_1_connection_params.html">   12</a></span>    <span class="keyword">struct </span><a class="code hl_struct" href="structdatabase_1_1_connection_params.html">ConnectionParams</a></div>
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno">   13</span>    {</div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno"><a class="line" href="structdatabase_1_1_connection_params.html#aac294a88bf4a434b9f7af573a9eac43d">   14</a></span>        std::string <a class="code hl_variable" href="structdatabase_1_1_connection_params.html#aac294a88bf4a434b9f7af573a9eac43d">host</a>;</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="structdatabase_1_1_connection_params.html#a47cebdaa3263697a49a810e32126ddcb">   15</a></span>        <span class="keywordtype">int</span> <a class="code hl_variable" href="structdatabase_1_1_connection_params.html#a47cebdaa3263697a49a810e32126ddcb">port</a>;</div>
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="structdatabase_1_1_connection_params.html#a190de2967f826558a7ad5a9fdbc8f5de">   16</a></span>        std::string <a class="code hl_namespace" href="namespacedatabase.html">database</a>;</div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno"><a class="line" href="structdatabase_1_1_connection_params.html#a5a1b946ed57e96a6e623e508479070e2">   17</a></span>        std::string <a class="code hl_variable" href="structdatabase_1_1_connection_params.html#a5a1b946ed57e96a6e623e508479070e2">username</a>;</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="structdatabase_1_1_connection_params.html#ac5df7de1f780cee25408e4d5c310b0d1">   18</a></span>        std::string <a class="code hl_variable" href="structdatabase_1_1_connection_params.html#ac5df7de1f780cee25408e4d5c310b0d1">password</a>;</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno">   19</span> </div>
+<div class="foldopen" id="foldopen00020" data-start="{" data-end="}">
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="structdatabase_1_1_connection_params.html#adf642f06affe1750bd495f50fee2241d">   20</a></span>        std::string <a class="code hl_function" href="structdatabase_1_1_connection_params.html#adf642f06affe1750bd495f50fee2241d">connectionString</a>()<span class="keyword"> const</span></div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno">   21</span><span class="keyword">        </span>{</div>
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno">   22</span>            <span class="keywordflow">return</span> <span class="stringliteral">&quot;host=&quot;</span> + <a class="code hl_variable" href="structdatabase_1_1_connection_params.html#aac294a88bf4a434b9f7af573a9eac43d">host</a> +</div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>                   <span class="stringliteral">&quot; port=&quot;</span> + std::to_string(<a class="code hl_variable" href="structdatabase_1_1_connection_params.html#a47cebdaa3263697a49a810e32126ddcb">port</a>) +</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno">   24</span>                   <span class="stringliteral">&quot; dbname=&quot;</span> + <a class="code hl_namespace" href="namespacedatabase.html">database</a> +</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno">   25</span>                   <span class="stringliteral">&quot; user=&quot;</span> + <a class="code hl_variable" href="structdatabase_1_1_connection_params.html#a5a1b946ed57e96a6e623e508479070e2">username</a> +</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno">   26</span>                   <span class="stringliteral">&quot; password=&quot;</span> + <a class="code hl_variable" href="structdatabase_1_1_connection_params.html#ac5df7de1f780cee25408e4d5c310b0d1">password</a>;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno">   27</span>        }</div>
+</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno">   28</span>    };</div>
+</div>
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno">   29</span> </div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    <span class="comment">// ============================================================</span></div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno">   31</span>    <span class="comment">// Структуры для работы с 1С таблицами</span></div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno">   32</span>    <span class="comment">// ============================================================</span></div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno">   33</span> </div>
+<div class="foldopen" id="foldopen00034" data-start="{" data-end="};">
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="structdatabase_1_1_client.html">   34</a></span>    <span class="keyword">struct </span><a class="code hl_struct" href="structdatabase_1_1_client.html">Client</a></div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>    {</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno"><a class="line" href="structdatabase_1_1_client.html#a59c09de0aaf09eacd58d9e03cac42d65">   36</a></span>        std::string <a class="code hl_variable" href="structdatabase_1_1_client.html#a59c09de0aaf09eacd58d9e03cac42d65">id</a>;   <span class="comment">// _IDRRef (HEX с \x)</span></div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno"><a class="line" href="structdatabase_1_1_client.html#a2832335fbe78cdd62a9ecc4c91c57880">   37</a></span>        std::string <a class="code hl_variable" href="structdatabase_1_1_client.html#a2832335fbe78cdd62a9ecc4c91c57880">inn</a>;  <span class="comment">// _Fld50</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno"><a class="line" href="structdatabase_1_1_client.html#af5fd482be6f1c6ac9af6a60d4fbbffe5">   38</a></span>        std::string <a class="code hl_variable" href="structdatabase_1_1_client.html#af5fd482be6f1c6ac9af6a60d4fbbffe5">kpp</a>;  <span class="comment">// _Fld51</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno"><a class="line" href="structdatabase_1_1_client.html#a9a61216ce80e3281eaef7cdd8657ec95">   39</a></span>        std::string <a class="code hl_variable" href="structdatabase_1_1_client.html#a9a61216ce80e3281eaef7cdd8657ec95">name</a>; <span class="comment">// _Description</span></div>
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="structdatabase_1_1_client.html#ad0fe81a6ecf278fe23d280e96cc308c7">   40</a></span>        <span class="keywordtype">bool</span> <a class="code hl_variable" href="structdatabase_1_1_client.html#ad0fe81a6ecf278fe23d280e96cc308c7">marked</a>;      <span class="comment">// _Marked</span></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>    };</div>
+</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno">   42</span> </div>
+<div class="foldopen" id="foldopen00043" data-start="{" data-end="};">
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno"><a class="line" href="structdatabase_1_1_product.html">   43</a></span>    <span class="keyword">struct </span><a class="code hl_struct" href="structdatabase_1_1_product.html">Product</a></div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span>    {</div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno"><a class="line" href="structdatabase_1_1_product.html#a537c128b62c8ef01b1561d01cb7bb06b">   45</a></span>        std::string <a class="code hl_variable" href="structdatabase_1_1_product.html#a537c128b62c8ef01b1561d01cb7bb06b">id</a>;      <span class="comment">// _IDRRef (HEX с \x)</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno"><a class="line" href="structdatabase_1_1_product.html#a55f1bef2aac730c71a64e19daafeb12a">   46</a></span>        std::string <a class="code hl_variable" href="structdatabase_1_1_product.html#a55f1bef2aac730c71a64e19daafeb12a">code</a>;    <span class="comment">// _Code</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno"><a class="line" href="structdatabase_1_1_product.html#a996eaac83fc96ed18f8638b3e3b7f627">   47</a></span>        std::string <a class="code hl_variable" href="structdatabase_1_1_product.html#a996eaac83fc96ed18f8638b3e3b7f627">name</a>;    <span class="comment">// _Description</span></div>
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="structdatabase_1_1_product.html#af8dc8d1177ca8b6768561dd109a3d6d3">   48</a></span>        std::string <a class="code hl_variable" href="structdatabase_1_1_product.html#af8dc8d1177ca8b6768561dd109a3d6d3">article</a>; <span class="comment">// _Fld52</span></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno"><a class="line" href="structdatabase_1_1_product.html#acf8cf48c48ddc009d50b32934b24b6c8">   49</a></span>        <span class="keywordtype">bool</span> <a class="code hl_variable" href="structdatabase_1_1_product.html#acf8cf48c48ddc009d50b32934b24b6c8">marked</a>;         <span class="comment">// _Marked</span></div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno">   50</span>    };</div>
+</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno">   51</span> </div>
+<div class="foldopen" id="foldopen00052" data-start="{" data-end="};">
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="structdatabase_1_1_order_item.html">   52</a></span>    <span class="keyword">struct </span><a class="code hl_struct" href="structdatabase_1_1_order_item.html">OrderItem</a></div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno">   53</span>    {</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno"><a class="line" href="structdatabase_1_1_order_item.html#ad66ee06cad1bfdc160fe922b89defac0">   54</a></span>        std::string <a class="code hl_variable" href="structdatabase_1_1_order_item.html#ad66ee06cad1bfdc160fe922b89defac0">product_id</a>; <span class="comment">// _Fld56RRef (HEX с \x)</span></div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno"><a class="line" href="structdatabase_1_1_order_item.html#a0ee59553b20ae7d4ee663938e1d46500">   55</a></span>        <span class="keywordtype">double</span> <a class="code hl_variable" href="structdatabase_1_1_order_item.html#a0ee59553b20ae7d4ee663938e1d46500">quantity</a>;        <span class="comment">// _Fld57</span></div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno"><a class="line" href="structdatabase_1_1_order_item.html#afe42d8211d06bdba512bb3f49d6c1c6a">   56</a></span>        <span class="keywordtype">double</span> <a class="code hl_variable" href="structdatabase_1_1_order_item.html#afe42d8211d06bdba512bb3f49d6c1c6a">price</a>;           <span class="comment">// _Fld58</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno"><a class="line" href="structdatabase_1_1_order_item.html#a8d8598ac204f2c3dccc257042ab282d0">   57</a></span>        <span class="keywordtype">double</span> <a class="code hl_variable" href="structdatabase_1_1_order_item.html#a8d8598ac204f2c3dccc257042ab282d0">sum</a>;             <span class="comment">// _Fld59</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span>    };</div>
+</div>
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno">   59</span> </div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>    <span class="comment">// ============================================================</span></div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno">   61</span>    <span class="comment">// Класс для работы с PostgreSQL через libpqxx</span></div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno">   62</span>    <span class="comment">// ============================================================</span></div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno">   63</span> </div>
+<div class="foldopen" id="foldopen00064" data-start="{" data-end="};">
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="classdatabase_1_1_postgre_s_q_l.html">   64</a></span>    <span class="keyword">class </span><a class="code hl_function" href="classdatabase_1_1_postgre_s_q_l.html#afa4286fcc9ddb506fc30b9d934615b0f">PostgreSQL</a></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>    {</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span>    <span class="keyword">public</span>:</div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span>        <a class="code hl_function" href="classdatabase_1_1_postgre_s_q_l.html#afa4286fcc9ddb506fc30b9d934615b0f">PostgreSQL</a>();</div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span>        <a class="code hl_function" href="classdatabase_1_1_postgre_s_q_l.html#afa4286fcc9ddb506fc30b9d934615b0f">PostgreSQL</a>(<span class="keyword">const</span> <a class="code hl_struct" href="structdatabase_1_1_connection_params.html">ConnectionParams</a> &amp;params);</div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span>        <a class="code hl_function" href="classdatabase_1_1_postgre_s_q_l.html#a372a7ea6dc198d0ed42190d114980e39">~PostgreSQL</a>();</div>
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno">   70</span> </div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>        <span class="keywordtype">bool</span> <a class="code hl_function" href="classdatabase_1_1_postgre_s_q_l.html#a785b7fa2f3259b5258c06bfbd9e8b2c3">connect</a>();</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno">   72</span>        <span class="keywordtype">bool</span> <a class="code hl_function" href="classdatabase_1_1_postgre_s_q_l.html#af9b6445361883ff9a3dd155fc9bf1b52">isConnected</a>() <span class="keyword">const</span>;</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno">   73</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="classdatabase_1_1_postgre_s_q_l.html#af41a6c8beb9e194a4c1bdfa346d0712d">disconnect</a>();</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno">   74</span> </div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno">   75</span>        <span class="comment">// Выполнение SQL запроса (без результата)</span></div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>        <span class="keywordtype">bool</span> <a class="code hl_function" href="classdatabase_1_1_postgre_s_q_l.html#aae16b58e807cbaf423edb361275dc018">execute</a>(<span class="keyword">const</span> std::string &amp;sql);</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span>        <span class="comment">// Выполнение запроса с параметрами</span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span>        <span class="keywordtype">bool</span> <a class="code hl_function" href="classdatabase_1_1_postgre_s_q_l.html#a1b682272e817f53fe4f0ccfcb727e253">executeParams</a>(<span class="keyword">const</span> std::string &amp;sql, <span class="keyword">const</span> std::vector&lt;std::string&gt; &amp;params);</div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span> </div>
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno">   81</span>        <span class="comment">// Выполнение запроса с результатом</span></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>        pqxx::result <a class="code hl_function" href="classdatabase_1_1_postgre_s_q_l.html#a95022441d5201d81365056c401ec2474">query</a>(<span class="keyword">const</span> std::string &amp;sql);</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno">   83</span> </div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno">   84</span>        <span class="comment">// ============================================================</span></div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno">   85</span>        <span class="comment">// Работа с контрагентами</span></div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno">   86</span>        <span class="comment">// ============================================================</span></div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno">   87</span>        std::optional&lt;Client&gt; <a class="code hl_function" href="classdatabase_1_1_postgre_s_q_l.html#a78e26c9484a4cda19507c89600f609b6">findClient</a>(<span class="keyword">const</span> std::string &amp;inn, <span class="keyword">const</span> std::string &amp;kpp = <span class="stringliteral">&quot;&quot;</span>);</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno">   88</span>        std::string <a class="code hl_function" href="classdatabase_1_1_postgre_s_q_l.html#ac22c54f52920ec67e8579bb70f360949">createClient</a>(<span class="keyword">const</span> std::string &amp;inn, <span class="keyword">const</span> std::string &amp;kpp, <span class="keyword">const</span> std::string &amp;name);</div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno">   90</span>        <span class="comment">// ============================================================</span></div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>        <span class="comment">// Работа с номенклатурой</span></div>
+<div class="line"><a id="l00092" name="l00092"></a><span class="lineno">   92</span>        <span class="comment">// ============================================================</span></div>
+<div class="line"><a id="l00093" name="l00093"></a><span class="lineno">   93</span>        std::optional&lt;Product&gt; <a class="code hl_function" href="classdatabase_1_1_postgre_s_q_l.html#a4a090045c1149fcfef8b05415d41e6fb">findProductByArticle</a>(<span class="keyword">const</span> std::string &amp;article);</div>
+<div class="line"><a id="l00094" name="l00094"></a><span class="lineno">   94</span> </div>
+<div class="line"><a id="l00095" name="l00095"></a><span class="lineno">   95</span>        <span class="comment">// ============================================================</span></div>
+<div class="line"><a id="l00096" name="l00096"></a><span class="lineno">   96</span>        <span class="comment">// Работа с заказами</span></div>
+<div class="line"><a id="l00097" name="l00097"></a><span class="lineno">   97</span>        <span class="comment">// ============================================================</span></div>
+<div class="line"><a id="l00098" name="l00098"></a><span class="lineno">   98</span>        std::string <a class="code hl_function" href="classdatabase_1_1_postgre_s_q_l.html#a6773124fa34e1abd8758791867453058">createOrder</a>(</div>
+<div class="line"><a id="l00099" name="l00099"></a><span class="lineno">   99</span>            <span class="keyword">const</span> std::string &amp;client_id,</div>
+<div class="line"><a id="l00100" name="l00100"></a><span class="lineno">  100</span>            <span class="keyword">const</span> std::string &amp;date,</div>
+<div class="line"><a id="l00101" name="l00101"></a><span class="lineno">  101</span>            <span class="keyword">const</span> std::string &amp;number,</div>
+<div class="line"><a id="l00102" name="l00102"></a><span class="lineno">  102</span>            <span class="keyword">const</span> std::vector&lt;OrderItem&gt; &amp;items);</div>
+<div class="line"><a id="l00103" name="l00103"></a><span class="lineno">  103</span> </div>
+<div class="line"><a id="l00104" name="l00104"></a><span class="lineno">  104</span>        <span class="comment">// ============================================================</span></div>
+<div class="line"><a id="l00105" name="l00105"></a><span class="lineno">  105</span>        <span class="comment">// Запись в регистр сведений</span></div>
+<div class="line"><a id="l00106" name="l00106"></a><span class="lineno">  106</span>        <span class="comment">// ============================================================</span></div>
+<div class="line"><a id="l00107" name="l00107"></a><span class="lineno">  107</span>        <span class="keywordtype">void</span> <a class="code hl_function" href="classdatabase_1_1_postgre_s_q_l.html#af10309b83ba66fdfdbf86871653cbab7">logKafkaMessage</a>(</div>
+<div class="line"><a id="l00108" name="l00108"></a><span class="lineno">  108</span>            <span class="keywordtype">long</span> <span class="keywordtype">long</span> linux_time,</div>
+<div class="line"><a id="l00109" name="l00109"></a><span class="lineno">  109</span>            <span class="keyword">const</span> std::string &amp;tin,</div>
+<div class="line"><a id="l00110" name="l00110"></a><span class="lineno">  110</span>            <span class="keyword">const</span> std::string &amp;trrc,</div>
+<div class="line"><a id="l00111" name="l00111"></a><span class="lineno">  111</span>            <span class="keyword">const</span> std::string &amp;json_data);</div>
+<div class="line"><a id="l00112" name="l00112"></a><span class="lineno">  112</span> </div>
+<div class="line"><a id="l00113" name="l00113"></a><span class="lineno">  113</span>    <span class="keyword">private</span>:</div>
+<div class="line"><a id="l00114" name="l00114"></a><span class="lineno">  114</span>        <a class="code hl_struct" href="structdatabase_1_1_connection_params.html">ConnectionParams</a> params_;</div>
+<div class="line"><a id="l00115" name="l00115"></a><span class="lineno">  115</span>        std::unique_ptr&lt;pqxx::connection&gt; conn_;</div>
+<div class="line"><a id="l00116" name="l00116"></a><span class="lineno">  116</span>        <span class="keywordtype">bool</span> connected_;</div>
+<div class="line"><a id="l00117" name="l00117"></a><span class="lineno">  117</span> </div>
+<div class="line"><a id="l00118" name="l00118"></a><span class="lineno">  118</span>        std::string escape(<span class="keyword">const</span> std::string &amp;str);</div>
+<div class="line"><a id="l00119" name="l00119"></a><span class="lineno">  119</span>        std::string generateUUID();</div>
+<div class="line"><a id="l00120" name="l00120"></a><span class="lineno">  120</span>        std::string convertToHex(<span class="keyword">const</span> std::string &amp;uuid);   <span class="comment">// UUID → HEX с \x</span></div>
+<div class="line"><a id="l00121" name="l00121"></a><span class="lineno">  121</span>        std::string convertTo1CUUID(<span class="keyword">const</span> std::string &amp;hex); <span class="comment">// HEX → UUID с дефисами</span></div>
+<div class="line"><a id="l00122" name="l00122"></a><span class="lineno">  122</span>        std::string formatDate(<span class="keyword">const</span> std::string &amp;date);</div>
+<div class="line"><a id="l00123" name="l00123"></a><span class="lineno">  123</span>    };</div>
+</div>
+<div class="line"><a id="l00124" name="l00124"></a><span class="lineno">  124</span> </div>
+<div class="line"><a id="l00125" name="l00125"></a><span class="lineno">  125</span>} <span class="comment">// namespace database</span></div>
+<div class="ttc" id="aclassdatabase_1_1_postgre_s_q_l_html_a1b682272e817f53fe4f0ccfcb727e253"><div class="ttname"><a href="classdatabase_1_1_postgre_s_q_l.html#a1b682272e817f53fe4f0ccfcb727e253">database::PostgreSQL::executeParams</a></div><div class="ttdeci">bool executeParams(const std::string &amp;sql, const std::vector&lt; std::string &gt; &amp;params)</div><div class="ttdef"><b>Определения</b> <a href="postgresql_8cpp_source.html#l00118">postgresql.cpp:118</a></div></div>
+<div class="ttc" id="aclassdatabase_1_1_postgre_s_q_l_html_a372a7ea6dc198d0ed42190d114980e39"><div class="ttname"><a href="classdatabase_1_1_postgre_s_q_l.html#a372a7ea6dc198d0ed42190d114980e39">database::PostgreSQL::~PostgreSQL</a></div><div class="ttdeci">~PostgreSQL()</div><div class="ttdef"><b>Определения</b> <a href="postgresql_8cpp_source.html#l00023">postgresql.cpp:23</a></div></div>
+<div class="ttc" id="aclassdatabase_1_1_postgre_s_q_l_html_a4a090045c1149fcfef8b05415d41e6fb"><div class="ttname"><a href="classdatabase_1_1_postgre_s_q_l.html#a4a090045c1149fcfef8b05415d41e6fb">database::PostgreSQL::findProductByArticle</a></div><div class="ttdeci">std::optional&lt; Product &gt; findProductByArticle(const std::string &amp;article)</div><div class="ttdef"><b>Определения</b> <a href="postgresql_8cpp_source.html#l00420">postgresql.cpp:420</a></div></div>
+<div class="ttc" id="aclassdatabase_1_1_postgre_s_q_l_html_a6773124fa34e1abd8758791867453058"><div class="ttname"><a href="classdatabase_1_1_postgre_s_q_l.html#a6773124fa34e1abd8758791867453058">database::PostgreSQL::createOrder</a></div><div class="ttdeci">std::string createOrder(const std::string &amp;client_id, const std::string &amp;date, const std::string &amp;number, const std::vector&lt; OrderItem &gt; &amp;items)</div><div class="ttdef"><b>Определения</b> <a href="postgresql_8cpp_source.html#l00462">postgresql.cpp:462</a></div></div>
+<div class="ttc" id="aclassdatabase_1_1_postgre_s_q_l_html_a785b7fa2f3259b5258c06bfbd9e8b2c3"><div class="ttname"><a href="classdatabase_1_1_postgre_s_q_l.html#a785b7fa2f3259b5258c06bfbd9e8b2c3">database::PostgreSQL::connect</a></div><div class="ttdeci">bool connect()</div><div class="ttdef"><b>Определения</b> <a href="postgresql_8cpp_source.html#l00032">postgresql.cpp:32</a></div></div>
+<div class="ttc" id="aclassdatabase_1_1_postgre_s_q_l_html_a78e26c9484a4cda19507c89600f609b6"><div class="ttname"><a href="classdatabase_1_1_postgre_s_q_l.html#a78e26c9484a4cda19507c89600f609b6">database::PostgreSQL::findClient</a></div><div class="ttdeci">std::optional&lt; Client &gt; findClient(const std::string &amp;inn, const std::string &amp;kpp=&quot;&quot;)</div><div class="ttdef"><b>Определения</b> <a href="postgresql_8cpp_source.html#l00307">postgresql.cpp:307</a></div></div>
+<div class="ttc" id="aclassdatabase_1_1_postgre_s_q_l_html_a95022441d5201d81365056c401ec2474"><div class="ttname"><a href="classdatabase_1_1_postgre_s_q_l.html#a95022441d5201d81365056c401ec2474">database::PostgreSQL::query</a></div><div class="ttdeci">pqxx::result query(const std::string &amp;sql)</div><div class="ttdef"><b>Определения</b> <a href="postgresql_8cpp_source.html#l00153">postgresql.cpp:153</a></div></div>
+<div class="ttc" id="aclassdatabase_1_1_postgre_s_q_l_html_aae16b58e807cbaf423edb361275dc018"><div class="ttname"><a href="classdatabase_1_1_postgre_s_q_l.html#aae16b58e807cbaf423edb361275dc018">database::PostgreSQL::execute</a></div><div class="ttdeci">bool execute(const std::string &amp;sql)</div><div class="ttdef"><b>Определения</b> <a href="postgresql_8cpp_source.html#l00095">postgresql.cpp:95</a></div></div>
+<div class="ttc" id="aclassdatabase_1_1_postgre_s_q_l_html_ac22c54f52920ec67e8579bb70f360949"><div class="ttname"><a href="classdatabase_1_1_postgre_s_q_l.html#ac22c54f52920ec67e8579bb70f360949">database::PostgreSQL::createClient</a></div><div class="ttdeci">std::string createClient(const std::string &amp;inn, const std::string &amp;kpp, const std::string &amp;name)</div><div class="ttdef"><b>Определения</b> <a href="postgresql_8cpp_source.html#l00362">postgresql.cpp:362</a></div></div>
+<div class="ttc" id="aclassdatabase_1_1_postgre_s_q_l_html_af10309b83ba66fdfdbf86871653cbab7"><div class="ttname"><a href="classdatabase_1_1_postgre_s_q_l.html#af10309b83ba66fdfdbf86871653cbab7">database::PostgreSQL::logKafkaMessage</a></div><div class="ttdeci">void logKafkaMessage(long long linux_time, const std::string &amp;tin, const std::string &amp;trrc, const std::string &amp;json_data)</div><div class="ttdef"><b>Определения</b> <a href="postgresql_8cpp_source.html#l00537">postgresql.cpp:537</a></div></div>
+<div class="ttc" id="aclassdatabase_1_1_postgre_s_q_l_html_af41a6c8beb9e194a4c1bdfa346d0712d"><div class="ttname"><a href="classdatabase_1_1_postgre_s_q_l.html#af41a6c8beb9e194a4c1bdfa346d0712d">database::PostgreSQL::disconnect</a></div><div class="ttdeci">void disconnect()</div><div class="ttdef"><b>Определения</b> <a href="postgresql_8cpp_source.html#l00081">postgresql.cpp:81</a></div></div>
+<div class="ttc" id="aclassdatabase_1_1_postgre_s_q_l_html_af9b6445361883ff9a3dd155fc9bf1b52"><div class="ttname"><a href="classdatabase_1_1_postgre_s_q_l.html#af9b6445361883ff9a3dd155fc9bf1b52">database::PostgreSQL::isConnected</a></div><div class="ttdeci">bool isConnected() const</div><div class="ttdef"><b>Определения</b> <a href="postgresql_8cpp_source.html#l00076">postgresql.cpp:76</a></div></div>
+<div class="ttc" id="aclassdatabase_1_1_postgre_s_q_l_html_afa4286fcc9ddb506fc30b9d934615b0f"><div class="ttname"><a href="classdatabase_1_1_postgre_s_q_l.html#afa4286fcc9ddb506fc30b9d934615b0f">database::PostgreSQL::PostgreSQL</a></div><div class="ttdeci">PostgreSQL()</div><div class="ttdef"><b>Определения</b> <a href="postgresql_8cpp_source.html#l00017">postgresql.cpp:17</a></div></div>
+<div class="ttc" id="anamespacedatabase_html"><div class="ttname"><a href="namespacedatabase.html">database</a></div><div class="ttdef"><b>Определения</b> <a href="postgresql_8cpp_source.html#l00010">postgresql.cpp:11</a></div></div>
+<div class="ttc" id="astructdatabase_1_1_client_html"><div class="ttname"><a href="structdatabase_1_1_client.html">database::Client</a></div><div class="ttdef"><b>Определения</b> <a href="#l00034">postgresql.hpp:35</a></div></div>
+<div class="ttc" id="astructdatabase_1_1_client_html_a2832335fbe78cdd62a9ecc4c91c57880"><div class="ttname"><a href="structdatabase_1_1_client.html#a2832335fbe78cdd62a9ecc4c91c57880">database::Client::inn</a></div><div class="ttdeci">std::string inn</div><div class="ttdef"><b>Определения</b> <a href="#l00037">postgresql.hpp:37</a></div></div>
+<div class="ttc" id="astructdatabase_1_1_client_html_a59c09de0aaf09eacd58d9e03cac42d65"><div class="ttname"><a href="structdatabase_1_1_client.html#a59c09de0aaf09eacd58d9e03cac42d65">database::Client::id</a></div><div class="ttdeci">std::string id</div><div class="ttdef"><b>Определения</b> <a href="#l00036">postgresql.hpp:36</a></div></div>
+<div class="ttc" id="astructdatabase_1_1_client_html_a9a61216ce80e3281eaef7cdd8657ec95"><div class="ttname"><a href="structdatabase_1_1_client.html#a9a61216ce80e3281eaef7cdd8657ec95">database::Client::name</a></div><div class="ttdeci">std::string name</div><div class="ttdef"><b>Определения</b> <a href="#l00039">postgresql.hpp:39</a></div></div>
+<div class="ttc" id="astructdatabase_1_1_client_html_ad0fe81a6ecf278fe23d280e96cc308c7"><div class="ttname"><a href="structdatabase_1_1_client.html#ad0fe81a6ecf278fe23d280e96cc308c7">database::Client::marked</a></div><div class="ttdeci">bool marked</div><div class="ttdef"><b>Определения</b> <a href="#l00040">postgresql.hpp:40</a></div></div>
+<div class="ttc" id="astructdatabase_1_1_client_html_af5fd482be6f1c6ac9af6a60d4fbbffe5"><div class="ttname"><a href="structdatabase_1_1_client.html#af5fd482be6f1c6ac9af6a60d4fbbffe5">database::Client::kpp</a></div><div class="ttdeci">std::string kpp</div><div class="ttdef"><b>Определения</b> <a href="#l00038">postgresql.hpp:38</a></div></div>
+<div class="ttc" id="astructdatabase_1_1_connection_params_html"><div class="ttname"><a href="structdatabase_1_1_connection_params.html">database::ConnectionParams</a></div><div class="ttdef"><b>Определения</b> <a href="#l00012">postgresql.hpp:13</a></div></div>
+<div class="ttc" id="astructdatabase_1_1_connection_params_html_a47cebdaa3263697a49a810e32126ddcb"><div class="ttname"><a href="structdatabase_1_1_connection_params.html#a47cebdaa3263697a49a810e32126ddcb">database::ConnectionParams::port</a></div><div class="ttdeci">int port</div><div class="ttdef"><b>Определения</b> <a href="#l00015">postgresql.hpp:15</a></div></div>
+<div class="ttc" id="astructdatabase_1_1_connection_params_html_a5a1b946ed57e96a6e623e508479070e2"><div class="ttname"><a href="structdatabase_1_1_connection_params.html#a5a1b946ed57e96a6e623e508479070e2">database::ConnectionParams::username</a></div><div class="ttdeci">std::string username</div><div class="ttdef"><b>Определения</b> <a href="#l00017">postgresql.hpp:17</a></div></div>
+<div class="ttc" id="astructdatabase_1_1_connection_params_html_aac294a88bf4a434b9f7af573a9eac43d"><div class="ttname"><a href="structdatabase_1_1_connection_params.html#aac294a88bf4a434b9f7af573a9eac43d">database::ConnectionParams::host</a></div><div class="ttdeci">std::string host</div><div class="ttdef"><b>Определения</b> <a href="#l00014">postgresql.hpp:14</a></div></div>
+<div class="ttc" id="astructdatabase_1_1_connection_params_html_ac5df7de1f780cee25408e4d5c310b0d1"><div class="ttname"><a href="structdatabase_1_1_connection_params.html#ac5df7de1f780cee25408e4d5c310b0d1">database::ConnectionParams::password</a></div><div class="ttdeci">std::string password</div><div class="ttdef"><b>Определения</b> <a href="#l00018">postgresql.hpp:18</a></div></div>
+<div class="ttc" id="astructdatabase_1_1_connection_params_html_adf642f06affe1750bd495f50fee2241d"><div class="ttname"><a href="structdatabase_1_1_connection_params.html#adf642f06affe1750bd495f50fee2241d">database::ConnectionParams::connectionString</a></div><div class="ttdeci">std::string connectionString() const</div><div class="ttdef"><b>Определения</b> <a href="#l00020">postgresql.hpp:20</a></div></div>
+<div class="ttc" id="astructdatabase_1_1_order_item_html"><div class="ttname"><a href="structdatabase_1_1_order_item.html">database::OrderItem</a></div><div class="ttdef"><b>Определения</b> <a href="#l00052">postgresql.hpp:53</a></div></div>
+<div class="ttc" id="astructdatabase_1_1_order_item_html_a0ee59553b20ae7d4ee663938e1d46500"><div class="ttname"><a href="structdatabase_1_1_order_item.html#a0ee59553b20ae7d4ee663938e1d46500">database::OrderItem::quantity</a></div><div class="ttdeci">double quantity</div><div class="ttdef"><b>Определения</b> <a href="#l00055">postgresql.hpp:55</a></div></div>
+<div class="ttc" id="astructdatabase_1_1_order_item_html_a8d8598ac204f2c3dccc257042ab282d0"><div class="ttname"><a href="structdatabase_1_1_order_item.html#a8d8598ac204f2c3dccc257042ab282d0">database::OrderItem::sum</a></div><div class="ttdeci">double sum</div><div class="ttdef"><b>Определения</b> <a href="#l00057">postgresql.hpp:57</a></div></div>
+<div class="ttc" id="astructdatabase_1_1_order_item_html_ad66ee06cad1bfdc160fe922b89defac0"><div class="ttname"><a href="structdatabase_1_1_order_item.html#ad66ee06cad1bfdc160fe922b89defac0">database::OrderItem::product_id</a></div><div class="ttdeci">std::string product_id</div><div class="ttdef"><b>Определения</b> <a href="#l00054">postgresql.hpp:54</a></div></div>
+<div class="ttc" id="astructdatabase_1_1_order_item_html_afe42d8211d06bdba512bb3f49d6c1c6a"><div class="ttname"><a href="structdatabase_1_1_order_item.html#afe42d8211d06bdba512bb3f49d6c1c6a">database::OrderItem::price</a></div><div class="ttdeci">double price</div><div class="ttdef"><b>Определения</b> <a href="#l00056">postgresql.hpp:56</a></div></div>
+<div class="ttc" id="astructdatabase_1_1_product_html"><div class="ttname"><a href="structdatabase_1_1_product.html">database::Product</a></div><div class="ttdef"><b>Определения</b> <a href="#l00043">postgresql.hpp:44</a></div></div>
+<div class="ttc" id="astructdatabase_1_1_product_html_a537c128b62c8ef01b1561d01cb7bb06b"><div class="ttname"><a href="structdatabase_1_1_product.html#a537c128b62c8ef01b1561d01cb7bb06b">database::Product::id</a></div><div class="ttdeci">std::string id</div><div class="ttdef"><b>Определения</b> <a href="#l00045">postgresql.hpp:45</a></div></div>
+<div class="ttc" id="astructdatabase_1_1_product_html_a55f1bef2aac730c71a64e19daafeb12a"><div class="ttname"><a href="structdatabase_1_1_product.html#a55f1bef2aac730c71a64e19daafeb12a">database::Product::code</a></div><div class="ttdeci">std::string code</div><div class="ttdef"><b>Определения</b> <a href="#l00046">postgresql.hpp:46</a></div></div>
+<div class="ttc" id="astructdatabase_1_1_product_html_a996eaac83fc96ed18f8638b3e3b7f627"><div class="ttname"><a href="structdatabase_1_1_product.html#a996eaac83fc96ed18f8638b3e3b7f627">database::Product::name</a></div><div class="ttdeci">std::string name</div><div class="ttdef"><b>Определения</b> <a href="#l00047">postgresql.hpp:47</a></div></div>
+<div class="ttc" id="astructdatabase_1_1_product_html_acf8cf48c48ddc009d50b32934b24b6c8"><div class="ttname"><a href="structdatabase_1_1_product.html#acf8cf48c48ddc009d50b32934b24b6c8">database::Product::marked</a></div><div class="ttdeci">bool marked</div><div class="ttdef"><b>Определения</b> <a href="#l00049">postgresql.hpp:49</a></div></div>
+<div class="ttc" id="astructdatabase_1_1_product_html_af8dc8d1177ca8b6768561dd109a3d6d3"><div class="ttname"><a href="structdatabase_1_1_product.html#af8dc8d1177ca8b6768561dd109a3d6d3">database::Product::article</a></div><div class="ttdeci">std::string article</div><div class="ttdef"><b>Определения</b> <a href="#l00048">postgresql.hpp:48</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+</div><!-- container -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a href="dir_803ee67260c130b45d29089798491ab2.html">database</a></li><li class="navelem"><a href="postgresql_8hpp.html">postgresql.hpp</a></li>
+    <li class="footer">Документация по Kafka-1C Connector. Последние изменения: <span class="timestamp"></span>. Создано системой <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.17.0 </li>
+  </ul>
+</div>
+</body>
+</html>

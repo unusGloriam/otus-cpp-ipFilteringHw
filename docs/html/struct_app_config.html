@@ -1,0 +1,319 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ru">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.17.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Kafka-1C Connector: Структура AppConfig</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="codefolding.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="module">
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+const theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'default';
+mermaid.initialize({ startOnLoad: true, theme: theme });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Kafka-1C Connector<span id="projectnumber">&#160;1.0.0</span>
+   </div>
+   <div id="projectbrief">High-performance Kafka-1C integration microservice</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Создано системой Doxygen 1.17.0 -->
+<script type="text/javascript">
+let searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', codefold.init);
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', () => {
+  initMenu('',true);
+  init_search();
+});
+</script>
+<div id="main-nav-mobile">
+<div class="sm sm-dox"><input id="main-menu-state" type="checkbox"/>
+<label class="main-menu-btn" for="main-menu-state">
+<span class="main-menu-btn-icon"></span> Toggle main menu visibility</label>
+<span id="searchBoxPos1" style="position:absolute;right:8px;top:8px;height:36px;"></span>
+</div>
+</div><!-- main-nav-mobile -->
+<div id="main-nav">
+  <ul class="sm sm-dox" id="main-menu">
+    <li id="searchBoxPos2" style="float:right">
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <span id="MSearchSelect" class="search-icon" onmouseover="return searchBox.OnSearchSelectShow()" onmouseout="return searchBox.OnSearchSelectHide()"><span class="search-icon-dropdown"></span></span>
+          <input type="text" id="MSearchField" value="" placeholder="Поиск" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><div id="MSearchCloseImg" class="close-icon"></div></a>
+          </span>
+        </div>
+    </li>
+  </ul>
+</div><!-- main-nav -->
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded',() => { initNavTree('struct_app_config.html','','struct_app_config-members'); });
+</script>
+<div id="container">
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Загрузка...</div>
+<div class="SRStatus" id="Searching">Поиск...</div>
+<div class="SRStatus" id="NoMatches">Не найдено</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">Структура AppConfig</div></div>
+</div><!--header-->
+<div class="contents">
+
+<p><code>#include &lt;<a class="el" href="config_8hpp_source.html">config.hpp</a>&gt;</code></p>
+<div class="dynheader">
+Граф связей класса AppConfig:</div>
+<div class="dyncontent">
+<div class="center"><img src="struct_app_config__coll__graph.png" border="0" usemap="#a_app_config_coll__map" loading="lazy" alt="Collaboration graph"/></div>
+<map name="a_app_config_coll__map" id="a_app_config_coll__map">
+<area shape="rect" title=" " alt="" coords="558,189,640,216"/>
+<area shape="rect" href="struct_kafka_config.html" title=" " alt="" coords="330,67,424,93"/>
+<area shape="poly" title=" " alt="" coords="424,97,535,155,583,189,577,188,533,160,423,103"/>
+<area shape="rect" href="struct_kafka_config_1_1_topics.html" title=" " alt="" coords="32,5,172,32"/>
+<area shape="poly" title=" " alt="" coords="187,25,291,45,346,65,341,67,290,51,188,31"/>
+<area shape="rect" href="struct_kafka_config_1_1_producer.html" title=" " alt="" coords="25,60,179,87"/>
+<area shape="poly" title=" " alt="" coords="194,73,332,77,328,81,195,78"/>
+<area shape="rect" href="struct_kafka_config_1_1_consumer.html" title=" " alt="" coords="21,115,183,141"/>
+<area shape="poly" title=" " alt="" coords="198,118,290,104,339,93,334,95,291,109,199,123"/>
+<area shape="rect" href="struct_database_config.html" title=" " alt="" coords="319,163,434,189"/>
+<area shape="poly" title=" " alt="" coords="450,182,560,197,555,198,450,187"/>
+<area shape="rect" href="structdatabase_1_1_connection_params.html" title=" " alt="" coords="5,169,199,196"/>
+<area shape="poly" title=" " alt="" coords="214,180,291,179,322,179,316,181,291,184,215,186"/>
+<area shape="rect" href="struct_processing_config.html" title=" " alt="" coords="315,216,439,243"/>
+<area shape="poly" title=" " alt="" coords="455,228,534,221,560,217,565,216,534,227,455,234"/>
+<area shape="rect" href="struct_cache_config.html" title=" " alt="" coords="328,271,426,297"/>
+<area shape="poly" title=" " alt="" coords="441,280,487,273,533,258,562,237,584,218,589,215,566,242,535,262,488,278,441,285"/>
+</map>
+<center><span class="legend">[<a target="top" href="graph_legend.html">см. легенду</a>]</span></center></div>
+<table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-static-methods" class="groupheader"><a id="pub-static-methods" name="pub-static-methods"></a>
+Открытые статические члены</h2></td></tr>
+<tr class="memitem:ad5f556af8ec235c8f58b14d1125b9d23" id="r_ad5f556af8ec235c8f58b14d1125b9d23"><td class="memItemLeft">static <a class="el" href="struct_app_config.html">AppConfig</a>&#160;</td><td class="memItemRight"><a class="el" href="#ad5f556af8ec235c8f58b14d1125b9d23">load</a> (const std::string &amp;filename)</td></tr>
+</table><table class="memberdecls">
+<tr class="heading"><td colspan="2"><h2 id="header-pub-attribs" class="groupheader"><a id="pub-attribs" name="pub-attribs"></a>
+Открытые атрибуты</h2></td></tr>
+<tr class="memitem:a6eabe866e9b2dded624221f90e6bec7f" id="r_a6eabe866e9b2dded624221f90e6bec7f"><td class="memItemLeft"><a class="el" href="struct_kafka_config.html">KafkaConfig</a>&#160;</td><td class="memItemRight"><a class="el" href="#a6eabe866e9b2dded624221f90e6bec7f">kafka</a></td></tr>
+<tr class="memitem:ad48b440bdfae4964ca599149729d09ec" id="r_ad48b440bdfae4964ca599149729d09ec"><td class="memItemLeft"><a class="el" href="struct_database_config.html">DatabaseConfig</a>&#160;</td><td class="memItemRight"><a class="el" href="#ad48b440bdfae4964ca599149729d09ec">database</a></td></tr>
+<tr class="memitem:a317a75e33b14b550d5037863dc12d6a9" id="r_a317a75e33b14b550d5037863dc12d6a9"><td class="memItemLeft"><a class="el" href="struct_processing_config.html">ProcessingConfig</a>&#160;</td><td class="memItemRight"><a class="el" href="#a317a75e33b14b550d5037863dc12d6a9">processing</a></td></tr>
+<tr class="memitem:ab61fecf8d49e3d3eae421cfcab3a94bd" id="r_ab61fecf8d49e3d3eae421cfcab3a94bd"><td class="memItemLeft"><a class="el" href="struct_cache_config.html">CacheConfig</a>&#160;</td><td class="memItemRight"><a class="el" href="#ab61fecf8d49e3d3eae421cfcab3a94bd">cache</a></td></tr>
+<tr class="memitem:a278bb1ffae10e016c5355964746230f9" id="r_a278bb1ffae10e016c5355964746230f9"><td class="memItemLeft">std::vector&lt; <a class="el" href="struct_group_config.html">GroupConfig</a> &gt;&#160;</td><td class="memItemRight"><a class="el" href="#a278bb1ffae10e016c5355964746230f9">groups</a></td></tr>
+<tr class="memitem:a71293784add692e888b81f72d2e27a6a" id="r_a71293784add692e888b81f72d2e27a6a"><td class="memItemLeft">std::string&#160;</td><td class="memItemRight"><a class="el" href="#a71293784add692e888b81f72d2e27a6a">mode</a></td></tr>
+</table>
+<a name="details" id="details"></a><h2 id="header-details" class="groupheader">Подробное описание</h2>
+<div class="textblock">
+<p class="definition">См. определение в файле <a class="el" href="config_8hpp_source.html">config.hpp</a> строка <a class="el" href="config_8hpp_source.html#l00081">81</a></p>
+</div><a name="doc-func-members" id="doc-func-members"></a><h2 id="header-doc-func-members" class="groupheader">Методы</h2>
+<a id="ad5f556af8ec235c8f58b14d1125b9d23" name="ad5f556af8ec235c8f58b14d1125b9d23"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad5f556af8ec235c8f58b14d1125b9d23">&#9670;&#160;</a></span>load()</h2>
+
+<div class="memitem">
+<div class="memproto">
+<table class="mlabels">
+  <tr>
+  <td class="mlabels-left">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_app_config.html">AppConfig</a> AppConfig::load </td>
+          <td>(</td>
+          <td class="paramtype">const std::string &amp;</td>          <td class="paramname"><span class="paramname"><em>filename</em></span></td><td>)</td>
+          <td></td>
+        </tr>
+      </table>
+  </td>
+  <td class="mlabels-right">
+<span class="mlabels"><span class="mlabel static">static</span></span>  </td>
+  </tr>
+</table>
+</div><div class="memdoc">
+<div class="dynheader">
+Граф вызова функции:</div>
+<div class="dyncontent">
+<div class="center"><img src="struct_app_config_ad5f556af8ec235c8f58b14d1125b9d23_icgraph.png" border="0" usemap="#astruct_app_config_ad5f556af8ec235c8f58b14d1125b9d23_icgraph" loading="lazy" alt=""/></div>
+<map name="astruct_app_config_ad5f556af8ec235c8f58b14d1125b9d23_icgraph" id="astruct_app_config_ad5f556af8ec235c8f58b14d1125b9d23_icgraph">
+<area shape="rect" title=" " alt="" coords="103,5,217,32"/>
+<area shape="rect" href="main_8cpp.html#a0ddf1224851353fc92bfbff6f499fa97" title=" " alt="" coords="5,5,55,32"/>
+<area shape="poly" title=" " alt="" coords="85,20,55,21,55,16,90,18"/>
+</map>
+</div>
+
+</div>
+</div>
+<a name="doc-variable-members" id="doc-variable-members"></a><h2 id="header-doc-variable-members" class="groupheader">Данные класса</h2>
+<a id="ab61fecf8d49e3d3eae421cfcab3a94bd" name="ab61fecf8d49e3d3eae421cfcab3a94bd"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ab61fecf8d49e3d3eae421cfcab3a94bd">&#9670;&#160;</a></span>cache</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_cache_config.html">CacheConfig</a> AppConfig::cache</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="config_8hpp_source.html">config.hpp</a> строка <a class="el" href="config_8hpp_source.html#l00086">86</a></p>
+
+</div>
+</div>
+<a id="ad48b440bdfae4964ca599149729d09ec" name="ad48b440bdfae4964ca599149729d09ec"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ad48b440bdfae4964ca599149729d09ec">&#9670;&#160;</a></span>database</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_database_config.html">DatabaseConfig</a> AppConfig::database</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="config_8hpp_source.html">config.hpp</a> строка <a class="el" href="config_8hpp_source.html#l00084">84</a></p>
+
+</div>
+</div>
+<a id="a278bb1ffae10e016c5355964746230f9" name="a278bb1ffae10e016c5355964746230f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a278bb1ffae10e016c5355964746230f9">&#9670;&#160;</a></span>groups</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::vector&lt;<a class="el" href="struct_group_config.html">GroupConfig</a>&gt; AppConfig::groups</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="config_8hpp_source.html">config.hpp</a> строка <a class="el" href="config_8hpp_source.html#l00087">87</a></p>
+
+</div>
+</div>
+<a id="a6eabe866e9b2dded624221f90e6bec7f" name="a6eabe866e9b2dded624221f90e6bec7f"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a6eabe866e9b2dded624221f90e6bec7f">&#9670;&#160;</a></span>kafka</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_kafka_config.html">KafkaConfig</a> AppConfig::kafka</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="config_8hpp_source.html">config.hpp</a> строка <a class="el" href="config_8hpp_source.html#l00083">83</a></p>
+
+</div>
+</div>
+<a id="a71293784add692e888b81f72d2e27a6a" name="a71293784add692e888b81f72d2e27a6a"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a71293784add692e888b81f72d2e27a6a">&#9670;&#160;</a></span>mode</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">std::string AppConfig::mode</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="config_8hpp_source.html">config.hpp</a> строка <a class="el" href="config_8hpp_source.html#l00088">88</a></p>
+
+</div>
+</div>
+<a id="a317a75e33b14b550d5037863dc12d6a9" name="a317a75e33b14b550d5037863dc12d6a9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a317a75e33b14b550d5037863dc12d6a9">&#9670;&#160;</a></span>processing</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="struct_processing_config.html">ProcessingConfig</a> AppConfig::processing</td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p class="definition">См. определение в файле <a class="el" href="config_8hpp_source.html">config.hpp</a> строка <a class="el" href="config_8hpp_source.html#l00085">85</a></p>
+
+</div>
+</div>
+<hr/>Объявления и описания членов структуры находятся в файле:<ul>
+<li>src/config/<a class="el" href="config_8hpp_source.html">config.hpp</a></li>
+</ul>
+</div><!-- contents -->
+</div><!-- doc-content -->
+<div id="page-nav" class="page-nav-panel">
+<div id="page-nav-resize-handle"></div>
+<div id="page-nav-tree">
+<div id="page-nav-contents">
+</div><!-- page-nav-contents -->
+</div><!-- page-nav-tree -->
+</div><!-- page-nav -->
+</div><!-- container -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a href="struct_app_config.html">AppConfig</a></li>
+    <li class="footer">Документация по Kafka-1C Connector. Последние изменения: <span class="timestamp"></span>. Создано системой <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.17.0 </li>
+  </ul>
+</div>
+</body>
+</html>

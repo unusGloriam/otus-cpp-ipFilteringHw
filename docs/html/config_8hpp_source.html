@@ -1,0 +1,288 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "https://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" lang="ru">
+<head>
+<meta http-equiv="Content-Type" content="text/xhtml;charset=UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=11"/>
+<meta name="generator" content="Doxygen 1.17.0"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Kafka-1C Connector: Исходный файл src/config/config.hpp</title>
+<link href="tabs.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="codefolding.js"></script>
+<script type="text/javascript" src="clipboard.js"></script>
+<link href="navtree.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="navtreedata.js"></script>
+<script type="text/javascript" src="navtree.js"></script>
+<script type="text/javascript" src="cookie.js"></script>
+<link href="search/search.css" rel="stylesheet" type="text/css"/>
+<script type="text/javascript" src="search/searchdata.js"></script>
+<script type="text/javascript" src="search/search.js"></script>
+<script type="module">
+import mermaid from 'https://cdn.jsdelivr.net/npm/mermaid@11/dist/mermaid.esm.min.mjs';
+const theme = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'default';
+mermaid.initialize({ startOnLoad: true, theme: theme });
+</script>
+<link href="doxygen.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<div id="top"><!-- do not remove this div, it is closed by doxygen! -->
+<div id="titlearea">
+<table cellspacing="0" cellpadding="0">
+ <tbody>
+ <tr id="projectrow">
+  <td id="projectalign">
+   <div id="projectname">Kafka-1C Connector<span id="projectnumber">&#160;1.0.0</span>
+   </div>
+   <div id="projectbrief">High-performance Kafka-1C integration microservice</div>
+  </td>
+ </tr>
+ </tbody>
+</table>
+</div>
+<!-- end header part -->
+<!-- Создано системой Doxygen 1.17.0 -->
+<script type="text/javascript">
+let searchBox = new SearchBox("searchBox", "search/",'.html');
+</script>
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', codefold.init);
+</script>
+<script type="text/javascript" src="menudata.js"></script>
+<script type="text/javascript" src="menu.js"></script>
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded', () => {
+  initMenu('',true);
+  init_search();
+});
+</script>
+<div id="main-nav-mobile">
+<div class="sm sm-dox"><input id="main-menu-state" type="checkbox"/>
+<label class="main-menu-btn" for="main-menu-state">
+<span class="main-menu-btn-icon"></span> Toggle main menu visibility</label>
+<span id="searchBoxPos1" style="position:absolute;right:8px;top:8px;height:36px;"></span>
+</div>
+</div><!-- main-nav-mobile -->
+<div id="main-nav">
+  <ul class="sm sm-dox" id="main-menu">
+    <li id="searchBoxPos2" style="float:right">
+        <div id="MSearchBox" class="MSearchBoxInactive">
+        <span class="left">
+          <span id="MSearchSelect" class="search-icon" onmouseover="return searchBox.OnSearchSelectShow()" onmouseout="return searchBox.OnSearchSelectHide()"><span class="search-icon-dropdown"></span></span>
+          <input type="text" id="MSearchField" value="" placeholder="Поиск" accesskey="S"
+               onfocus="searchBox.OnSearchFieldFocus(true)" 
+               onblur="searchBox.OnSearchFieldFocus(false)" 
+               onkeyup="searchBox.OnSearchFieldChange(event)"/>
+          </span><span class="right">
+            <a id="MSearchClose" href="javascript:searchBox.CloseResultsWindow()"><div id="MSearchCloseImg" class="close-icon"></div></a>
+          </span>
+        </div>
+    </li>
+  </ul>
+</div><!-- main-nav -->
+</div><!-- top -->
+<div id="side-nav" class="ui-resizable side-nav-resizable">
+  <div id="nav-tree">
+    <div id="nav-tree-contents">
+      <div id="nav-sync" class="sync"></div>
+    </div>
+  </div>
+  <div id="splitbar" style="-moz-user-select:none;" 
+       class="ui-resizable-handle">
+  </div>
+</div>
+<script type="text/javascript">
+document.addEventListener('DOMContentLoaded',() => { initNavTree('config_8hpp_source.html','',''); });
+</script>
+<div id="container">
+<div id="doc-content">
+<!-- window showing the filter options -->
+<div id="MSearchSelectWindow"
+     onmouseover="return searchBox.OnSearchSelectShow()"
+     onmouseout="return searchBox.OnSearchSelectHide()"
+     onkeydown="return searchBox.OnSearchSelectKey(event)">
+</div>
+
+<!-- iframe showing the search results (closed by default) -->
+<div id="MSearchResultsWindow">
+<div id="MSearchResults">
+<div class="SRPage">
+<div id="SRIndex">
+<div id="SRResults"></div>
+<div class="SRStatus" id="Loading">Загрузка...</div>
+<div class="SRStatus" id="Searching">Поиск...</div>
+<div class="SRStatus" id="NoMatches">Не найдено</div>
+</div>
+</div>
+</div>
+</div>
+
+<div class="header">
+  <div class="headertitle"><div class="title">config.hpp</div></div>
+</div><!--header-->
+<div class="contents">
+<a href="config_8hpp.html">См. документацию.</a><div class="fragment"><div class="line"><a id="l00001" name="l00001"></a><span class="lineno">    1</span><span class="preprocessor">#pragma once</span></div>
+<div class="line"><a id="l00002" name="l00002"></a><span class="lineno">    2</span> </div>
+<div class="line"><a id="l00003" name="l00003"></a><span class="lineno">    3</span><span class="preprocessor">#include &lt;string&gt;</span></div>
+<div class="line"><a id="l00004" name="l00004"></a><span class="lineno">    4</span><span class="preprocessor">#include &lt;vector&gt;</span></div>
+<div class="line"><a id="l00005" name="l00005"></a><span class="lineno">    5</span><span class="preprocessor">#include &lt;nlohmann/json.hpp&gt;</span></div>
+<div class="line"><a id="l00006" name="l00006"></a><span class="lineno">    6</span><span class="preprocessor">#include &quot;<a class="code" href="postgresql_8hpp.html">../database/postgresql.hpp</a>&quot;</span> <span class="comment">// &lt;-- ДОБАВЛЯЕМ</span></div>
+<div class="line"><a id="l00007" name="l00007"></a><span class="lineno">    7</span> </div>
+<div class="line"><a id="l00008" name="l00008"></a><span class="lineno"><a class="line" href="config_8hpp.html#ab701e3ac61a85b337ec5c1abaad6742d">    8</a></span><span class="keyword">using </span><a class="code hl_typedef" href="config_8hpp.html#ab701e3ac61a85b337ec5c1abaad6742d">json</a> = nlohmann::json;</div>
+<div class="line"><a id="l00009" name="l00009"></a><span class="lineno">    9</span> </div>
+<div class="line"><a id="l00010" name="l00010"></a><span class="lineno">   10</span><span class="comment">// ============================================================</span></div>
+<div class="line"><a id="l00011" name="l00011"></a><span class="lineno">   11</span><span class="comment">// KafkaConfig</span></div>
+<div class="line"><a id="l00012" name="l00012"></a><span class="lineno">   12</span><span class="comment">// ============================================================</span></div>
+<div class="foldopen" id="foldopen00013" data-start="{" data-end="};">
+<div class="line"><a id="l00013" name="l00013"></a><span class="lineno"><a class="line" href="struct_kafka_config.html">   13</a></span><span class="keyword">struct </span><a class="code hl_struct" href="struct_kafka_config.html">KafkaConfig</a></div>
+<div class="line"><a id="l00014" name="l00014"></a><span class="lineno">   14</span>{</div>
+<div class="line"><a id="l00015" name="l00015"></a><span class="lineno"><a class="line" href="struct_kafka_config.html#a2348a03b02fe3fd8603b36d0668a466d">   15</a></span>    std::string <a class="code hl_variable" href="struct_kafka_config.html#a2348a03b02fe3fd8603b36d0668a466d">bootstrap_servers</a>;</div>
+<div class="foldopen" id="foldopen00016" data-start="{" data-end="};">
+<div class="line"><a id="l00016" name="l00016"></a><span class="lineno"><a class="line" href="struct_kafka_config_1_1_topics.html">   16</a></span>    <span class="keyword">struct </span><a class="code hl_struct" href="struct_kafka_config_1_1_topics.html">Topics</a></div>
+<div class="line"><a id="l00017" name="l00017"></a><span class="lineno">   17</span>    {</div>
+<div class="line"><a id="l00018" name="l00018"></a><span class="lineno"><a class="line" href="struct_kafka_config_1_1_topics.html#a3512bb9c634bc7bb91b8adac920696d2">   18</a></span>        std::string <a class="code hl_variable" href="struct_kafka_config_1_1_topics.html#a3512bb9c634bc7bb91b8adac920696d2">input</a>;</div>
+<div class="line"><a id="l00019" name="l00019"></a><span class="lineno"><a class="line" href="struct_kafka_config_1_1_topics.html#a1f236a7912500d4677004e28fa94e8b7">   19</a></span>        std::string <a class="code hl_variable" href="struct_kafka_config_1_1_topics.html#a1f236a7912500d4677004e28fa94e8b7">output</a>;</div>
+<div class="line"><a id="l00020" name="l00020"></a><span class="lineno"><a class="line" href="struct_kafka_config_1_1_topics.html#a58392568ff76c07a0d3b70d420089040">   20</a></span>        std::string <a class="code hl_variable" href="struct_kafka_config_1_1_topics.html#a58392568ff76c07a0d3b70d420089040">errors</a>;</div>
+<div class="line"><a id="l00021" name="l00021"></a><span class="lineno"><a class="line" href="struct_kafka_config.html#ab1be7681f0d61eb354db018745e25c1f">   21</a></span>    } <a class="code hl_variable" href="struct_kafka_config.html#ab1be7681f0d61eb354db018745e25c1f">topics</a>;</div>
+</div>
+<div class="foldopen" id="foldopen00022" data-start="{" data-end="};">
+<div class="line"><a id="l00022" name="l00022"></a><span class="lineno"><a class="line" href="struct_kafka_config_1_1_producer.html">   22</a></span>    <span class="keyword">struct </span><a class="code hl_struct" href="struct_kafka_config_1_1_producer.html">Producer</a></div>
+<div class="line"><a id="l00023" name="l00023"></a><span class="lineno">   23</span>    {</div>
+<div class="line"><a id="l00024" name="l00024"></a><span class="lineno"><a class="line" href="struct_kafka_config_1_1_producer.html#a2fe3aa9fe31856c6b64ff8b2f3c0b361">   24</a></span>        std::string <a class="code hl_variable" href="struct_kafka_config_1_1_producer.html#a2fe3aa9fe31856c6b64ff8b2f3c0b361">acks</a>;</div>
+<div class="line"><a id="l00025" name="l00025"></a><span class="lineno"><a class="line" href="struct_kafka_config_1_1_producer.html#ad949a76f16ffbbd833c093bf6832277c">   25</a></span>        <span class="keywordtype">int</span> <a class="code hl_variable" href="struct_kafka_config_1_1_producer.html#ad949a76f16ffbbd833c093bf6832277c">retries</a>;</div>
+<div class="line"><a id="l00026" name="l00026"></a><span class="lineno"><a class="line" href="struct_kafka_config_1_1_producer.html#a11c8f76401938e0d921885ac4b721044">   26</a></span>        <span class="keywordtype">int</span> <a class="code hl_variable" href="struct_kafka_config_1_1_producer.html#a11c8f76401938e0d921885ac4b721044">batch_size</a>;</div>
+<div class="line"><a id="l00027" name="l00027"></a><span class="lineno"><a class="line" href="struct_kafka_config_1_1_producer.html#af52d43fd37e83b1fb83ff88832932025">   27</a></span>        <span class="keywordtype">int</span> <a class="code hl_variable" href="struct_kafka_config_1_1_producer.html#af52d43fd37e83b1fb83ff88832932025">linger_ms</a>;</div>
+<div class="line"><a id="l00028" name="l00028"></a><span class="lineno"><a class="line" href="struct_kafka_config.html#a44989757e6df2b612ba641b15444030a">   28</a></span>    } <a class="code hl_variable" href="struct_kafka_config.html#a44989757e6df2b612ba641b15444030a">producer</a>;</div>
+</div>
+<div class="foldopen" id="foldopen00029" data-start="{" data-end="};">
+<div class="line"><a id="l00029" name="l00029"></a><span class="lineno"><a class="line" href="struct_kafka_config_1_1_consumer.html">   29</a></span>    <span class="keyword">struct </span><a class="code hl_struct" href="struct_kafka_config_1_1_consumer.html">Consumer</a></div>
+<div class="line"><a id="l00030" name="l00030"></a><span class="lineno">   30</span>    {</div>
+<div class="line"><a id="l00031" name="l00031"></a><span class="lineno"><a class="line" href="struct_kafka_config_1_1_consumer.html#a038ca3598f8aca14524c11bc9e1c6730">   31</a></span>        std::string <a class="code hl_variable" href="struct_kafka_config_1_1_consumer.html#a038ca3598f8aca14524c11bc9e1c6730">group_id</a>;</div>
+<div class="line"><a id="l00032" name="l00032"></a><span class="lineno"><a class="line" href="struct_kafka_config_1_1_consumer.html#aefe2c1f841e4badd0b345ca5fd309c6f">   32</a></span>        std::string <a class="code hl_variable" href="struct_kafka_config_1_1_consumer.html#aefe2c1f841e4badd0b345ca5fd309c6f">auto_offset_reset</a>;</div>
+<div class="line"><a id="l00033" name="l00033"></a><span class="lineno"><a class="line" href="struct_kafka_config_1_1_consumer.html#afd3d5f25ef1e08466f864f70cd4170da">   33</a></span>        <span class="keywordtype">bool</span> <a class="code hl_variable" href="struct_kafka_config_1_1_consumer.html#afd3d5f25ef1e08466f864f70cd4170da">enable_auto_commit</a>;</div>
+<div class="line"><a id="l00034" name="l00034"></a><span class="lineno"><a class="line" href="struct_kafka_config.html#a28fc38d804239de7371366e113fe82ea">   34</a></span>    } <a class="code hl_variable" href="struct_kafka_config.html#a28fc38d804239de7371366e113fe82ea">consumer</a>;</div>
+</div>
+<div class="line"><a id="l00035" name="l00035"></a><span class="lineno">   35</span>};</div>
+</div>
+<div class="line"><a id="l00036" name="l00036"></a><span class="lineno">   36</span> </div>
+<div class="line"><a id="l00037" name="l00037"></a><span class="lineno">   37</span><span class="comment">// ============================================================</span></div>
+<div class="line"><a id="l00038" name="l00038"></a><span class="lineno">   38</span><span class="comment">// DatabaseConfig — используем ConnectionParams из database</span></div>
+<div class="line"><a id="l00039" name="l00039"></a><span class="lineno">   39</span><span class="comment">// ============================================================</span></div>
+<div class="foldopen" id="foldopen00040" data-start="{" data-end="};">
+<div class="line"><a id="l00040" name="l00040"></a><span class="lineno"><a class="line" href="struct_database_config.html">   40</a></span><span class="keyword">struct </span><a class="code hl_struct" href="struct_database_config.html">DatabaseConfig</a></div>
+<div class="line"><a id="l00041" name="l00041"></a><span class="lineno">   41</span>{</div>
+<div class="line"><a id="l00042" name="l00042"></a><span class="lineno"><a class="line" href="struct_database_config.html#a466fbc3aae51e96a09e18a610510ddda">   42</a></span>    <a class="code hl_struct" href="structdatabase_1_1_connection_params.html">database::ConnectionParams</a> <a class="code hl_variable" href="struct_database_config.html#a466fbc3aae51e96a09e18a610510ddda">postgresql</a>;</div>
+<div class="line"><a id="l00043" name="l00043"></a><span class="lineno">   43</span>};</div>
+</div>
+<div class="line"><a id="l00044" name="l00044"></a><span class="lineno">   44</span> </div>
+<div class="line"><a id="l00045" name="l00045"></a><span class="lineno">   45</span><span class="comment">// ============================================================</span></div>
+<div class="line"><a id="l00046" name="l00046"></a><span class="lineno">   46</span><span class="comment">// ProcessingConfig</span></div>
+<div class="line"><a id="l00047" name="l00047"></a><span class="lineno">   47</span><span class="comment">// ============================================================</span></div>
+<div class="foldopen" id="foldopen00048" data-start="{" data-end="};">
+<div class="line"><a id="l00048" name="l00048"></a><span class="lineno"><a class="line" href="struct_processing_config.html">   48</a></span><span class="keyword">struct </span><a class="code hl_struct" href="struct_processing_config.html">ProcessingConfig</a></div>
+<div class="line"><a id="l00049" name="l00049"></a><span class="lineno">   49</span>{</div>
+<div class="line"><a id="l00050" name="l00050"></a><span class="lineno"><a class="line" href="struct_processing_config.html#ad5e444469cadb6aa3f141fed824fc2fb">   50</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="struct_processing_config.html#ad5e444469cadb6aa3f141fed824fc2fb">max_workers</a>;</div>
+<div class="line"><a id="l00051" name="l00051"></a><span class="lineno"><a class="line" href="struct_processing_config.html#adefd52f2a2e86fd9110b6a76110eb382">   51</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="struct_processing_config.html#adefd52f2a2e86fd9110b6a76110eb382">batch_size</a>;</div>
+<div class="line"><a id="l00052" name="l00052"></a><span class="lineno"><a class="line" href="struct_processing_config.html#a3f7997e36b3bf9e253ad887ae7c1c8d5">   52</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="struct_processing_config.html#a3f7997e36b3bf9e253ad887ae7c1c8d5">retry_interval_seconds</a>;</div>
+<div class="line"><a id="l00053" name="l00053"></a><span class="lineno"><a class="line" href="struct_processing_config.html#a5fbabda8fc7ddf93b0997b3228a147df">   53</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="struct_processing_config.html#a5fbabda8fc7ddf93b0997b3228a147df">delete_after_send</a>;</div>
+<div class="line"><a id="l00054" name="l00054"></a><span class="lineno">   54</span>};</div>
+</div>
+<div class="line"><a id="l00055" name="l00055"></a><span class="lineno">   55</span> </div>
+<div class="line"><a id="l00056" name="l00056"></a><span class="lineno">   56</span><span class="comment">// ============================================================</span></div>
+<div class="line"><a id="l00057" name="l00057"></a><span class="lineno">   57</span><span class="comment">// CacheConfig</span></div>
+<div class="line"><a id="l00058" name="l00058"></a><span class="lineno">   58</span><span class="comment">// ============================================================</span></div>
+<div class="foldopen" id="foldopen00059" data-start="{" data-end="};">
+<div class="line"><a id="l00059" name="l00059"></a><span class="lineno"><a class="line" href="struct_cache_config.html">   59</a></span><span class="keyword">struct </span><a class="code hl_struct" href="struct_cache_config.html">CacheConfig</a></div>
+<div class="line"><a id="l00060" name="l00060"></a><span class="lineno">   60</span>{</div>
+<div class="line"><a id="l00061" name="l00061"></a><span class="lineno"><a class="line" href="struct_cache_config.html#a906e9e3cebb56102ef80e04ae332b6b8">   61</a></span>    std::string <a class="code hl_variable" href="struct_cache_config.html#a906e9e3cebb56102ef80e04ae332b6b8">path</a>;</div>
+<div class="line"><a id="l00062" name="l00062"></a><span class="lineno"><a class="line" href="struct_cache_config.html#a811e7654983743415a50f817813ca293">   62</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="struct_cache_config.html#a811e7654983743415a50f817813ca293">retention_days</a> = 7;</div>
+<div class="line"><a id="l00063" name="l00063"></a><span class="lineno"><a class="line" href="struct_cache_config.html#a789469e676460aba92e45f59634c9baa">   63</a></span>    <span class="keywordtype">int</span> <a class="code hl_variable" href="struct_cache_config.html#a789469e676460aba92e45f59634c9baa">reprocess_delay_seconds</a> = 7;</div>
+<div class="line"><a id="l00064" name="l00064"></a><span class="lineno"><a class="line" href="struct_cache_config.html#a7e8c2d3a69fd12df4809602ec825c62e">   64</a></span>    std::string <a class="code hl_variable" href="struct_cache_config.html#a7e8c2d3a69fd12df4809602ec825c62e">source_prefix</a>; <span class="comment">// УНИКАЛЬНЫЙ ПРЕФИКС РАЗДЕЛЕНИЯ ПОТОКОВ В КЭШЕ SQLLITE</span></div>
+<div class="line"><a id="l00065" name="l00065"></a><span class="lineno">   65</span>};</div>
+</div>
+<div class="line"><a id="l00066" name="l00066"></a><span class="lineno">   66</span> </div>
+<div class="line"><a id="l00067" name="l00067"></a><span class="lineno">   67</span><span class="comment">// ============================================================</span></div>
+<div class="line"><a id="l00068" name="l00068"></a><span class="lineno">   68</span><span class="comment">// GroupConfig</span></div>
+<div class="line"><a id="l00069" name="l00069"></a><span class="lineno">   69</span><span class="comment">// ============================================================</span></div>
+<div class="foldopen" id="foldopen00070" data-start="{" data-end="};">
+<div class="line"><a id="l00070" name="l00070"></a><span class="lineno"><a class="line" href="struct_group_config.html">   70</a></span><span class="keyword">struct </span><a class="code hl_struct" href="struct_group_config.html">GroupConfig</a></div>
+<div class="line"><a id="l00071" name="l00071"></a><span class="lineno">   71</span>{</div>
+<div class="line"><a id="l00072" name="l00072"></a><span class="lineno"><a class="line" href="struct_group_config.html#ab0a5a3b7ddd836ed4fb3708518ccaff4">   72</a></span>    std::string <a class="code hl_variable" href="struct_group_config.html#ab0a5a3b7ddd836ed4fb3708518ccaff4">name</a>;</div>
+<div class="line"><a id="l00073" name="l00073"></a><span class="lineno"><a class="line" href="struct_group_config.html#a1961ea5cd382a8eb95ba35f8b0d30085">   73</a></span>    <span class="keywordtype">bool</span> <a class="code hl_variable" href="struct_group_config.html#a1961ea5cd382a8eb95ba35f8b0d30085">enabled</a>;</div>
+<div class="line"><a id="l00074" name="l00074"></a><span class="lineno"><a class="line" href="struct_group_config.html#a4f11116931abc7703ea5d03f6496bce6">   74</a></span>    std::string <a class="code hl_variable" href="struct_group_config.html#a4f11116931abc7703ea5d03f6496bce6">input_directory</a>;</div>
+<div class="line"><a id="l00075" name="l00075"></a><span class="lineno"><a class="line" href="struct_group_config.html#ae612e29e9519757dd70db5b75484e666">   75</a></span>    std::string <a class="code hl_variable" href="struct_group_config.html#ae612e29e9519757dd70db5b75484e666">kafka_topic</a>;</div>
+<div class="line"><a id="l00076" name="l00076"></a><span class="lineno">   76</span>};</div>
+</div>
+<div class="line"><a id="l00077" name="l00077"></a><span class="lineno">   77</span> </div>
+<div class="line"><a id="l00078" name="l00078"></a><span class="lineno">   78</span><span class="comment">// ============================================================</span></div>
+<div class="line"><a id="l00079" name="l00079"></a><span class="lineno">   79</span><span class="comment">// AppConfig</span></div>
+<div class="line"><a id="l00080" name="l00080"></a><span class="lineno">   80</span><span class="comment">// ============================================================</span></div>
+<div class="foldopen" id="foldopen00081" data-start="{" data-end="};">
+<div class="line"><a id="l00081" name="l00081"></a><span class="lineno"><a class="line" href="struct_app_config.html">   81</a></span><span class="keyword">struct </span><a class="code hl_struct" href="struct_app_config.html">AppConfig</a></div>
+<div class="line"><a id="l00082" name="l00082"></a><span class="lineno">   82</span>{</div>
+<div class="line"><a id="l00083" name="l00083"></a><span class="lineno"><a class="line" href="struct_app_config.html#a6eabe866e9b2dded624221f90e6bec7f">   83</a></span>    <a class="code hl_struct" href="struct_kafka_config.html">KafkaConfig</a> <a class="code hl_variable" href="struct_app_config.html#a6eabe866e9b2dded624221f90e6bec7f">kafka</a>;</div>
+<div class="line"><a id="l00084" name="l00084"></a><span class="lineno"><a class="line" href="struct_app_config.html#ad48b440bdfae4964ca599149729d09ec">   84</a></span>    <a class="code hl_struct" href="struct_database_config.html">DatabaseConfig</a> <a class="code hl_namespace" href="namespacedatabase.html">database</a>;</div>
+<div class="line"><a id="l00085" name="l00085"></a><span class="lineno"><a class="line" href="struct_app_config.html#a317a75e33b14b550d5037863dc12d6a9">   85</a></span>    <a class="code hl_struct" href="struct_processing_config.html">ProcessingConfig</a> <a class="code hl_variable" href="struct_app_config.html#a317a75e33b14b550d5037863dc12d6a9">processing</a>;</div>
+<div class="line"><a id="l00086" name="l00086"></a><span class="lineno"><a class="line" href="struct_app_config.html#ab61fecf8d49e3d3eae421cfcab3a94bd">   86</a></span>    <a class="code hl_struct" href="struct_cache_config.html">CacheConfig</a> <a class="code hl_variable" href="struct_app_config.html#ab61fecf8d49e3d3eae421cfcab3a94bd">cache</a>;</div>
+<div class="line"><a id="l00087" name="l00087"></a><span class="lineno"><a class="line" href="struct_app_config.html#a278bb1ffae10e016c5355964746230f9">   87</a></span>    std::vector&lt;GroupConfig&gt; <a class="code hl_variable" href="struct_app_config.html#a278bb1ffae10e016c5355964746230f9">groups</a>;</div>
+<div class="line"><a id="l00088" name="l00088"></a><span class="lineno"><a class="line" href="struct_app_config.html#a71293784add692e888b81f72d2e27a6a">   88</a></span>    std::string <a class="code hl_variable" href="struct_app_config.html#a71293784add692e888b81f72d2e27a6a">mode</a>; <span class="comment">// &quot;producer&quot;, &quot;consumer&quot;, &quot;both&quot;</span></div>
+<div class="line"><a id="l00089" name="l00089"></a><span class="lineno">   89</span> </div>
+<div class="line"><a id="l00090" name="l00090"></a><span class="lineno"><a class="line" href="struct_app_config.html#ad5f556af8ec235c8f58b14d1125b9d23">   90</a></span>    <span class="keyword">static</span> <a class="code hl_struct" href="struct_app_config.html">AppConfig</a> <a class="code hl_function" href="struct_app_config.html#ad5f556af8ec235c8f58b14d1125b9d23">load</a>(<span class="keyword">const</span> std::string &amp;filename);</div>
+<div class="line"><a id="l00091" name="l00091"></a><span class="lineno">   91</span>};</div>
+</div>
+<div class="ttc" id="aconfig_8hpp_html_ab701e3ac61a85b337ec5c1abaad6742d"><div class="ttname"><a href="config_8hpp.html#ab701e3ac61a85b337ec5c1abaad6742d">json</a></div><div class="ttdeci">nlohmann::json json</div><div class="ttdef"><b>Определения</b> <a href="#l00008">config.hpp:8</a></div></div>
+<div class="ttc" id="anamespacedatabase_html"><div class="ttname"><a href="namespacedatabase.html">database</a></div><div class="ttdef"><b>Определения</b> <a href="postgresql_8cpp_source.html#l00010">postgresql.cpp:11</a></div></div>
+<div class="ttc" id="apostgresql_8hpp_html"><div class="ttname"><a href="postgresql_8hpp.html">postgresql.hpp</a></div></div>
+<div class="ttc" id="astruct_app_config_html"><div class="ttname"><a href="struct_app_config.html">AppConfig</a></div><div class="ttdef"><b>Определения</b> <a href="#l00081">config.hpp:82</a></div></div>
+<div class="ttc" id="astruct_app_config_html_a278bb1ffae10e016c5355964746230f9"><div class="ttname"><a href="struct_app_config.html#a278bb1ffae10e016c5355964746230f9">AppConfig::groups</a></div><div class="ttdeci">std::vector&lt; GroupConfig &gt; groups</div><div class="ttdef"><b>Определения</b> <a href="#l00087">config.hpp:87</a></div></div>
+<div class="ttc" id="astruct_app_config_html_a317a75e33b14b550d5037863dc12d6a9"><div class="ttname"><a href="struct_app_config.html#a317a75e33b14b550d5037863dc12d6a9">AppConfig::processing</a></div><div class="ttdeci">ProcessingConfig processing</div><div class="ttdef"><b>Определения</b> <a href="#l00085">config.hpp:85</a></div></div>
+<div class="ttc" id="astruct_app_config_html_a6eabe866e9b2dded624221f90e6bec7f"><div class="ttname"><a href="struct_app_config.html#a6eabe866e9b2dded624221f90e6bec7f">AppConfig::kafka</a></div><div class="ttdeci">KafkaConfig kafka</div><div class="ttdef"><b>Определения</b> <a href="#l00083">config.hpp:83</a></div></div>
+<div class="ttc" id="astruct_app_config_html_a71293784add692e888b81f72d2e27a6a"><div class="ttname"><a href="struct_app_config.html#a71293784add692e888b81f72d2e27a6a">AppConfig::mode</a></div><div class="ttdeci">std::string mode</div><div class="ttdef"><b>Определения</b> <a href="#l00088">config.hpp:88</a></div></div>
+<div class="ttc" id="astruct_app_config_html_ab61fecf8d49e3d3eae421cfcab3a94bd"><div class="ttname"><a href="struct_app_config.html#ab61fecf8d49e3d3eae421cfcab3a94bd">AppConfig::cache</a></div><div class="ttdeci">CacheConfig cache</div><div class="ttdef"><b>Определения</b> <a href="#l00086">config.hpp:86</a></div></div>
+<div class="ttc" id="astruct_app_config_html_ad5f556af8ec235c8f58b14d1125b9d23"><div class="ttname"><a href="struct_app_config.html#ad5f556af8ec235c8f58b14d1125b9d23">AppConfig::load</a></div><div class="ttdeci">static AppConfig load(const std::string &amp;filename)</div></div>
+<div class="ttc" id="astruct_cache_config_html"><div class="ttname"><a href="struct_cache_config.html">CacheConfig</a></div><div class="ttdef"><b>Определения</b> <a href="#l00059">config.hpp:60</a></div></div>
+<div class="ttc" id="astruct_cache_config_html_a789469e676460aba92e45f59634c9baa"><div class="ttname"><a href="struct_cache_config.html#a789469e676460aba92e45f59634c9baa">CacheConfig::reprocess_delay_seconds</a></div><div class="ttdeci">int reprocess_delay_seconds</div><div class="ttdef"><b>Определения</b> <a href="#l00063">config.hpp:63</a></div></div>
+<div class="ttc" id="astruct_cache_config_html_a7e8c2d3a69fd12df4809602ec825c62e"><div class="ttname"><a href="struct_cache_config.html#a7e8c2d3a69fd12df4809602ec825c62e">CacheConfig::source_prefix</a></div><div class="ttdeci">std::string source_prefix</div><div class="ttdef"><b>Определения</b> <a href="#l00064">config.hpp:64</a></div></div>
+<div class="ttc" id="astruct_cache_config_html_a811e7654983743415a50f817813ca293"><div class="ttname"><a href="struct_cache_config.html#a811e7654983743415a50f817813ca293">CacheConfig::retention_days</a></div><div class="ttdeci">int retention_days</div><div class="ttdef"><b>Определения</b> <a href="#l00062">config.hpp:62</a></div></div>
+<div class="ttc" id="astruct_cache_config_html_a906e9e3cebb56102ef80e04ae332b6b8"><div class="ttname"><a href="struct_cache_config.html#a906e9e3cebb56102ef80e04ae332b6b8">CacheConfig::path</a></div><div class="ttdeci">std::string path</div><div class="ttdef"><b>Определения</b> <a href="#l00061">config.hpp:61</a></div></div>
+<div class="ttc" id="astruct_database_config_html"><div class="ttname"><a href="struct_database_config.html">DatabaseConfig</a></div><div class="ttdef"><b>Определения</b> <a href="#l00040">config.hpp:41</a></div></div>
+<div class="ttc" id="astruct_database_config_html_a466fbc3aae51e96a09e18a610510ddda"><div class="ttname"><a href="struct_database_config.html#a466fbc3aae51e96a09e18a610510ddda">DatabaseConfig::postgresql</a></div><div class="ttdeci">database::ConnectionParams postgresql</div><div class="ttdef"><b>Определения</b> <a href="#l00042">config.hpp:42</a></div></div>
+<div class="ttc" id="astruct_group_config_html"><div class="ttname"><a href="struct_group_config.html">GroupConfig</a></div><div class="ttdef"><b>Определения</b> <a href="#l00070">config.hpp:71</a></div></div>
+<div class="ttc" id="astruct_group_config_html_a1961ea5cd382a8eb95ba35f8b0d30085"><div class="ttname"><a href="struct_group_config.html#a1961ea5cd382a8eb95ba35f8b0d30085">GroupConfig::enabled</a></div><div class="ttdeci">bool enabled</div><div class="ttdef"><b>Определения</b> <a href="#l00073">config.hpp:73</a></div></div>
+<div class="ttc" id="astruct_group_config_html_a4f11116931abc7703ea5d03f6496bce6"><div class="ttname"><a href="struct_group_config.html#a4f11116931abc7703ea5d03f6496bce6">GroupConfig::input_directory</a></div><div class="ttdeci">std::string input_directory</div><div class="ttdef"><b>Определения</b> <a href="#l00074">config.hpp:74</a></div></div>
+<div class="ttc" id="astruct_group_config_html_ab0a5a3b7ddd836ed4fb3708518ccaff4"><div class="ttname"><a href="struct_group_config.html#ab0a5a3b7ddd836ed4fb3708518ccaff4">GroupConfig::name</a></div><div class="ttdeci">std::string name</div><div class="ttdef"><b>Определения</b> <a href="#l00072">config.hpp:72</a></div></div>
+<div class="ttc" id="astruct_group_config_html_ae612e29e9519757dd70db5b75484e666"><div class="ttname"><a href="struct_group_config.html#ae612e29e9519757dd70db5b75484e666">GroupConfig::kafka_topic</a></div><div class="ttdeci">std::string kafka_topic</div><div class="ttdef"><b>Определения</b> <a href="#l00075">config.hpp:75</a></div></div>
+<div class="ttc" id="astruct_kafka_config_1_1_consumer_html"><div class="ttname"><a href="struct_kafka_config_1_1_consumer.html">KafkaConfig::Consumer</a></div><div class="ttdef"><b>Определения</b> <a href="#l00029">config.hpp:30</a></div></div>
+<div class="ttc" id="astruct_kafka_config_1_1_consumer_html_a038ca3598f8aca14524c11bc9e1c6730"><div class="ttname"><a href="struct_kafka_config_1_1_consumer.html#a038ca3598f8aca14524c11bc9e1c6730">KafkaConfig::Consumer::group_id</a></div><div class="ttdeci">std::string group_id</div><div class="ttdef"><b>Определения</b> <a href="#l00031">config.hpp:31</a></div></div>
+<div class="ttc" id="astruct_kafka_config_1_1_consumer_html_aefe2c1f841e4badd0b345ca5fd309c6f"><div class="ttname"><a href="struct_kafka_config_1_1_consumer.html#aefe2c1f841e4badd0b345ca5fd309c6f">KafkaConfig::Consumer::auto_offset_reset</a></div><div class="ttdeci">std::string auto_offset_reset</div><div class="ttdef"><b>Определения</b> <a href="#l00032">config.hpp:32</a></div></div>
+<div class="ttc" id="astruct_kafka_config_1_1_consumer_html_afd3d5f25ef1e08466f864f70cd4170da"><div class="ttname"><a href="struct_kafka_config_1_1_consumer.html#afd3d5f25ef1e08466f864f70cd4170da">KafkaConfig::Consumer::enable_auto_commit</a></div><div class="ttdeci">bool enable_auto_commit</div><div class="ttdef"><b>Определения</b> <a href="#l00033">config.hpp:33</a></div></div>
+<div class="ttc" id="astruct_kafka_config_1_1_producer_html"><div class="ttname"><a href="struct_kafka_config_1_1_producer.html">KafkaConfig::Producer</a></div><div class="ttdef"><b>Определения</b> <a href="#l00022">config.hpp:23</a></div></div>
+<div class="ttc" id="astruct_kafka_config_1_1_producer_html_a11c8f76401938e0d921885ac4b721044"><div class="ttname"><a href="struct_kafka_config_1_1_producer.html#a11c8f76401938e0d921885ac4b721044">KafkaConfig::Producer::batch_size</a></div><div class="ttdeci">int batch_size</div><div class="ttdef"><b>Определения</b> <a href="#l00026">config.hpp:26</a></div></div>
+<div class="ttc" id="astruct_kafka_config_1_1_producer_html_a2fe3aa9fe31856c6b64ff8b2f3c0b361"><div class="ttname"><a href="struct_kafka_config_1_1_producer.html#a2fe3aa9fe31856c6b64ff8b2f3c0b361">KafkaConfig::Producer::acks</a></div><div class="ttdeci">std::string acks</div><div class="ttdef"><b>Определения</b> <a href="#l00024">config.hpp:24</a></div></div>
+<div class="ttc" id="astruct_kafka_config_1_1_producer_html_ad949a76f16ffbbd833c093bf6832277c"><div class="ttname"><a href="struct_kafka_config_1_1_producer.html#ad949a76f16ffbbd833c093bf6832277c">KafkaConfig::Producer::retries</a></div><div class="ttdeci">int retries</div><div class="ttdef"><b>Определения</b> <a href="#l00025">config.hpp:25</a></div></div>
+<div class="ttc" id="astruct_kafka_config_1_1_producer_html_af52d43fd37e83b1fb83ff88832932025"><div class="ttname"><a href="struct_kafka_config_1_1_producer.html#af52d43fd37e83b1fb83ff88832932025">KafkaConfig::Producer::linger_ms</a></div><div class="ttdeci">int linger_ms</div><div class="ttdef"><b>Определения</b> <a href="#l00027">config.hpp:27</a></div></div>
+<div class="ttc" id="astruct_kafka_config_1_1_topics_html"><div class="ttname"><a href="struct_kafka_config_1_1_topics.html">KafkaConfig::Topics</a></div><div class="ttdef"><b>Определения</b> <a href="#l00016">config.hpp:17</a></div></div>
+<div class="ttc" id="astruct_kafka_config_1_1_topics_html_a1f236a7912500d4677004e28fa94e8b7"><div class="ttname"><a href="struct_kafka_config_1_1_topics.html#a1f236a7912500d4677004e28fa94e8b7">KafkaConfig::Topics::output</a></div><div class="ttdeci">std::string output</div><div class="ttdef"><b>Определения</b> <a href="#l00019">config.hpp:19</a></div></div>
+<div class="ttc" id="astruct_kafka_config_1_1_topics_html_a3512bb9c634bc7bb91b8adac920696d2"><div class="ttname"><a href="struct_kafka_config_1_1_topics.html#a3512bb9c634bc7bb91b8adac920696d2">KafkaConfig::Topics::input</a></div><div class="ttdeci">std::string input</div><div class="ttdef"><b>Определения</b> <a href="#l00018">config.hpp:18</a></div></div>
+<div class="ttc" id="astruct_kafka_config_1_1_topics_html_a58392568ff76c07a0d3b70d420089040"><div class="ttname"><a href="struct_kafka_config_1_1_topics.html#a58392568ff76c07a0d3b70d420089040">KafkaConfig::Topics::errors</a></div><div class="ttdeci">std::string errors</div><div class="ttdef"><b>Определения</b> <a href="#l00020">config.hpp:20</a></div></div>
+<div class="ttc" id="astruct_kafka_config_html"><div class="ttname"><a href="struct_kafka_config.html">KafkaConfig</a></div><div class="ttdef"><b>Определения</b> <a href="#l00013">config.hpp:14</a></div></div>
+<div class="ttc" id="astruct_kafka_config_html_a2348a03b02fe3fd8603b36d0668a466d"><div class="ttname"><a href="struct_kafka_config.html#a2348a03b02fe3fd8603b36d0668a466d">KafkaConfig::bootstrap_servers</a></div><div class="ttdeci">std::string bootstrap_servers</div><div class="ttdef"><b>Определения</b> <a href="#l00015">config.hpp:15</a></div></div>
+<div class="ttc" id="astruct_kafka_config_html_a28fc38d804239de7371366e113fe82ea"><div class="ttname"><a href="struct_kafka_config.html#a28fc38d804239de7371366e113fe82ea">KafkaConfig::consumer</a></div><div class="ttdeci">struct KafkaConfig::Consumer consumer</div></div>
+<div class="ttc" id="astruct_kafka_config_html_a44989757e6df2b612ba641b15444030a"><div class="ttname"><a href="struct_kafka_config.html#a44989757e6df2b612ba641b15444030a">KafkaConfig::producer</a></div><div class="ttdeci">struct KafkaConfig::Producer producer</div></div>
+<div class="ttc" id="astruct_kafka_config_html_ab1be7681f0d61eb354db018745e25c1f"><div class="ttname"><a href="struct_kafka_config.html#ab1be7681f0d61eb354db018745e25c1f">KafkaConfig::topics</a></div><div class="ttdeci">struct KafkaConfig::Topics topics</div></div>
+<div class="ttc" id="astruct_processing_config_html"><div class="ttname"><a href="struct_processing_config.html">ProcessingConfig</a></div><div class="ttdef"><b>Определения</b> <a href="#l00048">config.hpp:49</a></div></div>
+<div class="ttc" id="astruct_processing_config_html_a3f7997e36b3bf9e253ad887ae7c1c8d5"><div class="ttname"><a href="struct_processing_config.html#a3f7997e36b3bf9e253ad887ae7c1c8d5">ProcessingConfig::retry_interval_seconds</a></div><div class="ttdeci">int retry_interval_seconds</div><div class="ttdef"><b>Определения</b> <a href="#l00052">config.hpp:52</a></div></div>
+<div class="ttc" id="astruct_processing_config_html_a5fbabda8fc7ddf93b0997b3228a147df"><div class="ttname"><a href="struct_processing_config.html#a5fbabda8fc7ddf93b0997b3228a147df">ProcessingConfig::delete_after_send</a></div><div class="ttdeci">bool delete_after_send</div><div class="ttdef"><b>Определения</b> <a href="#l00053">config.hpp:53</a></div></div>
+<div class="ttc" id="astruct_processing_config_html_ad5e444469cadb6aa3f141fed824fc2fb"><div class="ttname"><a href="struct_processing_config.html#ad5e444469cadb6aa3f141fed824fc2fb">ProcessingConfig::max_workers</a></div><div class="ttdeci">int max_workers</div><div class="ttdef"><b>Определения</b> <a href="#l00050">config.hpp:50</a></div></div>
+<div class="ttc" id="astruct_processing_config_html_adefd52f2a2e86fd9110b6a76110eb382"><div class="ttname"><a href="struct_processing_config.html#adefd52f2a2e86fd9110b6a76110eb382">ProcessingConfig::batch_size</a></div><div class="ttdeci">int batch_size</div><div class="ttdef"><b>Определения</b> <a href="#l00051">config.hpp:51</a></div></div>
+<div class="ttc" id="astructdatabase_1_1_connection_params_html"><div class="ttname"><a href="structdatabase_1_1_connection_params.html">database::ConnectionParams</a></div><div class="ttdef"><b>Определения</b> <a href="postgresql_8hpp_source.html#l00012">postgresql.hpp:13</a></div></div>
+</div><!-- fragment --></div><!-- contents -->
+</div><!-- doc-content -->
+</div><!-- container -->
+<!-- start footer part -->
+<div id="nav-path" class="navpath"><!-- id is needed for treeview function! -->
+  <ul>
+    <li class="navelem"><a href="dir_68267d1309a1af8e8297ef4c3efbcdba.html">src</a></li><li class="navelem"><a href="dir_7e83d1792d529f4aa7126ac7e0b3b699.html">config</a></li><li class="navelem"><a href="config_8hpp.html">config.hpp</a></li>
+    <li class="footer">Документация по Kafka-1C Connector. Последние изменения: <span class="timestamp"></span>. Создано системой <a href="https://www.doxygen.org/index.html"><img class="footer" src="doxygen.svg" width="104" height="31" alt="doxygen"/></a> 1.17.0 </li>
+  </ul>
+</div>
+</body>
+</html>

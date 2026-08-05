@@ -1,0 +1,25 @@
+<map id="runProducer" name="runProducer">
+<area shape="rect" id="Node000001" title=" " alt="" coords="5,56,97,83"/>
+<area shape="rect" id="Node000002" href="$main_8cpp.html#a5a216c3284e0a72fe4f8101cd8b12b60" title=" " alt="" coords="145,5,240,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="89,53,140,36,137,40,92,57"/>
+<area shape="rect" id="Node000004" href="$class_logger.html#a474176e6966186566a2a321cb5cbd739" title=" " alt="" coords="323,56,412,83"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="97,67,309,67,306,72,98,72"/>
+<area shape="rect" id="Node000005" href="$main_8cpp.html#a5bc44c4396b63ff16c6a74bb1c394478" title=" " alt="" coords="145,157,240,184"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="71,80,162,147,157,149,71,86"/>
+<area shape="rect" id="Node000003" href="$class_logger.html#aafe8b4f6ed1259fbde150ab59e0785e7" title=" " alt="" coords="320,5,415,32"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="239,16,307,17,303,20,241,21"/>
+<area shape="poly" id="edge6_Node000005_Node000003" title=" " alt="" coords="198,156,231,101,256,69,286,42,308,32,304,36,290,46,260,73,235,104,202,159"/>
+<area shape="poly" id="edge7_Node000005_Node000004" title=" " alt="" coords="205,155,241,124,287,92,310,84,306,87,289,97,244,128,209,159"/>
+<area shape="rect" id="Node000006" href="$class_logger.html#aed78385ee0ad9d124521735894abab46" title=" " alt="" coords="316,107,419,133"/>
+<area shape="poly" id="edge5_Node000005_Node000006" title=" " alt="" coords="239,155,307,137,303,140,242,159"/>
+<area shape="rect" id="Node000007" href="$class_json_parser.html#af18e9188a3948e4c5b3d9c17a76bcd74" title=" " alt="" coords="288,157,447,184"/>
+<area shape="poly" id="edge8_Node000005_Node000007" title=" " alt="" coords="240,168,275,170,270,172,241,173"/>
+<area shape="rect" id="Node000008" href="$class_message_cache.html#a699e48cdd16aaf9e8a67d25d30925a24" title=" " alt="" coords="294,208,442,235"/>
+<area shape="poly" id="edge9_Node000005_Node000008" title=" " alt="" coords="240,182,307,202,302,204,241,187"/>
+<area shape="rect" id="Node000009" href="$class_kafka_producer.html#a5c01eb2a998310bbfe16ebc77666af8f" title=" " alt="" coords="296,259,439,285"/>
+<area shape="poly" id="edge10_Node000005_Node000009" title=" " alt="" coords="208,182,244,213,289,244,303,252,297,253,287,249,241,217,207,187"/>
+<area shape="rect" id="Node000010" href="$class_json_parser.html#a1d6b83be5c0757b3a628a7c1737e4628" title=" " alt="" coords="298,309,438,336"/>
+<area shape="poly" id="edge11_Node000005_Node000010" title=" " alt="" coords="201,182,235,237,260,268,290,295,298,302,293,302,286,299,256,272,231,240,199,187"/>
+<area shape="rect" id="Node000011" href="$class_logger.html#a5025d14c1f40cc23e9cbb48f98f0d9a6" title=" " alt="" coords="311,360,424,387"/>
+<area shape="poly" id="edge12_Node000005_Node000011" title=" " alt="" coords="198,182,210,217,228,260,254,306,290,346,299,355,294,354,286,350,250,309,223,263,205,219,196,187"/>
+</map>

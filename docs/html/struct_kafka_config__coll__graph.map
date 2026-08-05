@@ -1,0 +1,9 @@
+<map id="KafkaConfig" name="KafkaConfig">
+<area shape="rect" id="Node000001" title=" " alt="" coords="199,104,292,131"/>
+<area shape="rect" id="Node000002" href="$struct_kafka_config_1_1_topics.html" title=" " alt="" coords="5,5,145,32"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="111,37,226,102,221,105,110,42"/>
+<area shape="rect" id="Node000003" href="$struct_kafka_config_1_1_producer.html" title=" " alt="" coords="169,5,322,32"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="248,46,248,105,243,102,244,50"/>
+<area shape="rect" id="Node000004" href="$struct_kafka_config_1_1_consumer.html" title=" " alt="" coords="346,5,508,32"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="393,39,270,106,268,101,387,40"/>
+</map>
