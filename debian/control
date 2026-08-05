@@ -1,12 +1,12 @@
-Source: fashion-mnist
+Source: kafkaordersender
 Section: libs
 Priority: optional
 Maintainer: oshkines <oshkines@mail.ru>
 Build-Depends: debhelper-compat (= 13), cmake, g++
 Standards-Version: 4.6.0
 
-Package: fashion-mnist
+Package: kafkaordersender
 Architecture: any
 Depends: ${shlibs:Depends}, ${misc:Depends}
-Description: fashion-mnist – В данном задании вам предстоит реализовать инференс ML модели компьютерного зрения для классификации изображений предметов гардероба по типу.
- This is a student project for C++ course.
+Description: Kafka-1C Connector
+ High-performance Kafka-1C integration microservice

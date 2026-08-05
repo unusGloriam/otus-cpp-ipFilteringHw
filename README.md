@@ -1,196 +1,430 @@
-# Fashion MNIST Classifier
+# Kafka-1C Connector
 
-Реализация инференса модели классификации изображений Fashion MNIST на C++. 
-В проекте реализована **логистическая регрессия** - самая простая и понятная модель для начала.
+**Высокопроизводительный микросервис для интеграции 1С с Apache Kafka на C++**
 
-## Структура проекта
+[![C++](https://img.shields.io/badge/C++-20-blue.svg)](https://isocpp.org/)
+[![Kafka](https://img.shields.io/badge/Kafka-4.2.1-green.svg)](https://kafka.apache.org/)
+[![PostgreSQL](https://img.shields.io/badge/PostgreSQL-16-blue.svg)](https://www.postgresql.org/)
+[![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
 
-fashion_mnist/
-├── CMakeLists.txt # Конфигурация сборки
-├── README.md # Этот файл
-├── src/
-│ ├── main.cpp # Главная программа
-│ ├── logistic_regression.hpp # Заголовочный файл логистической регрессии
-│ ├── logistic_regression.cpp # Реализация логистической регрессии
-│ ├── utils.hpp # Заголовочный файл утилит
-│ └── utils.cpp # Реализация утилит (чтение CSV)
-├── models/ # Папка с моделями
-│ ├── logreg_coef.txt # Веса логистической регрессии
-│ ├── w1.txt # Веса первого слоя MLP
-│ ├── w2.txt # Веса второго слоя MLP
-│ └── model.cbm # Модель CatBoost
-└── test.csv # Тестовые данные
+---
+
+## 📋 Описание
+
+**Kafka-1C Connector** — это production-ready микросервис на C++20 для высокоскоростной интеграции 1С с Apache Kafka. Обеспечивает надежную передачу заказов между 1С и внешними системами с гарантией доставки и восстановлением после сбоев.
+
+### Ключевые возможности
+
+| Возможность | Описание |
+|-------------|----------|
+| **🔁 Двунаправленная интеграция** | Producer (1С → Kafka) и Consumer (Kafka → 1С) в одном приложении |
+| **💾 Надежность** | SQLite кэширование всех сообщений с восстановлением после сбоев |
+| **🚀 Производительность** | Lock-free многопоточная обработка с атомарными операциями |
+| **🔄 Отказоустойчивость** | Автоматическое восстановление неотправленных сообщений при перезапуске |
+| **📊 Мониторинг** | Детальное логирование и статистика по всем операциям |
+| **⚙️ Гибкость** | JSON-конфигурация всех параметров (топики, потоки, папки) |
+| **🐳 Docker** | Готовый Dockerfile для развертывания в контейнере |
+
+---
+
+## 🏗 Архитектура
+┌─────────────────────────────────────────────────────────────────────────────┐
+│ Kafka-1C Connector │
+├─────────────────────────────────────────────────────────────────────────────┤
+│ │
+│ ┌─────────────────────────────┐ ┌──────────────────────────────────┐ │
+│ │ PRODUCER (Поток 1) │ │ CONSUMER (Поток 2) │ │
+│ │ │ │ │ │
+│ │ 📁 input/*.json │ │ 📨 Kafka (orders.input) │ │
+│ │ ↓ │ │ ↓ │ │
+│ │ 🔍 Парсинг JSON │ │ 🔍 Парсинг JSON │ │
+│ │ ↓ │ │ ↓ │ │
+│ │ 💾 SQLite кэш (pending) │ │ 🔍 Поиск контрагента │ │
+│ │ ↓ │ │ ↓ │ │
+│ │ 📤 Kafka (orders.input) │ │ 🔍 Поиск товаров │ │
+│ │ ↓ │ │ ↓ │ │
+│ │ ✅ Обновление статуса │ │ 📝 Создание заказа │ │
+│ │ 🗑 Удаление файла │ │ ↓ │ │
+│ └─────────────────────────────┘ │ 💾 SQLite кэш (sent/error) │ │
+│ │ ↓ │ │
+│ │ 📤 Kafka (orders.errors) │ │
+│ └──────────────────────────────────┘ │
+│ │
+│ ┌─────────────────────────────────────────────────────────────────────┐ │
+│ │ ОБЩИЕ РЕСУРСЫ │ │
+│ │ • SQLite кэш (cache/messages.db) │ │
+│ │ • PostgreSQL (trade_otus) │ │
+│ │ • Конфигурация (config/settings.json) │ │
+│ │ • Логгер с временными метками │ │
+│ └─────────────────────────────────────────────────────────────────────┘ │
+│ │
+└─────────────────────────────────────────────────────────────────────────────┘
 
 
-## Требования
+---
 
-- **Компилятор**: C++17 (GCC 7+, Clang 5+, MSVC 2019+)
-- **CMake**: 3.10 или выше
-- **Операционная система**: Windows / Linux / macOS
+## 🚀 Быстрый старт
 
-## Сборка
+### Требования
 
-### Windows (Visual Studio / MinGW)
+| Компонент | Версия | Описание |
+|-----------|--------|----------|
+| **C++** | 20 | Стандарт языка |
+| **CMake** | 3.10+ | Система сборки |
+| **Apache Kafka** | 4.2.1+ | Брокер сообщений |
+| **PostgreSQL** | 16+ | База данных |
+| **vcpkg** | latest | Менеджер пакетов |
+
+### Зависимости (vcpkg)
 
 ```powershell
-# Создаем папку для сборки
-mkdir build
-cd build
+vcpkg install librdkafka:x64-windows
+vcpkg install nlohmann-json:x64-windows
+vcpkg install sqlite3:x64-windows
+vcpkg install libpqxx:x64-windows
 
-# Конфигурируем CMake
-cmake ..
-
-# Собираем проект
+Сборка
+Windows (Visual Studio)
+git clone <repository>
+cd ProjectC++
+mkdir build && cd build
+cmake .. -DCMAKE_TOOLCHAIN_FILE="C:/vcpkg/scripts/buildsystems/vcpkg.cmake" -DCMAKE_BUILD_TYPE=Release
 cmake --build . --config Release
 
-# Создаем папку для сборки
-mkdir build
-cd build
-
-# Конфигурируем CMake
-cmake ..
-
-# Собираем проект
+Linux / macOS
+mkdir build && cd build
+cmake .. -DCMAKE_BUILD_TYPE=Release
 make -j$(nproc)
 
-# Копируем файлы моделей и данных в папку с исполняемым файлом
-copy ..\models\logreg_coef.txt Release\
-copy ..\test.csv Release\
+Запуск
+1. Запустите Kafka
+# Linux
+cd /opt/kafka
+./bin/kafka-server-start.sh config/server.properties
 
-# Запускаем
-cd Release
-.\fashion_mnist.exe logreg test.csv logreg_coef.txt
+# Windows
+cd D:\kafka
+.\bin\windows\kafka-server-start.bat .\config\server.properties
 
-# Копируем файлы моделей и данных
-cp ../models/logreg_coef.txt .
-cp ../test.csv .
+2. Создайте топики
+# Linux
+/opt/kafka/bin/kafka-topics.sh --create \
+  --topic orders.input \
+  --bootstrap-server localhost:9092 \
+  --partitions 3 \
+  --replication-factor 1
 
-# Запускаем
-./fashion_mnist logreg test.csv logreg_coef.txt
+/opt/kafka/bin/kafka-topics.sh --create \
+  --topic orders.errors \
+  --bootstrap-server localhost:9092 \
+  --partitions 1 \
+  --replication-factor 1
 
-Формат входных данных
-test.csv
-Формат: CSV без заголовка
+# Windows
+.\bin\windows\kafka-topics.bat --create --topic orders.input --bootstrap-server localhost:9092 --partitions 3 --replication-factor 1
 
-Количество столбцов: 785
+3. Запустите микросервис
+cd build/Release
+./kafka_order_sender.exe           # Режим both (Producer + Consumer)
+./kafka_order_sender.exe producer  # Только Producer
+./kafka_order_sender.exe consumer  # Только Consumer
 
-1-й столбец: метка класса (0-9)
+⚙️ Конфигурация
+config/settings.json
+{
+    "kafka": {
+        "bootstrap_servers": "localhost:9092",
+        "topics": {
+            "input": "orders.input",
+            "output": "orders.output",
+            "errors": "orders.errors"
+        },
+        "producer": {
+            "acks": "all",
+            "retries": 3,
+            "batch_size": 100,
+            "linger_ms": 5
+        },
+        "consumer": {
+            "group_id": "kafka_1c_consumer",
+            "auto_offset_reset": "earliest",
+            "enable_auto_commit": true
+        }
+    },
+    "database": {
+        "postgresql": {
+            "host": "localhost",
+            "port": 5432,
+            "database": "trade_otus",
+            "username": "postgres",
+            "password": "your_password"
+        }
+    },
+    "cache": {
+        "path": "cache/messages.db"
+    },
+    "processing": {
+        "max_workers": 4,
+        "batch_size": 100,
+        "retry_interval_seconds": 60,
+        "delete_after_send": true
+    },
+    "mode": "both",
+    "groups": [
+        {
+            "name": "Main",
+            "enabled": true,
+            "input_directory": "input",
+            "kafka_topic": "orders.input"
+        }
+    ]
+}
 
-Столбцы 2-785: значения пикселей (0-255), 28x28 изображение, развернутое в строку
+								Параметры конфигурации
+Параметр							Описание							Значение по умолчанию
+kafka.bootstrap_servers			Адрес Kafka брокера							localhost:9092
+kafka.producer.acks				Уровень подтверждения (0, 1, all)			all
+kafka.producer.retries			Количество попыток отправки					3
+kafka.consumer.group_id			ID группы потребителей						kafka_1c_consumer
+database.postgresql.host		Хост PostgreSQL								localhost
+database.postgresql.port		Порт PostgreSQL								5432
+processing.max_workers			Максимальное количество потоков				4
+processing.delete_after_send	Удалять файлы после отправки				true
+mode							Режим работы (producer, consumer, both)		both
 
-logreg_coef.txt
-Формат: текстовый файл с вещественными числами
+📁 Формат заказа (JSON)
+Пример файла input/order_1.json
+{
+    "TIN": "7701234567",
+    "TRRC": "770101001",
+    "contractor": "ООО Тестовая Компания",
+    "date": "2026-08-02T10:00:00",
+    "number": "ORD-001",
+    "goods": [
+        {
+            "SKU": "PROD-001",
+            "Quantity": 10,
+            "Price": 1500.50,
+            "Sum": 15005.00
+        },
+        {
+            "SKU": "PROD-002",
+            "Quantity": 5,
+            "Price": 2500.00,
+            "Sum": 12500.00
+        }
+    ]
+}
 
-Размер: 10 строк × 785 столбцов
-
-Каждая строка - веса для одного класса (0-9)
-
-1-й элемент - свободный член (bias)
-
-Остальные 784 элемента - веса для пикселей
-
-Как это работает
-1. Загрузка данных
-Программа читает test.csv и извлекает:
-
-X: матрица признаков (пиксели изображений)
-
-y: вектор меток классов
-
-2. Загрузка модели
-Читает файл logreg_coef.txt и загружает матрицу весов 10×785.
-
-3. Предсказание для одного изображения
-Для каждого класса вычисляется линейная комбинация:
-score_class = bias + w1*pixel1 + w2*pixel2 + ... + w784*pixel784
-Затем применяется softmax для получения вероятностей:
-P(class_i) = exp(score_i) / sum(exp(score_j))
-Выбирается класс с максимальной вероятностью.
-
-4. Вычисление точности
-accuracy = (количество правильных предсказаний) / (общее количество примеров)
-Пример вывода
-Loading test data from: test.csv
-Loaded 10000 test samples
-Features per sample: 784
-Using Logistic Regression model
-Loaded 10 x 785 weights matrix
-Accuracy: 0.850
-Time: 1234 ms
-
-Архитектура модели
-Логистическая регрессия
-Вход: 784 пикселя (изображение 28x28)
-      ↓
-Линейное преобразование для каждого класса
-      ↓
-Softmax (10 классов)
-      ↓
-Выход: номер класса (0-9)
-
-Математическая формула
-Для класса c:
-z_c = w_{c,0} + Σ_{i=1}^{784} w_{c,i} * x_i
-Где:
-
-w_{c,0} - свободный член (bias)
-
-w_{c,i} - вес для i-го пикселя
-
-x_i - значение i-го пикселя
-
-Вероятность класса c:
-P(c) = exp(z_c) / Σ_{j=0}^{9} exp(z_j)
-
-Сравнение моделей
-Модель	Точность	Сложность реализации
-Логистическая регрессия	~0.85	★☆☆ (простая)
-MLP			~0.89	★★☆ (средняя)
-CatBoost	~0.87	★★★ (сложная)
-CNN			~0.91	★★★ (сложная)
-
-Расширение проекта
-Добавление MLP
-Реализовать класс MLP
-
-Загружать w1.txt (784×128) и w2.txt (128×10)
-
-Применить сигмоиду на скрытом слое и softmax на выходе
-
-Добавление CatBoost
-Скачать и собрать библиотеку CatBoost
-
-Подключить libcatboost.so
-
-Использовать CalcModelPredictionSingle
-
-Добавление CNN (TensorFlow)
-Скачать TensorFlow C API
-
-Загрузить модель из saved_model/
-
-Выполнить инференс через тензоры
-
-Решение проблем
-Ошибка "Cannot open file"
-Проверьте, что файлы существуют
-
-Убедитесь, что указаны правильные пути
-
-Низкая точность
-Проверьте, что используется правильный файл модели
-
-Убедитесь, что данные нормализованы (0-255)
-
-Ошибка сборки
-Убедитесь, что установлен компилятор C++17
-
-Проверьте, что CMake версии 3.10 или выше
-
-Лицензия
-MIT License
-
-Автор
-Студент курса "C++ Профессионал" от OTUS
+						Поля заказа
+Поле					Тип				Обязательное			Описание
+TIN						string				✅				ИНН контрагента (12 цифр)
+TRRC					string				✅				КПП контрагента (9 цифр)
+contractor				string				❌				Наименование контрагента
+date					string				❌				Дата документа (ISO 8601)
+number					string				❌				Номер документа
+goods					array				✅				Массив товаров
+SKU						string				✅				Артикул товара
+Quantity				number				✅				Количество
+Price					number				✅				Цена за единицу
+Sum						number				✅				Сумма
 
 
+🔄 Работа с PostgreSQL
+Схема базы данных (1С)
+-- Контрагенты
+CREATE TABLE _Reference47 (
+    _IDRRef UUID PRIMARY KEY,
+    _Code VARCHAR(20),
+    _Description VARCHAR(255),
+    _Fld50 VARCHAR(12),   -- ИНН
+    _Fld51 VARCHAR(9),    -- КПП
+    _Marked BOOLEAN DEFAULT FALSE
+);
+
+-- Номенклатура
+CREATE TABLE _Reference48 (
+    _IDRRef UUID PRIMARY KEY,
+    _Code VARCHAR(20),
+    _Description VARCHAR(255),
+    _Fld52 VARCHAR(50),   -- Артикул
+    _Marked BOOLEAN DEFAULT FALSE
+);
+
+-- Заказы
+CREATE TABLE _Document49 (
+    _IDRRef UUID PRIMARY KEY,
+    _Date_Time TIMESTAMP,
+    _Number VARCHAR(50),
+    _Posted BOOLEAN DEFAULT TRUE,
+    _Marked BOOLEAN DEFAULT FALSE,
+    _Fld53RRef UUID REFERENCES _Reference47(_IDRRef)
+);
+
+-- Товары в заказе
+CREATE TABLE _Document49_VT54 (
+    _Document49_IDRRef UUID REFERENCES _Document49(_IDRRef),
+    _Fld56RRef UUID REFERENCES _Reference48(_IDRRef),
+    _Fld57 NUMERIC(15, 3),
+    _Fld58 NUMERIC(15, 2),
+    _Fld59 NUMERIC(15, 2)
+);
+
+-- Регистр сведений (логи)
+CREATE TABLE _InfoRg60 (
+    _Fld61 BIGINT,        -- Linux timestamp
+    _Fld62 VARCHAR(12),   -- ИНН
+    _Fld63 VARCHAR(9),    -- КПП
+    _Fld64 TEXT           -- JSON данные
+);
+
+Логика обработки заказа
+1. Поиск контрагента по TIN и TRRC
+
+2. Если не найден — создание нового контрагента
+
+3. Поиск товаров по артикулам (SKU)
+
+4. Создание заказа в документе и таблице товаров
+
+5. Запись в регистр сведений (аудит)
+
+📊 Мониторинг
+Просмотр сообщений в Kafka
+
+# Просмотр всех сообщений
+kafka-console-consumer --topic orders.input --bootstrap-server localhost:9092 --from-beginning
+
+# Просмотр ошибок
+kafka-console-consumer --topic orders.errors --bootstrap-server localhost:9092 --from-beginning
+
+# Просмотр с фильтром по ключу
+kafka-console-consumer --topic orders.input --bootstrap-server localhost:9092 --property print.key=true --property key.separator=:
+
+Просмотр кэша SQLite
+# Установить sqlite3
+sqlite3 cache/messages.db
+
+# Просмотр всех сообщений
+SELECT * FROM messages;
+
+# Просмотр только ожидающих
+SELECT * FROM messages WHERE status = 'pending';
+
+# Статистика по статусам
+SELECT status, COUNT(*) FROM messages GROUP BY status;
+
+Логирование
+Программа выводит логи в консоль с временными метками:
+[INFO] 2026-08-02 14:30:15.123 === Kafka-1C Connector (Producer + Consumer) ===
+[INFO] 2026-08-02 14:30:15.124 Version: 1.0.0
+[INFO] 2026-08-02 14:30:15.125 Config loaded successfully
+[INFO] 2026-08-02 14:30:15.126 Cache initialized: cache/messages.db
+[INFO] 2026-08-02 14:30:15.127 PostgreSQL connected: trade_otus
+[Kafka] Producer initialized. Brokers: localhost:9092, Topic: orders.input
+[INFO] 2026-08-02 14:30:15.128 Mode: both
+[INFO] 2026-08-02 14:30:15.129 Starting Producer thread...
+[INFO] 2026-08-02 14:30:17.130 Starting Consumer thread...
+[INFO] 2026-08-02 14:30:17.131 Found 1 files in input
+[JSON] Loaded: order_1.json
+[INFO] 2026-08-02 14:30:17.132 [Producer] Sent: 7701234567 (1)
+[DEBUG] 2026-08-02 14:30:17.133 [Producer] Delivered: 7701234567 (offset: 0)
+[INFO] 2026-08-02 14:30:17.134 Order processed successfully: ORD-001
+
+🐳 Docker
+Сборка образа
+docker build -t kafka-1c-connector .
+
+Запуск контейнера
+docker run -p 9092:9092 -p 5432:5432 kafka-1c-connector
+
+📁 Структура проекта
+ProjectC++
+├── CMakeLists.txt              # Конфигурация сборки
+├── Dockerfile                  # Docker образ
+├── Doxyfile                    # Конфигурация Doxygen
+├── README.md                   # Документация
+├── .gitignore                  # Игнорируемые файлы
+│
+├── config/
+│   └── settings.json           # Основная конфигурация
+│
+├── input/                      # Папка для JSON файлов
+│   └── order_1.json            # Пример заказа
+│
+├── cache/                      # SQLite база (создается автоматически)
+│   └── messages.db             # Кэш сообщений
+│
+└── src/
+    ├── main.cpp                # Точка входа
+    ├── config/
+    │   ├── config.hpp
+    │   └── config.cpp          # Загрузка конфигурации
+    ├── kafka/
+    │   ├── producer.hpp
+    │   ├── producer.cpp        # Kafka Producer
+    │   ├── consumer.hpp
+    │   └── consumer.cpp        # Kafka Consumer
+    ├── parser/
+    │   ├── json_parser.hpp
+    │   └── json_parser.cpp     # Парсинг JSON
+    ├── cache/
+    │   ├── sqlite_cache.hpp
+    │   └── sqlite_cache.cpp    # SQLite кэш
+    ├── database/
+    │   ├── postgresql.hpp
+    │   └── postgresql.cpp      # PostgreSQL
+    ├── processor/
+    │   ├── order_processor.hpp
+    │   └── order_processor.cpp # Обработка заказов
+    └── utils/
+        ├── logger.hpp
+        ├── logger.cpp          # Логирование
+        └── uuid.hpp            # Генерация UUID
+		
+🔧 Отладка
+Включение DEBUG логов
+В main.cpp добавьте:
+Logger::setLevel(Logger::Level::DEBUG);
+
+Брейкпоинты для отладки
+Файл									Строка								Что проверять
+main.cpp					AppConfig config = AppConfig::load(...)		Загрузка конфига
+producer.cpp				producer_->produce(...)						Отправка в Kafka
+consumer.cpp				consumer_->consume(...)						Получение из Kafka
+order_processor.cpp			processMessage(...)							Обработка заказа
+postgresql.cpp				txn.exec(...)								Выполнение SQL
+
+📈 План развития
+✅ Сделано (MVP)
+☑ Kafka Producer с многопоточностью
+☑ Kafka Consumer с автоматическим коммитом
+☑ SQLite кэширование и восстановление
+☑ Интеграция с PostgreSQL (1С схема)
+☑ JSON-конфигурация
+☑ Логирование
+☑ Docker-контейнеризация
+🚧 В планах (Релиз 2.0)
+□ Динамические SQL запросы через конфигурацию
+□ Поддержка RabbitMQ
+□ GUI для настройки (Qt)
+□ Метрики и мониторинг (Prometheus)
+□ Кластеризация и балансировка
+□ Web-интерфейс администратора
+
+📄 Лицензия
+MIT License. См. файл LICENSE.
+
+📧 Контакты
+Автор: Evgeniy Oshkin
+
+Email: oshkines@mail.ru
+
+GitHub: oshkines/otus-cpp-prof
+
+⭐ Поддержка
+Если проект оказался полезным, поставьте звезду на GitHub! Это поможет другим разработчикам найти его.
+
+Сделано с ❤️ для бешеной скорости интеграции 1С и Kafka
+
+© 2026 Evgeniy Oshkin. Все права защищены.

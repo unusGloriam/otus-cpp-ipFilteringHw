@@ -1,32 +1,87 @@
 cmake_minimum_required(VERSION 3.10)
-project(fashion-mnist VERSION 6.1.0 LANGUAGES CXX)
+project(kafkaordersender VERSION 8.0.0 LANGUAGES CXX)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+set(CMAKE_CXX_EXTENSIONS OFF)
 
-# Флаги компиляции
-if(MSVC)
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /W3 /O2")
-else()
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -Wall -Wextra -O2")
-endif()
+# ============================================================
+# ПУТИ К БИБЛИОТЕКАМ (из vcpkg)
+# ============================================================
 
-# Исходные файлы
+set(VCPKG_ROOT "C:/vcpkg/installed/x64-windows")
+
+# ============================================================
+# ИСХОДНЫЕ ФАЙЛЫ
+# ============================================================
+
 set(SOURCES
     src/main.cpp
-    src/logistic_regression.cpp
-    src/utils.cpp
+    src/config/config.cpp
+    src/kafka/producer.cpp
+    src/kafka/consumer.cpp
+    src/parser/json_parser.cpp
+    src/cache/sqlite_cache.cpp
+    src/database/postgresql.cpp
+	src/processor/order_processor.cpp
+    src/utils/logger.cpp
 )
 
 set(HEADERS
-    src/logistic_regression.hpp
-    src/utils.hpp
+    src/config/config.hpp
+    src/kafka/producer.hpp
+    src/kafka/consumer.hpp
+    src/parser/json_parser.hpp
+    src/cache/sqlite_cache.hpp
+    src/database/postgresql.hpp
+	src/processor/order_processor.hpp
+    src/utils/logger.hpp
+    src/utils/uuid.hpp
 )
 
-# Исполняемый файл
-add_executable(fashion-mnist ${SOURCES} ${HEADERS})
+# ============================================================
+# ИСПОЛНЯЕМЫЙ ФАЙЛ
+# ============================================================
 
-target_include_directories(fashion-mnist PRIVATE ${CMAKE_SOURCE_DIR}/src)
+add_executable(kafka_order_sender ${SOURCES} ${HEADERS})
 
-# Установка
-install(TARGETS fashion-mnist RUNTIME DESTINATION bin)
+# Пути для заголовочных файлов
+target_include_directories(kafka_order_sender PRIVATE 
+    ${CMAKE_SOURCE_DIR}/src
+    ${VCPKG_ROOT}/include
+)
+
+# Пути для библиотек
+target_link_directories(kafka_order_sender PRIVATE
+    ${VCPKG_ROOT}/lib
+)
+
+# Линковка библиотек
+target_link_libraries(kafka_order_sender
+    PRIVATE
+    rdkafka++          # C++ библиотека для Kafka
+    rdkafka            # C библиотека для Kafka  
+    sqlite3            # SQLite3
+    pqxx               # PostgreSQL C++ библиотека
+)
+
+# Для MSVC
+if(MSVC)
+    target_compile_definitions(kafka_order_sender PRIVATE _CRT_SECURE_NO_WARNINGS)
+endif()
+
+# ============================================================
+# УСТАНОВКА
+# ============================================================
+
+install(TARGETS kafka_order_sender RUNTIME DESTINATION bin)
+install(DIRECTORY config/ DESTINATION config)
+install(DIRECTORY input/ DESTINATION input)
+
+file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/config" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/Release")
+file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/input" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/Release")
+file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/Release/cache")
+
+file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/config" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/Debug")
+file(COPY "${CMAKE_CURRENT_SOURCE_DIR}/input" DESTINATION "${CMAKE_CURRENT_BINARY_DIR}/Debug")
+file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/Debug/cache")

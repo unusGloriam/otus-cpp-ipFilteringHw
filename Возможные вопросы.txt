@@ -1,0 +1,744 @@
+📚 ПОДРОБНЫЕ ОТВЕТЫ НА ВОПРОСЫ ДЛЯ ЗАЩИТЫ
+1️⃣ КАК УСТРОЕН LOCK-FREE PRODUCER?
+📖 Краткий ответ (для устного выступления)
+Lock-free Producer — это многопоточный механизм отправки файлов в Kafka, который использует атомарные 
+операции для распределения работы между потоками без использования блокировок (mutex). 
+Это обеспечивает максимальную производительность и предотвращает взаимоблокировки.
+
+🔧 Техническая реализация
+// main.cpp - runProducer()
+void runProducer(AppConfig& config, KafkaProducer& producer, MessageCache& cache) {
+    const int MAX_WORKERS = config.processing.max_workers;  // 4 потока
+    std::vector<std::thread> workers;
+    
+    while (running) {
+        for (const auto& group : config.groups) {
+            auto files = getJsonFiles(group.input_directory);  // Получаем список файлов
+            
+            // ★ КЛЮЧЕВОЙ МОМЕНТ ★
+            // Атомарный счетчик - общий для всех потоков
+            std::atomic<size_t> next_index{0};
+            
+            // Запускаем N потоков
+            for (int i = 0; i < MAX_WORKERS && running; ++i) {
+                workers.emplace_back([&]() {
+                    processFiles(
+                        group.input_directory,
+                        producer,
+                        cache,
+                        group.kafka_topic,
+                        std::ref(next_index),  // ← Передаем атомарный счетчик по ссылке
+                        std::cref(files)
+                    );
+                });
+            }
+            
+            // Ждем завершения всех потоков
+            for (auto& worker : workers) {
+                if (worker.joinable()) {
+                    worker.join();
+                }
+            }
+            workers.clear();
+        }
+    }
+}
+
+🔍 Как работает атомарный индекс
+// main.cpp - processFiles()
+void processFiles(..., std::atomic<size_t>& next_index, const std::vector<std::string>& files) {
+    size_t idx;
+    
+    // ★ ГЛАВНАЯ МАГИЯ ★
+    // fetch_add() - атомарная операция:
+    // 1. Читает текущее значение
+    // 2. Увеличивает на 1
+    // 3. Возвращает предыдущее значение
+    // ВСЕ ЭТО ВЫПОЛНЯЕТСЯ КАК ОДНА НЕДЕЛИМАЯ ОПЕРАЦИЯ!
+    while ((idx = next_index.fetch_add(1)) < files.size()) {
+        const std::string& filepath = files[idx];
+        
+        // Обработка файла...
+        auto order = JsonParser::parseOrder(filepath);
+        // ... отправка в Kafka ...
+    }
+}
+
+📊 Визуализация работы
+Файлы: [A.json, B.json, C.json, D.json, E.json, F.json, G.json, H.json]
+                           ↓
+            atomic<size_t> next_index = 0
+                           ↓
+    ┌─────────────────────────────────────────────┐
+    │  Поток 1    Поток 2    Поток 3    Поток 4   │
+    │  fetch_add  fetch_add  fetch_add  fetch_add │
+    │      ↓         ↓         ↓         ↓        │
+    │     0         1         2         3         │
+    │     ↓         ↓         ↓         ↓         │
+    │  A.json    B.json    C.json    D.json       │
+    │     ↓         ↓         ↓         ↓         │
+    │  fetch_add  fetch_add  fetch_add  fetch_add │
+    │      ↓         ↓         ↓         ↓        │
+    │     4         5         6         7         │
+    │     ↓         ↓         ↓         ↓         │
+    │  E.json    F.json    G.json    H.json       │
+    └─────────────────────────────────────────────┘
+	
+	✅ Преимущества Lock-free подхода
+Традиционный подход (mutex)			Lock-free подход (atomic)
+❌ Блокировка потоков				✅ Потоки не блокируются
+❌ Риск взаимоблокировок			✅ Нет взаимоблокировок
+❌ Накладные расходы на mutex		✅ Минимальные накладные расходы
+❌ Контекстные переключения			✅ Нет переключений
+❌ Сложность отладки				✅ Проще отлаживать
+✅ Гарантированная безопасность		✅ Гарантированная безопасность
+
+2️⃣ ЗАЧЕМ НУЖЕН SQLITE КЭШ?
+📖 Краткий ответ
+SQLite кэш — это резервное хранилище всех сообщений, которое гарантирует, что ни одно сообщение не будет потеряно при сбоях. Сообщение сохраняется в кэш ПЕРЕД отправкой в Kafka или записью в PostgreSQL.
+
+🎯 Основные функции
+1. Гарантия доставки (Producer)
+// Последовательность Producer:
+1. Сохранить в SQLite (статус: pending)  ← ЕСЛИ СБОЙ ЗДЕСЬ - ФАЙЛ НЕ УДАЛЕН
+2. Отправить в Kafka                     ← ЕСЛИ СБОЙ ЗДЕСЬ - МОЖНО ВОССТАНОВИТЬ
+3. Обновить статус (sent)                ← ЕСЛИ СБОЙ ЗДЕСЬ - ОТПРАВЛЕНО, НО НЕ ПОМЕЧЕНО
+4. Удалить файл
+
+2. Восстановление после сбоя (Consumer)
+// При запуске Consumer:
+void OrderProcessor::reprocessPendingMessages() {
+    // 1. Читаем все pending сообщения из SQLite
+    auto pending = cache_.getPendingMessages(1000);
+    
+    // 2. Повторно обрабатываем каждое
+    for (const auto& [id, topic, message, filename] : pending) {
+        // 3. Парсим и обрабатываем как обычно
+        OrderData order = OrderData::fromJson(message);
+        // ... обработка ...
+        
+        // 4. Если успешно - помечаем как sent
+        cache_.markSent(id);
+    }
+}
+
+3. Отслеживание статуса
+// Статусы сообщений в SQLite:
+// 1. 'pending'  - ожидает обработки
+// 2. 'sent'     - успешно обработано
+// 3. 'error'    - произошла ошибка
+
+// Таблица messages
+CREATE TABLE messages (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    filename TEXT NOT NULL,
+    tin TEXT,
+    trrc TEXT,
+    topic TEXT NOT NULL,
+    message TEXT NOT NULL,
+    status TEXT DEFAULT 'pending',  // ← КЛЮЧЕВОЕ ПОЛЕ
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    sent_at TIMESTAMP,
+    error TEXT
+);
+
+📊 Сценарии использования
+Сценарий 1: Producer (отправка в Kafka)
+1. Прочитан файл order.json
+2. Сохранен в SQLite (status = 'pending') ← КЭШИРОВАНИЕ
+3. Отправлен в Kafka → УСПЕШНО
+4. Обновлен статус (status = 'sent')
+5. Удален файл
+
+Сценарий 2: Сбой при отправке в Kafka
+1. Прочитан файл order.json
+2. Сохранен в SQLite (status = 'pending') ← СОХРАНЕН!
+3. Отправка в Kafka → ОШИБКА (Kafka недоступна)
+4. Программа завершается
+   ...
+5. Перезапуск программы
+6. Обнаруживает pending сообщения
+7. Повторно отправляет в Kafka ✅
+
+Сценарий 3: Consumer (обработка заказа)
+1. Получено сообщение из Kafka
+2. Сохранен в SQLite (status = 'pending') ← КЭШИРОВАНИЕ
+3. Поиск клиента в PostgreSQL → УСПЕШНО
+4. Поиск товаров в PostgreSQL → УСПЕШНО
+5. Создание заказа в PostgreSQL → УСПЕШНО
+6. Обновлен статус (status = 'sent')
+
+✅ Преимущества SQLite кэша
+Без кэша							С кэшем
+❌ Потеря сообщений при сбое	✅ Сообщения не теряются
+❌ Нет восстановления			✅ Автоматическое восстановление
+❌ Нельзя отследить статус		✅ Полный контроль статуса
+❌ Нет аудита					✅ Есть история всех операций
+
+
+3️⃣ ЧТО ДЕЛАЕТ РЕГИСТР СВЕДЕНИЙ?
+📖 Краткий ответ
+Регистр сведений (_InfoRg60) — это таблица аудита в 1С, которая хранит историю всех полученных сообщений. Каждая запись содержит: временную метку, ИНН, КПП и полный JSON заказа.
+🎯 Назначение
+-- Структура регистра сведений
+CREATE TABLE _InfoRg60 (
+    _Fld61 BIGINT,        -- Linux timestamp (миллисекунды с 1970)
+    _Fld62 VARCHAR(12),   -- ИНН контрагента
+    _Fld63 VARCHAR(9),    -- КПП контрагента
+    _Fld64 TEXT           -- Полный JSON заказа
+);
+
+📝 Как используется в коде
+// order_processor.cpp - logToRegister()
+void OrderProcessor::logToRegister(const OrderData& order, const std::string& json_str) {
+    // 1. Получаем текущее время в миллисекундах
+    long long linux_time = getLinuxTime();  // 1712345678901
+    
+    // 2. Записываем в регистр
+    db_.logKafkaMessage(linux_time, order.tin, order.trrc, json_str);
+}
+
+// postgresql.cpp - logKafkaMessage()
+void PostgreSQL::logKafkaMessage(
+    long long linux_time,
+    const std::string& tin,
+    const std::string& trrc,
+    const std::string& json_data
+) {
+    std::string sql = R"(
+        INSERT INTO _InfoRg60 (_Fld61, _Fld62, _Fld63, _Fld64)
+        VALUES (" + std::to_string(linux_time) + R"(, '" + escape(tin) + R"(', '" + escape(trrc) + R"(', '" + escape(json_data) + R"(')
+    )";
+    execute(sql);
+}
+
+📊 Что хранится в регистре
+-- Пример записи
+INSERT INTO _InfoRg60 VALUES (
+    1712345678901,                    -- Время получения
+    '7701234567',                     -- ИНН
+    '770101001',                      -- КПП
+    '{"TIN":"7701234567","TRRC":"770101001","contractor":"ООО Тест","goods":[...]}'
+);
+
+🎯 Зачем это нужно?
+1. Аудит
+Кто отправил заказ (ИНН/КПП)
+
+Когда был получен (timestamp)
+
+Какие данные были отправлены (JSON)
+
+2. Отслеживание проблем
+Можно проверить, что заказ был получен
+
+Можно восстановить данные, если что-то пошло не так
+
+3. Интеграция с 1С
+1С может использовать этот регистр для проверки входящих данных
+
+Синхронизация между системами
+
+4. Отчетность
+Можно строить отчеты по полученным заказам
+
+Статистика по контрагентам
+
+📋 Сравнение с другими таблицами
+Таблица				Назначение						Когда записывается
+_InfoRg60		Регистр сведений (аудит)		Сразу после получения из Kafka
+_Reference47	Контрагенты						После обработки контрагента
+_Reference48	Номенклатура					После обработки товаров
+_Document49		Заказы							После создания заказа
+
+✅ Преимущества
+БЕЗ РЕГИСТРА СВЕДЕНИЙ:
+❌ Нет истории сообщений
+❌ Нельзя отследить, что пришло
+❌ Сложно отлаживать
+❌ Нет аудита
+
+С РЕГИСТРОМ СВЕДЕНИЙ:
+✅ Полная история всех сообщений
+✅ Можно отследить проблемы
+✅ Легкая отладка
+✅ Аудит для 1С
+✅ Восстановление данных
+
+4️⃣ КАК ВОССТАНАВЛИВАЮТСЯ СООБЩЕНИЯ ПОСЛЕ СБОЯ?
+📖 Краткий ответ
+При запуске Consumer автоматически проверяет SQLite кэш на наличие сообщений со статусом pending и повторно обрабатывает их. Это гарантирует, что ни одно сообщение не будет потеряно даже при сбоях.
+
+🔄 Полный цикл восстановления
+// main.cpp - при запуске Consumer
+void runConsumer(...) {
+    // 1. Создаем процессор
+    OrderProcessor processor(db, cache, error_producer);
+    
+    // 2. ★ ВОССТАНОВЛЕНИЕ ★
+    Logger::info("[Consumer] Checking for pending messages in cache...");
+    processor.reprocessPendingMessages();  // ← КЛЮЧЕВОЙ МЕТОД
+    
+    // 3. Запускаем основной цикл
+    consumer.start();
+}
+
+📝 Детальная реализация восстановления
+// order_processor.cpp - reprocessPendingMessages()
+void OrderProcessor::reprocessPendingMessages() {
+    // 1. Получаем все pending сообщения из SQLite
+    auto pending = cache_.getPendingMessages(1000);
+    
+    if (pending.empty()) {
+        Logger::info("No pending messages to reprocess");
+        return;
+    }
+    
+    Logger::info("Found " + std::to_string(pending.size()) + 
+                 " pending messages to reprocess");
+    
+    // 2. Обрабатываем каждое сообщение
+    for (const auto& [id, topic, message, filename] : pending) {
+        Logger::info("Reprocessing: " + filename);
+        
+        try {
+            // 3. Парсим JSON
+            OrderData order = OrderData::fromJson(message);
+            if (!JsonParser::validate(order)) {
+                Logger::error("Invalid cached order: " + filename);
+                cache_.markError(id, "Invalid JSON in cache");
+                sendError("PostgreSQL write error", "Invalid cached order", message);
+                continue;
+            }
+            
+            // 4. Логируем в регистр сведений
+            logToRegister(order, message);
+            
+            // 5. Обрабатываем контрагента
+            auto client_id = processClient(order);
+            if (!client_id) {
+                Logger::error("Failed to reprocess client: " + order.tin);
+                cache_.markError(id, "Client not found");
+                sendError("PostgreSQL write error", "Client not found", message);
+                continue;
+            }
+            
+            // 6. Обрабатываем товары
+            auto items = processProducts(order);
+            if (items.empty()) {
+                Logger::error("No valid products in cached order: " + filename);
+                cache_.markError(id, "No products found");
+                sendError("PostgreSQL write error", "No products found", message);
+                continue;
+            }
+            
+            // 7. Создаем заказ
+            if (!createOrder(order, *client_id, items)) {
+                Logger::error("Failed to reprocess order: " + filename);
+                cache_.markError(id, "Order creation failed");
+                sendError("PostgreSQL write error", "Order creation failed", message);
+                continue;
+            }
+            
+            // 8. ★ ПОМЕЧАЕМ КАК ОБРАБОТАННОЕ ★
+            cache_.markSent(id);
+            Logger::info("Reprocessed successfully: " + filename);
+            
+        } catch (const std::exception& e) {
+            Logger::error("Reprocess error: " + std::string(e.what()));
+            cache_.markError(id, e.what());
+            sendError("PostgreSQL write error", "Reprocess error", message);
+        }
+    }
+}
+
+📊 Сценарии восстановления
+Сценарий 1: Сбой до отправки в Kafka (Producer)
+
+1. Файл прочитан и сохранен в SQLite (status = 'pending')
+2. ❌ Сбой: Kafka недоступна
+3. Программа завершена
+4. 🔄 Перезапуск Producer
+5. ✅ Обнаружены pending сообщения
+6. ✅ Повторная отправка в Kafka
+7. ✅ Статус обновлен на 'sent'
+8. ✅ Файл удален
+
+Сценарий 2: Сбой после отправки, до обновления статуса
+1. Файл прочитан и сохранен в SQLite (status = 'pending')
+2. ✅ Отправлен в Kafka (успешно)
+3. ❌ Сбой: программа упала до обновления статуса
+4. Программа завершена
+5. 🔄 Перезапуск Producer
+6. ✅ Обнаружены pending сообщения
+7. ⚠️ Сообщение уже есть в Kafka (дубликат)
+8. ✅ Повторная отправка (idempotent)
+9. ✅ Статус обновлен на 'sent'
+
+Сценарий 3: Сбой при обработке Consumer
+1. ✅ Получено сообщение из Kafka
+2. ✅ Сохранено в SQLite (status = 'pending')
+3. ✅ Записано в регистр сведений
+4. ❌ Сбой: PostgreSQL недоступен
+5. Программа завершена
+6. 🔄 Перезапуск Consumer
+7. ✅ Обнаружены pending сообщения
+8. ✅ Повторная обработка
+9. ✅ Статус обновлен на 'sent'
+
+🛡️ Гарантии надежности
+// Атомарность операций
+1. Сохранение в SQLite    → Атомарно (INSERT)
+2. Отправка в Kafka       → Атомарно (produce)
+3. Обновление статуса     → Атомарно (UPDATE)
+
+// Если что-то пошло не так между 1 и 2:
+// - Сообщение в SQLite со статусом 'pending'
+// - При перезапуске будет повторно отправлено
+
+// Если что-то пошло не так между 2 и 3:
+// - Сообщение в SQLite со статусом 'pending'
+// - При перезапуске будет отправлено повторно (дубликат)
+// - Kafka гарантирует idempotent-обработку
+
+5️⃣ ПОЧЕМУ ACKS=ALL?
+📖 Краткий ответ
+acks=all — это настройка Kafka Producer, которая требует подтверждения от всех реплик (in-sync replicas) перед тем, как считать сообщение доставленным. Это обеспечивает максимальную надежность и гарантирует, что сообщение не будет потеряно даже при сбое брокера.
+
+📊 Уровни подтверждения (acks)
+acks			Описание					Надежность				Производительность
+0			Без подтверждения					❌ Очень низкая			✅ Максимальная
+1			Подтверждение от лидера				🔶 Средняя				🔶 Высокая
+all			Подтверждение от всех реплик		✅ Максимальная			❌ Низкая
+
+🔧 Реализация в коде
+// config/settings.json
+{
+    "kafka": {
+        "producer": {
+            "acks": "all",        // ← ТРЕБУЕТ ПОДТВЕРЖДЕНИЯ ОТ ВСЕХ РЕПЛИК
+            "retries": 3,
+            "batch_size": 100,
+            "linger_ms": 5
+        }
+    }
+}
+
+// producer.cpp - init()
+bool KafkaProducer::init(const std::string& acks, int retries) {
+    RdKafka::Conf* conf = RdKafka::Conf::create(RdKafka::Conf::CONF_GLOBAL);
+    
+    // Устанавливаем acks
+    conf->set("acks", acks, errstr_);  // ← "all"
+    
+    // Дополнительные настройки для надежности
+    conf->set("message.send.max.retries", std::to_string(retries), errstr_);
+    conf->set("request.timeout.ms", "5000", errstr_);
+    
+    // Создаем producer
+    producer_.reset(RdKafka::Producer::create(conf, errstr_));
+    // ...
+}
+
+📋 Как работает acks=all
+    Producer                    Kafka Cluster
+        │                           │
+        │  1. Отправка сообщения    │
+        ├──────────────────────────►│
+        │                           │
+        │                    ┌──────┴──────┐
+        │                    │   Leader    │ ← Получает сообщение
+        │                    │  Replica    │
+        │                    └──────┬──────┘
+        │                           │
+        │                    ┌──────┴──────┐
+        │                    │  Follower   │ ← Реплицирует
+        │                    │  Replica 1  │
+        │                    └──────┬──────┘
+        │                           │
+        │                    ┌──────┴──────┐
+        │                    │  Follower   │ ← Реплицирует
+        │                    │  Replica 2  │
+        │                    └──────┬──────┘
+        │                           │
+        │  2. Подтверждение от всех │
+        │◄──────────────────────────┤
+        │                           │
+        │  3. Message delivered!    │
+		
+🎯 Почему выбрали acks=all?
+1. Финансовые данные
+// Заказы содержат финансовую информацию
+// Потеря заказа = потеря денег
+// acks=all гарантирует, что заказ не потеряется
+
+2. Интеграция с 1С
+// 1С отправляет критически важные данные
+// Нужна 100% гарантия доставки
+// acks=all обеспечивает эту гарантию
+
+3. Бизнес-требования
+// Заказы должны быть доставлены в любом случае
+// Даже при сбое одного брокера
+// acks=all гарантирует доставку при сбое
+
+📊 Сравнение сценариев
+Сценарий: Сбой лидера после получения сообщения
+acks=0							acks=1					acks=all
+❌ Сообщение потеряно		❌ Сообщение потеряно	✅ Сообщение сохранено
+Producer не знает			Producer не знает		Producer получил подтверждение
+Нет восстановления			Нет восстановления		Есть восстановление
+
+Сценарий: Сбой фолловера во время репликации
+acks=0							acks=1						acks=all
+✅ Сообщение доставлено		✅ Сообщение доставлено		❌ Сообщение НЕ доставлено
+❌ Нет гарантии				❌ Нет гарантии				✅ Безопасность
+Риск потери					Риск потери					Нет риска	
+
+// Настройка баланса между надежностью и производительностью
+{
+    "kafka": {
+        "producer": {
+            "acks": "all",          // ← Надежность
+            "retries": 3,           // ← Попытки при сбое
+            "batch_size": 100,      // ← Производительность
+            "linger_ms": 5          // ← Производительность
+        }
+    }
+}
+
+⚖️ Компромисс
+// Почему так:
+// 1. acks=all    → Гарантия доставки (бизнес-требование)
+// 2. retries=3   → Автоматическое восстановление
+// 3. batch_size=100 → Оптимизация сети
+// 4. linger_ms=5 → Оптимизация задержек	
+
+6️⃣ КАК ОБРАБАТЫВАЮТСЯ ОШИБКИ?
+📖 Краткий ответ
+Все ошибки в Consumer обрабатываются через единый механизм sendError(), который отправляет структурированное сообщение в топик orders.errors. 
+Это позволяет централизованно отслеживать все проблемы и анализировать их.
+
+🔧 Единый механизм обработки ошибок
+// order_processor.cpp - sendError()
+void OrderProcessor::sendError(
+    const std::string& error_type,      // Тип ошибки
+    const std::string& description,     // Описание
+    const std::string& original_message // Оригинальное сообщение
+) {
+    try {
+        // 1. Генерируем UUID для идентификации ошибки
+        std::string uuid = utils::generateUUID();
+        std::string key = error_type + " " + uuid;
+        
+        // 2. Формируем структурированный JSON
+        nlohmann::json error_json;
+        error_json["error_type"] = error_type;
+        error_json["uuid"] = uuid;
+        error_json["timestamp"] = getLinuxTime();
+        error_json["description"] = description;
+        if (!original_message.empty()) {
+            error_json["original_message"] = original_message;
+        }
+        
+        std::string error_str = error_json.dump();
+        
+        // 3. Отправляем в топик errors
+        if (error_producer_.send(key, error_str)) {
+            Logger::debug("Error sent to Kafka: " + key);
+        } else {
+            Logger::error("Failed to send error to Kafka: " + key);
+        }
+        
+    } catch (const std::exception& e) {
+        Logger::error("sendError failed: " + std::string(e.what()));
+    }
+}
+
+📝 Типы ошибок
+
+// 1. Ошибки чтения из Kafka
+sendError("Kafka read error", "Message is not valid JSON", value);
+
+// 2. Ошибки валидации
+sendError("Kafka read error", "Invalid order structure: missing TIN", value);
+
+// 3. Ошибки PostgreSQL
+sendError("PostgreSQL write error", "Client not found and could not be created", value);
+
+// 4. Ошибки товаров
+sendError("PostgreSQL write error", "No valid products found in order", value);
+
+// 5. Ошибки создания заказа
+sendError("PostgreSQL write error", "Failed to create order in PostgreSQL", value);
+
+📊 Где происходят проверки
+// order_processor.cpp - processMessage()
+bool OrderProcessor::processMessage(const std::string& key, 
+                                    const std::string& value, 
+                                    int64_t timestamp) {
+    try {
+        // ✅ Проверка 1: Валидность JSON
+        if (value.empty() || (value[0] != '{' && value[0] != '[')) {
+            sendError("Kafka read error", "Message is not valid JSON", value);
+            return false;  // ← ОШИБКА 1
+        }
+        
+        // ✅ Проверка 2: Структура заказа
+        OrderData order = OrderData::fromJson(value);
+        if (!JsonParser::validate(order)) {
+            sendError("Kafka read error", "Invalid order structure", value);
+            return false;  // ← ОШИБКА 2
+        }
+        
+        // ✅ Проверка 3: Контрагент
+        auto client_id = processClient(order);
+        if (!client_id) {
+            sendError("PostgreSQL write error", "Client not found", value);
+            return false;  // ← ОШИБКА 3
+        }
+        
+        // ✅ Проверка 4: Товары
+        auto items = processProducts(order);
+        if (items.empty()) {
+            sendError("PostgreSQL write error", "No valid products found", value);
+            return false;  // ← ОШИБКА 4
+        }
+        
+        // ✅ Проверка 5: Создание заказа
+        if (!createOrder(order, *client_id, items)) {
+            sendError("PostgreSQL write error", "Failed to create order", value);
+            return false;  // ← ОШИБКА 5
+        }
+        
+        return true;  // ✅ УСПЕХ
+        
+    } catch (const std::exception& e) {
+        // ✅ Проверка 6: Исключения
+        sendError("Kafka read error", "Exception: " + std::string(e.what()), value);
+        return false;  // ← ОШИБКА 6
+    }
+}
+
+📋 Формат ошибки в Kafka
+{
+    "error_type": "PostgreSQL write error",
+    "uuid": "550e8400-e29b-41d4-a716-446655440000",
+    "timestamp": 1712345678901,
+    "description": "Client not found and could not be created: TIN=7709876543",
+    "original_message": "{\"TIN\":\"7709876543\",\"TRRC\":\"770202002\",\"contractor\":\"ООО Партнер\",\"date\":\"2026-08-02T11:00:00\",\"number\":\"ORD-007\",\"goods\":[{\"SKU\":\"PROD-007\",\"Quantity\":520,\"Price\":100.00,\"Sum\":52000.00}]}"
+}
+
+🎯 Мониторинг ошибок
+# 1. Просмотр всех ошибок
+kafka-console-consumer --topic orders.errors --bootstrap-server localhost:9092 --from-beginning
+
+# 2. Просмотр ошибок по типу
+kafka-console-consumer --topic orders.errors --bootstrap-server localhost:9092 --property print.key=true
+
+# 3. Анализ ошибок в SQLite
+sqlite3 cache/messages.db
+SELECT * FROM messages WHERE status = 'error';
+
+# 4. Статистика ошибок в логах
+[INFO] === Summary ===
+[INFO] Errors: 3  ← СЧЕТЧИК ОШИБОК
+
+🛡️ Обработка ошибок на всех уровнях
+
+// 1. Уровень Kafka (consumer.cpp)
+if (msg->err() == RdKafka::ERR_NO_ERROR) {
+    // Успешно
+} else {
+    // Ошибка чтения из Kafka
+    Logger::error("Consumer error: " + msg->errstr());
+}
+
+// 2. Уровень Processor (order_processor.cpp)
+try {
+    // Обработка заказа
+} catch (const std::exception& e) {
+    sendError("Kafka read error", e.what(), value);
+    return false;
+}
+
+// 3. Уровень PostgreSQL (postgresql.cpp)
+try {
+    txn.exec(sql);
+    txn.commit();
+} catch (const std::exception& e) {
+    Logger::error("SQL error: " + std::string(e.what()));
+    return false;
+}
+
+// 4. Уровень SQLite (sqlite_cache.cpp)
+if (sqlite3_step(stmt) != SQLITE_DONE) {
+    std::cerr << "[Cache] Insert failed: " << sqlite3_errmsg(db_) << std::endl;
+    return false;
+}
+
+✅ Преимущества системы обработки ошибок
+
+Аспект							Преимущество
+Централизация				Все ошибки через sendError()
+Структурированность			Единый JSON формат
+Отслеживаемость				UUID для каждой ошибки
+Аналитика					Легко анализировать в Kafka
+Логирование					Детальные логи с уровнями
+Восстановление				SQLite кэш для повторной обработки
+Мониторинг					Счетчики ошибок в summary
+
+🎓 КЛЮЧЕВЫЕ ТЕЗИСЫ ДЛЯ ЗАЩИТЫ
+1️⃣ Lock-free Producer
+Использует атомарные операции (std::atomic)
+
+Нет блокировок (mutex)
+
+Максимальная производительность
+
+Безопасное распределение файлов между потоками
+
+2️⃣ SQLite кэш
+Резервное хранилище для всех сообщений
+
+Гарантия доставки при сбоях
+
+Автоматическое восстановление
+
+Три статуса: pending, sent, error
+
+3️⃣ Регистр сведений
+Таблица аудита в 1С
+
+Хранит историю всех сообщений
+
+Время, ИНН, КПП, JSON
+
+Для отчетности и отладки
+
+4️⃣ Восстановление после сбоя
+Автоматическая проверка при запуске
+
+Повторная обработка pending сообщений
+
+Ни одно сообщение не теряется
+
+Idempotent обработка
+
+5️⃣ acks=all
+Максимальная надежность
+
+Подтверждение от всех реплик
+
+Гарантия доставки
+
+Компромисс с производительностью
+
+6️⃣ Обработка ошибок
+Единый механизм sendError()
+
+Структурированный JSON
+
+Топик orders.errors
+
+Отслеживание всех проблем

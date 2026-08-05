@@ -1,0 +1,111 @@
+ПОЛНАЯ ЦЕПОЧКА ВЫЗОВОВ
+1. PRODUCER (JSON → KAFKA)
+main.cpp
+  └── main()
+        └── std::thread(runProducer)                    // Запуск потока Producer
+              └── runProducer()
+                    └── getJsonFiles()                  // .\src\main.cpp
+                          └── fs::directory_iterator   // Чтение папки input/
+                    └── for (workers)                  // Запуск N потоков
+                          └── processFiles()            // .\src\main.cpp
+                                ├── JsonParser::parseOrder()
+                                │     └── OrderData::fromJson()  // .\src\parser\json_parser.cpp
+                                │           └── nlohmann::json::parse()
+                                ├── JsonParser::validate()       // .\src\parser\json_parser.cpp
+                                ├── order.toJson()               // .\src\parser\json_parser.cpp
+                                ├── cache.save()                 // .\src\cache\sqlite_cache.cpp
+                                │     └── INSERT INTO messages (status='pending', source='producer')
+                                ├── producer.send()              // .\src\kafka\producer.cpp
+                                │     └── producer_->produce()   // librdkafka
+                                │     └── producer_->poll(0)
+                                └── fs::remove()                 // Удаление файла
+								
+
+2. CONSUMER (KAFKA → SQL)
+main.cpp
+  └── main()
+        └── std::thread(runConsumer)                   // Запуск потока Consumer
+              └── runConsumer()                         // .\src\main.cpp
+                    ├── KafkaConsumer()                // .\src\kafka\consumer.cpp
+                    │     └── consumer.init()
+                    │           └── RdKafka::KafkaConsumer::create()
+                    │           └── consumer_->subscribe()
+                    ├── OrderProcessor()               // .\src\processor\order_processor.cpp
+                    ├── processor.reprocessPendingMessages()
+                    │     └── cache_.getPendingMessages()   // .\src\cache\sqlite_cache.cpp
+                    │           └── SELECT ... WHERE status='pending' AND source LIKE '...|producer%'
+                    │     └── for each message:
+                    │           ├── OrderData::fromJson()
+                    │           ├── processClient()
+                    │           │     ├── db_.findClient()     // .\src\database\postgresql.cpp
+                    │           │     │     └── query(SELECT FROM _Reference47)
+                    │           │     └── db_.createClient()   // если не найден
+                    │           │           └── execute(INSERT INTO _Reference47)
+                    │           ├── processProducts()
+                    │           │     └── for each goods:
+                    │           │           └── db_.findProductByArticle()
+                    │           │                 └── query(SELECT FROM _Reference48)
+                    │           ├── createOrder()
+                    │           │     └── db_.createOrder()
+                    │           │           ├── generateUUID()
+                    │           │           ├── convertToHex()
+                    │           │           ├── execute(INSERT INTO _Document49)
+                    │           │           └── for each item:
+                    │           │                 └── execute(INSERT INTO _Document49_VT54)
+                    │           └── cache_.markSent()   // UPDATE messages SET status='sent'
+                    └── consumer.start()
+                          └── consumeLoop()            // .\src\kafka\consumer.cpp
+                                └── consumer_->consume()
+                                └── callback_()        // → OrderProcessor::processMessage()
+                                      └── processMessage()
+                                            ├── OrderData::fromJson()
+                                            ├── cache_.save()          // .\src\cache\sqlite_cache.cpp
+                                            │     └── INSERT (source='consumer')
+                                            ├── logToRegister()
+                                            │     └── db_.logKafkaMessage()
+                                            │           └── INSERT INTO _InfoRg60
+                                            ├── processClient()
+                                            │     ├── db_.findClient()
+                                            │     └── db_.createClient()
+                                            ├── processProducts()
+                                            │     └── db_.findProductByArticle()
+                                            ├── createOrder()
+                                            │     └── db_.createOrder()
+                                            └── cache_.markSent()
+
+3. ОБРАБОТКА ОШИБОК
+
+order_processor.cpp
+  └── OrderProcessor::sendError()
+        ├── utils::generateUUID()
+        ├── nlohmann::json (формирование)
+        └── error_producer_.send()          // .\src\kafka\producer.cpp
+              └── producer_->produce(topic: orders.errors)
+
+
+
+								СВОДНАЯ ТАБЛИЦА
+Этап		Функция							Файл								Что делает
+1		runProducer()						main.cpp						Запускает поток Producer
+2		processFiles()						main.cpp						Обрабатывает файлы в цикле
+3		JsonParser::parseOrder()			json_parser.cpp					Парсит JSON файл
+4		cache.save()						sqlite_cache.cpp				Сохраняет в SQLite (pending)
+5		producer.send()						producer.cpp					Отправляет в Kafka
+6		runConsumer()						main.cpp						Запускает поток Consumer
+7		reprocessPendingMessages()			order_processor.cpp				Восстанавливает из кэша
+8		consumeLoop()						consumer.cpp					Читает из Kafka
+9		processMessage()					order_processor.cpp				Обрабатывает сообщение
+10		processClient()						order_processor.cpp				Находит/создает контрагента
+11		processProducts()					order_processor.cpp				Находит товары
+12		createOrder()						order_processor.cpp				Создает заказ в PostgreSQL
+13		cache.markSent()					sqlite_cache.cpp				Помечает как обработанное
+
+
+КЛЮЧЕВЫЕ МОМЕНТЫ
+
+1. Producer:  файл → SQLite (pending) → Kafka
+2. Consumer:  Kafka → SQLite (pending) → SQL → markSent()
+3. Recovery:  SQLite (pending, source='producer', старше N сек) → SQL → markSent()
+4. Source:    producer | consumer (разделение потоков)
+5. Ошибки:    sendError() → Kafka (orders.errors)
+			  

@@ -1,0 +1,286 @@
+📋 ПАМЯТКА ДЛЯ ЗАЩИТЫ
+🎯 КЛЮЧЕВЫЕ МОМЕНТЫ ДЛЯ ЗАЩИТЫ
+1. АРХИТЕКТУРА ПРОЕКТА
+┌──────────────────────────────────────────────────────────────┐
+│                    ПРОЕКТНАЯ АРХИТЕКТУРА                     │
+├──────────────────────────────────────────────────────────────┤
+│                                                              │
+│  🏗 Трехуровневая архитектура:                               │
+│                                                              │
+│  1. Уровень ВЗАИМОДЕЙСТВИЯ (Kafka)                           │
+│     - producer.hpp/cpp    - отправка в Kafka                 │
+│     - consumer.hpp/cpp    - получение из Kafka               │
+│                                                              │
+│  2. Уровень БИЗНЕС-ЛОГИКИ (Processor)                        │
+│     - order_processor.hpp/cpp                                │
+│     - Обработка заказов: клиент → товары → заказ             │
+│                                                              │
+│  3. Уровень ДАННЫХ (Storage)                                 │
+│     - postgresql.hpp/cpp  - основное хранилище               │
+│     - sqlite_cache.hpp/cpp - резервное кэширование           │
+│                                                              │
+│  🔧 Вспомогательные модули:                                  │
+│     - config.hpp/cpp      - конфигурация                     │
+│     - json_parser.hpp/cpp - парсинг JSON                     │
+│     - logger.hpp/cpp      - логирование                      │
+│     - uuid.hpp            - генерация UUID                   │
+│                                                              │
+└──────────────────────────────────────────────────────────────┘
+
+2. ПОТОКИ ВЫПОЛНЕНИЯ
+// main.cpp - два параллельных потока
+
+Поток 1 (Producer)          Поток 2 (Consumer)
+────────────────────────────────────────────────
+runProducer()               runConsumer()
+    │                           │
+    ▼                           ▼
+Читает файлы из input/    Инициализирует KafkaConsumer
+    │                           │
+    ▼                           ▼
+Парсит JSON                Восстанавливает из кэша
+    │                           │
+    ▼                           ▼
+Сохраняет в SQLite         Запускает consumeLoop()
+    │                           │
+    ▼                           ▼
+Отправляет в Kafka         processMessage() для каждого
+    │                           │
+    ▼                           ▼
+Удаляет файл               Авто-коммит offset
+
+
+3. ПОСЛЕДОВАТЕЛЬНОСТЬ ОБРАБОТКИ ЗАКАЗА
+// 1. Входная точка
+OrderProcessor::processMessage(key, value, timestamp)
+    │
+    ├── 1.1 Проверка JSON
+    │   └── if (!JsonParser::validate(order)) → sendError()
+    │
+    ├── 1.2 Сохранение в SQLite кэш
+    │   └── cache_.save(cache_key, "processing", value, tin, trrc)
+    │
+    ├── 1.3 Логирование в регистр сведений
+    │   └── db_.logKafkaMessage(linux_time, tin, trrc, json_str)
+    │
+    ├── 1.4 Обработка контрагента
+    │   ├── db_.findClient(tin, trrc)
+    │   │   └── SELECT FROM _Reference47 WHERE _Fld50 = '...' AND _Fld51 = '...'
+    │   └── if not found → db_.createClient(tin, trrc, name)
+    │       └── INSERT INTO _Reference47 (...)
+    │
+    ├── 1.5 Обработка товаров (цикл)
+    │   └── for each item in order.goods:
+    │       └── db_.findProductByArticle(item.sku)
+    │           └── SELECT FROM _Reference48 WHERE _Fld52 = '...'
+    │       └── if not found → пропускаем
+    │       └── if found → добавляем в вектор items
+    │
+    ├── 1.6 Создание заказа
+    │   └── db_.createOrder(client_id, date, number, items)
+    │       ├── generateUUID() → order_id
+    │       ├── INSERT INTO _Document49 (_IDRRef, _Date_Time, _Number, _Posted, _Marked, _Fld53RRef)
+    │       │   VALUES (order_id, date, number, 1, 0, client_id)
+    │       └── for each item in items:
+    │           └── INSERT INTO _Document49_VT54 (_Document49_IDRRef, _Fld56RRef, _Fld57, _Fld58, _Fld59)
+    │               VALUES (order_id, product_id, quantity, price, sum)
+    │
+    └── 1.7 Успех
+        └── return true
+		
+4. ТАБЛИЦЫ БАЗЫ ДАННЫХ
+Таблица					Назначение					Ключевые поля
+_Reference47			Контрагенты			_IDRRef, _Fld50 (ИНН), _Fld51 (КПП)
+_Reference48			Номенклатура		_IDRRef, _Fld52 (Артикул)
+_Document49				Заказы (шапка)		_IDRRef, _Fld53RRef (клиент)
+_Document49_VT54		Товары в заказе		_Document49_IDRRef, _Fld56RRef (товар)
+_InfoRg60				Регистр сведений	_Fld61 (timestamp), _Fld62 (ИНН), _Fld63 (КПП)		
+
+5. ОБРАБОТКА ОШИБОК
+// Все ошибки отправляются в топик orders.errors
+void OrderProcessor::sendError(error_type, description, original_message)
+    │
+    ├── Генерирует UUID ошибки
+    ├── Формирует JSON:
+    │   {
+    │       "error_type": "Kafka read error",
+    │       "uuid": "...",
+    │       "timestamp": 1712345678901,
+    │       "description": "...",
+    │       "original_message": "..."
+    │   }
+    └── error_producer_.send(key, error_json.dump())
+
+// Типы ошибок:
+// 1. "Kafka read error"     - проблемы с парсингом JSON
+// 2. "PostgreSQL write error" - проблемы с записью в БД
+
+6. SQLITE КЭШ
+// Структура таблицы messages
+CREATE TABLE messages (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    filename TEXT NOT NULL,
+    tin TEXT,
+    trrc TEXT,
+    topic TEXT NOT NULL,
+    message TEXT NOT NULL,
+    status TEXT DEFAULT 'pending',  // 'pending', 'sent', 'error'
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    sent_at TIMESTAMP,
+    error TEXT
+);
+
+// Зачем нужен?
+// 1. Сохранение сообщений перед отправкой в Kafka (Producer)
+// 2. Восстановление после сбоя (Consumer)
+// 3. Отслеживание статуса обработки
+
+
+7. ТОЧКИ ОСТАНОВА ДЛЯ ОТЛАДКИ
+Файл					Строка				Что проверяем
+consumer.cpp			73				Получение сообщения из Kafka
+order_processor.cpp		58				Проверка JSON
+order_processor.cpp		65				Парсинг JSON → структура OrderData
+postgresql.cpp			122				SQL запрос поиска клиента
+postgresql.cpp			131				Результат поиска клиента
+postgresql.cpp			165				SQL запрос поиска товара
+postgresql.cpp			171				Результат поиска товара
+postgresql.cpp			200				INSERT в _Document49 (шапка)
+postgresql.cpp			211				INSERT в _Document49_VT54 (строки)
+postgresql.cpp			185				INSERT в _InfoRg60 (регистр)
+order_processor.cpp		53				Отправка ошибки в Kafka
+
+
+8. ВОПРОСЫ, КОТОРЫЕ МОГУТ ЗАДАТЬ НА ЗАЩИТЕ
+1. Почему используется SQLite + PostgreSQL?
+SQLite: кэш для надежности (сохранение сообщений до обработки)
+
+PostgreSQL: основное хранилище (1С база)
+
+2. Как обрабатываются ошибки?
+Все ошибки логируются и отправляются в топик orders.errors
+
+Структура ошибки содержит тип, описание, оригинальное сообщение
+
+3. Как происходит восстановление после сбоя?
+При запуске Consumer вызывает reprocessPendingMessages()
+
+Читает из SQLite все сообщения со статусом pending
+
+Повторно обрабатывает их
+
+4. Как гарантируется доставка?
+acks=all — подтверждение от всех реплик
+
+SQLite кэш перед отправкой
+
+Автоматический коммит offset после обработки
+
+5. Почему выбран C++20?
+Высокая производительность
+
+Lock-free многопоточность
+
+Современные возможности (std::atomic, std::optional)
+
+6. Как устроен многопоточный Producer?
+
+// Lock-free цикл с атомарным индексом
+std::atomic<size_t> next_index{0};
+while ((idx = next_index.fetch_add(1)) < files.size()) {
+    // Обработка файла без блокировок
+}
+
+9. КОМАНДЫ ДЛЯ ЗАПУСКА
+# Сборка
+cd build
+cmake .. -DCMAKE_TOOLCHAIN_FILE="C:/vcpkg/scripts/buildsystems/vcpkg.cmake"
+cmake --build . --config Release
+
+# Запуск
+cd Release
+./kafka_order_sender.exe           # Producer + Consumer
+./kafka_order_sender.exe producer  # Только Producer
+./kafka_order_sender.exe consumer  # Только Consumer
+
+# Просмотр сообщений в Kafka
+kafka-console-consumer --topic orders.input --bootstrap-server localhost:9092 --from-beginning
+
+# Просмотр ошибок
+kafka-console-consumer --topic orders.errors --bootstrap-server localhost:9092 --from-beginning
+
+# Проверка SQLite
+sqlite3 cache/messages.db
+SELECT * FROM messages;
+
+10. ОСНОВНЫЕ ЗАВИСИМОСТИ
+# CMakeLists.txt
+target_link_libraries(kafka_order_sender
+    PRIVATE
+    rdkafka++          # Kafka
+    sqlite3            # SQLite
+    pqxx               # PostgreSQL
+)
+
+# vcpkg
+librdkafka:x64-windows
+nlohmann-json:x64-windows
+sqlite3:x64-windows
+libpqxx:x64-windows
+
+11. JSON-ФОРМАТ ЗАКАЗА
+{
+    "TIN": "7701234567",      // ИНН контрагента (обязательное)
+    "TRRC": "770101001",      // КПП контрагента (обязательное)
+    "contractor": "ООО Тест", // Наименование (опционально)
+    "date": "2026-08-02T10:00:00", // Дата (опционально)
+    "number": "ORD-001",      // Номер (опционально)
+    "goods": [                // Массив товаров (обязательное)
+        {
+            "SKU": "PROD-001",    // Артикул (обязательное)
+            "Quantity": 10,       // Количество (обязательное)
+            "Price": 1500.50,     // Цена (обязательное)
+            "Sum": 15005.00       // Сумма (обязательное)
+        }
+    ]
+}
+
+12. СТАТИСТИКА ВЫПОЛНЕНИЯ
+// По завершению main() выводит:
+[INFO] === Summary ===
+[INFO] Producer sent: 15        // Отправлено сообщений
+[INFO] Consumer processed: 12   // Обработано заказов
+[INFO] Errors: 3                 // Ошибок
+[INFO] Pending in cache: 0      // Ожидают отправки
+[INFO] Total in cache: 15       // Всего в кэше
+
+🎯 ПЛАН ПОДГОТОВКИ К ЗАЩИТЕ
+Действие 1: Пройти код с отладчиком
+1. Установить брейкпоинты по списку выше
+2. Запустить программу в режиме consumer
+3. Отправить тестовый JSON в Kafka
+4. Пройти шаг за шагом все этапы
+5. Записать SQL запросы, которые выполняются
+
+Действие 2: Подготовить ответы на вопросы
+Как устроен Lock-free Producer?
+
+Зачем нужен SQLite кэш?
+
+Что делает регистр сведений?
+
+Как восстанавливаются сообщения после сбоя?
+
+Почему acks=all?
+
+Как обрабатываются ошибки?
+
+Действие 3: Подготовить демонстрацию
+1. Запустить программу в режиме both
+2. Положить файл в input/
+3. Показать лог отправки в Kafka
+4. Показать лог обработки Consumer
+5. Показать данные в PostgreSQL
+6. Показать данные в SQLite
+7. Показать ошибку (если есть)
+

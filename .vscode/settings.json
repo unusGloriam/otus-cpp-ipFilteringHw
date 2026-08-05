@@ -1,14 +1,26 @@
 {
     "cmake.sourceDirectory": "${workspaceFolder}",
     "cmake.buildDirectory": "${workspaceFolder}/build",
-    "cmake.generator": "MinGW Makefiles",
+    "cmake.generator": "Visual Studio 18 2026",
     "cmake.configureSettings": {
-        "CMAKE_CXX_COMPILER": "g++",
-        "CMAKE_C_COMPILER": "gcc"
+        "CMAKE_TOOLCHAIN_FILE": "C:/vcpkg/scripts/buildsystems/vcpkg.cmake"
     },
+    "cmake.buildConfig": "Debug",
+    "C_Cpp.default.cppStandard": "c++17",
+    "C_Cpp.default.includePath": [
+        "${workspaceFolder}/src",
+        "${workspaceFolder}/src/config",
+        "${workspaceFolder}/src/kafka",
+        "${workspaceFolder}/src/parser",
+        "${workspaceFolder}/src/cache",
+        "${workspaceFolder}/src/utils",
+        "C:/vcpkg/installed/x64-windows/include"
+    ],
     "files.associations": {
         "*.hpp": "cpp",
-        "*.cpp": "cpp"
+        "*.cpp": "cpp",
+        "*.json": "json"
     },
-    "C_Cpp.default.cppStandard": "c++17"
+    "editor.formatOnSave": true,
+    "editor.rulers": [100]
 }

@@ -1,13 +1,14 @@
 #!/usr/bin/make -f
 
-# Экспорт переменных из CMake
-export PROJECT_NAME = fashion-mnist
-
 %:
-	dh	$@
+	dh $@
 
 override_dh_auto_configure:
 	dh_auto_configure -- -DCMAKE_BUILD_TYPE=Release
 
 override_dh_auto_install:
-	dh_auto_install	
+	dh_auto_install
+
+override_dh_clean:
+	dh_clean
+	rm -rf build

@@ -1,9 +1,0 @@
-<map id="src/statistics.hpp" name="src/statistics.hpp">
-<area shape="rect" id="Node000001" title=" " alt="" coords="57,5,178,32"/>
-<area shape="rect" id="Node000002" title=" " alt="" coords="5,80,59,107"/>
-<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="105,32,60,72,56,68,100,33"/>
-<area shape="rect" id="Node000003" title=" " alt="" coords="83,80,152,107"/>
-<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="119,31,120,65,115,63,116,35"/>
-<area shape="rect" id="Node000004" title=" " alt="" coords="175,80,233,107"/>
-<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="133,30,180,70,175,70,132,35"/>
-</map>
