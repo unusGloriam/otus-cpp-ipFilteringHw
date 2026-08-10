@@ -1,0 +1,14 @@
+{
+  "TIN": "7701234569",
+  "TRRC": "",  
+  "contractor": "ИП Петров Б.Б.",
+  "date": "2026-08-10T12:52:00",
+  "number": "ORD-620",
+  "goods": [
+    {"SKU": "PROD-001", "Quantity": 1, "Price": 1000.00, "Sum": 1000.00},
+    {"SKU": "PROD-002", "Quantity": 2, "Price": 1500.00, "Sum": 3000.00},
+    {"SKU": "PROD-003", "Quantity": 3, "Price": 2000.00, "Sum": 6000.00},
+    {"SKU": "PROD-004", "Quantity": 4, "Price": 2500.00, "Sum": 10000.00},
+    {"SKU": "PROD-005", "Quantity": 5, "Price": 3000.00, "Sum": 15000.00}
+  ]
+}

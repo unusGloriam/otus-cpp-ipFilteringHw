@@ -106,7 +106,7 @@ OrderData OrderData::fromJson(const std::string &json_str)
 {
     try
     {
-        json j = json::parse(json_str);
+        json j = json::parse(json_str); // 4. Парсинг в nlohmann::json
         return fromJson(j);
     }
     catch (const std::exception &e)
@@ -117,10 +117,10 @@ OrderData OrderData::fromJson(const std::string &json_str)
 }
 
 // ============================================================
-// JsonParser::parseOrder - ★ ТОЛЬКО ОДНО ОПРЕДЕЛЕНИЕ ★
+// JsonParser::parseOrder - ТОЛЬКО ОДНО ОПРЕДЕЛЕНИЕ
 // ============================================================
 
-OrderData JsonParser::parseOrder(const std::string &filename)
+OrderData JsonParser::parseOrder(const std::string &filename) // 3. Вход в парсинг JSON
 {
     std::ifstream file(filename);
     if (!file.is_open())
@@ -174,7 +174,7 @@ std::vector<OrderData> JsonParser::parseDirectory(const std::string &directory)
 
 bool JsonParser::validate(const OrderData &order)
 {
-    if (order.tin.empty() || order.trrc.empty())
+    if (order.tin.empty())
     {
         std::cerr << "[JSON] Validation failed: Missing TIN or TRRC" << std::endl;
         return false;

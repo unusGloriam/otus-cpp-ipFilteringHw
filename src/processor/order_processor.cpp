@@ -27,7 +27,7 @@ long long OrderProcessor::getLinuxTime()
 // ============================================================
 // Отправка ошибки в топик orders.errors
 // ============================================================
-void OrderProcessor::sendError(const std::string &error_type,
+void OrderProcessor::sendError(const std::string &error_type, // 28. Отправка ошибки в Kafka
                                const std::string &description,
                                const std::string &original_message)
 {
@@ -48,7 +48,7 @@ void OrderProcessor::sendError(const std::string &error_type,
 
         std::string error_str = error_json.dump();
 
-        if (error_producer_.send(key, error_str)) // Отправка в Kafka
+        if (error_producer_.send(key, error_str)) // Отправка в Kafka // 29. Отправка в orders.errors
         {
             Logger::debug("Error sent to Kafka: " + key);
         }
@@ -87,7 +87,7 @@ bool OrderProcessor::isOrderAlreadyProcessed(const std::string &key)
 // ============================================================
 // Обработка одного сообщения из Kafka
 // ============================================================
-bool OrderProcessor::processMessage(const std::string &key,
+bool OrderProcessor::processMessage(const std::string &key, // 13. Вход в обработку
                                     const std::string &value,
                                     int64_t timestamp)
 {
@@ -112,7 +112,7 @@ bool OrderProcessor::processMessage(const std::string &key,
         }
 
         // 3. Парсим JSON
-        OrderData order = OrderData::fromJson(value);
+        OrderData order = OrderData::fromJson(value); // 14. Парсинг JSON
         if (!JsonParser::validate(order))
         {
             std::string error_msg = "Invalid order structure: missing TIN, TRRC or goods";
@@ -124,16 +124,16 @@ bool OrderProcessor::processMessage(const std::string &key,
         // 4. Сохраняем в SQLite кэш (на случай сбоя БД)
         std::string cache_key = "order_" + order.tin + "_" + order.number;
         std::string source_type = "consumer";
-        if (!cache_.save(cache_key, "processing", value, order.tin, order.trrc, source_type))
+        if (!cache_.save(cache_key, "processing", value, order.tin, order.trrc, source_type)) // 15. Сохранение в SQLite (Consumer)
         {
             Logger::warning("Failed to save to cache, continuing...");
         }
 
         // 5. Логируем в регистр сведений
-        logToRegister(order, value);
+        logToRegister(order, value); // 16. Запись в регистр сведений
 
         // 6. Обрабатываем контрагента
-        auto client_id = processClient(order);
+        auto client_id = processClient(order); // 18. Поиск контрагента
         if (!client_id)
         {
             std::string error_msg = "Client not found and could not be created: TIN=" + order.tin;
@@ -143,7 +143,7 @@ bool OrderProcessor::processMessage(const std::string &key,
         }
 
         // 7. Обрабатываем товары
-        auto items = processProducts(order);
+        auto items = processProducts(order); // 21. Поиск товаров
         if (items.empty())
         {
             std::string error_msg = "No valid products found in order";
@@ -153,7 +153,7 @@ bool OrderProcessor::processMessage(const std::string &key,
         }
 
         // 8. Создаем заказ
-        if (!createOrder(order, *client_id, items))
+        if (!createOrder(order, *client_id, items)) // 23. Создание заказа
         {
             std::string error_msg = "Failed to create order in PostgreSQL";
             Logger::error(error_msg);
@@ -230,7 +230,7 @@ void OrderProcessor::reprocessPendingMessages()
                 continue;
             }
 
-            cache_.markSent(id); // Обновление статуса
+            cache_.markSent(id); // Обновление статуса // 26. UPDATE SQLite (status='sent') - изменяем статус на обработано
             Logger::info("Reprocessed successfully: " + filename);
         }
         catch (const std::exception &e)

@@ -80,10 +80,10 @@ namespace database
 
     void PostgreSQL::disconnect()
     {
-        //if (conn_ && conn_->is_open())
+        // if (conn_ && conn_->is_open())
         //{
-        //    conn_->close();
-        //}
+        //     conn_->close();
+        // }
         conn_.reset();
         connected_ = false;
     }
@@ -339,7 +339,7 @@ namespace database
 
             Logger::debug("findClient SQL: " + sql);
 
-            pqxx::result result = query(sql);
+            pqxx::result result = query(sql); // 19. SELECT из _Reference47 (таблица контрагентов)
             if (result.empty())
             {
                 Logger::warning("Client not found: INN=" + inn + ", KPP=" + kpp);
@@ -400,6 +400,7 @@ namespace database
             std::string empty_uuid = "00000000-0000-0000-0000-000000000000";
             std::string empty_hex = convertToHex(empty_uuid); // ★ HEX с \x ★
 
+            // 20. INSERT в _Reference47 (создание контрагента)
             std::string sql = R"(
             INSERT INTO _Reference47 (_IDRRef, _Code, _Description, _Fld50, _Fld51, _Marked, _PredefinedID)
             VALUES (')" + id_hex +
@@ -447,7 +448,7 @@ namespace database
 
             Logger::debug("findProductByArticle SQL: " + sql);
 
-            pqxx::result result = query(sql);
+            pqxx::result result = query(sql); // 22. SELECT из _Reference48 (Поиск номенклатуры)
             if (result.empty())
             {
                 Logger::warning("Product not found: article=" + article);
@@ -508,6 +509,7 @@ namespace database
             pqxx::work txn(*conn_);
 
             // 1. Создаем документ (шапку заказа)
+            // 24. INSERT в _Document49 (начало создания документа заказа)
             std::string sql_order = R"(
             INSERT INTO _Document49 (_IDRRef, _Date_Time, _Number, _Posted, _Marked, _Fld53RRef)
             VALUES (')" + order_id_hex +
@@ -527,6 +529,7 @@ namespace database
                 // НЕ КОНВЕРТИРУЕМ - product_id УЖЕ В HEX ФОРМАТЕ
                 std::string product_id_hex = item.product_id;
 
+                // 25. INSERT в _Document49_VT54 (добавляем товары в Заказ покупателя отдельная таблица)
                 std::string sql_item = R"(
                 INSERT INTO _Document49_VT54 (_Document49_IDRRef, _Fld56RRef, _Fld57, _Fld58, _Fld59, _KeyField, _LineNo55)
                 VALUES (')" + order_id_hex +
@@ -560,7 +563,7 @@ namespace database
     // Запись в регистр сведений
     // ============================================================
 
-    void PostgreSQL::logKafkaMessage(
+    void PostgreSQL::logKafkaMessage( // 17. INSERT в _InfoRg60
         long long linux_time,
         const std::string &tin,
         const std::string &trrc,

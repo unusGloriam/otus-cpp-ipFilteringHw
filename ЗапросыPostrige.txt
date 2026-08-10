@@ -1,0 +1,54 @@
+SELECT 
+    _IDRRef as "Ссылка",
+    _Code as "Код",
+    _Description as "Наименование",
+    _Fld50 as "ИНН",
+    _Fld51 as "КПП",
+    _Marked as "ПометкаУдаления"
+FROM _Reference47;
+
+SELECT 
+    _IDRRef as "Ссылка",
+    _Code as "Код",
+    _Description as "Наименование",
+    _Fld52 as "Артикул",
+    _Marked as "ПометкаУдаления"
+FROM _Reference48;
+
+SELECT 
+    _IDRRef as "Ссылка",
+    _Date_Time as "Дата",
+    _Number as "Номер",
+    _Posted as "Проведен",
+    _Marked as "ПометкаУдаления",
+    _Fld53RRef as "Контрагент"
+FROM _Document49;
+
+SELECT 
+    _Document49_IDRRef as "Заказ",
+    _Fld56RRef as "Товар",
+    _Fld57 as "Количество",
+    _Fld58 as "Цена",
+    _Fld59 as "Сумма",
+    _LineNo55 as "НомерСтроки"
+FROM _Document49_VT54;
+
+SELECT 
+    _Fld61 as "Время",
+    _Fld62 as "ИНН",
+    _Fld63 as "КПП",
+    _Fld64 as "JSON"
+FROM _InfoRg60;
+
+SELECT 
+    d._Number as "Номер",
+    d._Date_Time as "Дата",
+    c._Description as "Контрагент",
+    p._Description as "Товар",
+    vt._Fld57 as "Кол-во",
+    vt._Fld58 as "Цена",
+    vt._Fld59 as "Сумма"
+FROM _Document49 d
+JOIN _Reference47 c ON d._Fld53RRef = c._IDRRef
+JOIN _Document49_VT54 vt ON d._IDRRef = vt._Document49_IDRRef
+JOIN _Reference48 p ON vt._Fld56RRef = p._IDRRef;

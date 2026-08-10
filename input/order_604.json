@@ -1,0 +1,10 @@
+{
+  "TIN": "7809876543",
+  "TRRC": "780202002",
+  "contractor": "LLC Partner SPB",
+  "date": "2026-08-10T12:22:00",
+  "number": "ORD-604",
+  "goods": [
+    {"SKU": "PROD-003", "Quantity": 7, "Price": 2000.00, "Sum": 14000.00}
+  ]
+}

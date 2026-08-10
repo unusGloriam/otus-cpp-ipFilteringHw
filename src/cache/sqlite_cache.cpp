@@ -37,7 +37,7 @@ bool MessageCache::init()
     execute("PRAGMA journal_mode=WAL;");
     execute("PRAGMA synchronous=NORMAL;");
 
-    // ★ ДОБАВЛЯЕМ ПОЛЕ source ★
+    // ДОБАВЛЯЕМ ПОЛЕ source
     const char *sql = R"(
         CREATE TABLE IF NOT EXISTS messages (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -87,7 +87,7 @@ bool MessageCache::save(const std::string &filename, const std::string &topic,
         return false;
     }
 
-    sqlite3_bind_text(stmt, 1, filename.c_str(), -1, SQLITE_TRANSIENT);
+    sqlite3_bind_text(stmt, 1, filename.c_str(), -1, SQLITE_TRANSIENT); // 6. Привязка параметров к INSERT
     sqlite3_bind_text(stmt, 2, tin.c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt, 3, trrc.c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_text(stmt, 4, topic.c_str(), -1, SQLITE_TRANSIENT);
@@ -101,7 +101,7 @@ bool MessageCache::save(const std::string &filename, const std::string &topic,
     }
     sqlite3_bind_text(stmt, 6, full_source.c_str(), -1, SQLITE_TRANSIENT);
 
-    int rc = sqlite3_step(stmt);
+    int rc = sqlite3_step(stmt); // 7. Выполнение INSERT
     sqlite3_finalize(stmt);
 
     if (rc != SQLITE_DONE)
@@ -120,6 +120,7 @@ bool MessageCache::markSent(int64_t id)
 {
     std::lock_guard<std::mutex> lock(mutex_);
 
+    // 27. Выполнение UPDATE изменение статуса
     std::string sql = R"(
         UPDATE messages 
         SET status = 'sent', sent_at = CURRENT_TIMESTAMP 

@@ -75,7 +75,7 @@ void processFiles(const std::string &directory,
 {
 
     size_t idx;
-    while ((idx = next_index.fetch_add(1)) < files.size())
+    while ((idx = next_index.fetch_add(1)) < files.size()) // 1. Lock-free атомарное разделение
     {
         const std::string &filepath = files[idx];
 
@@ -83,7 +83,7 @@ void processFiles(const std::string &directory,
         {
             Logger::debug("[Producer] Processing: " + filepath);
 
-            auto order = JsonParser::parseOrder(filepath);
+            auto order = JsonParser::parseOrder(filepath); // 2. Начало чтения файла
             if (!JsonParser::validate(order))
             {
                 Logger::error("[Producer] Invalid order: " + filepath);
@@ -95,14 +95,14 @@ void processFiles(const std::string &directory,
             std::string key = order.tin + "-" + order.number;
             std::string source_type = "producer";
 
-            if (!cache.save(filepath, topic, json_message, order.tin, order.trrc, source_type))
+            if (!cache.save(filepath, topic, json_message, order.tin, order.trrc, source_type)) // 5. Сохранение в SQLite (Producer)
             {
                 Logger::error("[Producer] Failed to cache: " + filepath);
                 error_count.fetch_add(1);
                 continue;
             }
 
-            if (producer.send(key, json_message))
+            if (producer.send(key, json_message)) // 8.Отправка в Kafka
             {
                 producer_count.fetch_add(1);
                 Logger::info("[Producer] Sent: " + key + " (" + std::to_string(producer_count.load()) + ")");
