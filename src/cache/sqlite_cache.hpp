@@ -21,9 +21,9 @@ public:
     bool init();
 
     // Сохранить сообщение перед отправкой
-    bool save(const std::string &filename, const std::string &topic,
-              const std::string &message, const std::string &tin = "",
-              const std::string &trrc = "", const std::string &source = "");
+    int64_t save(const std::string &filename, const std::string &topic,
+                 const std::string &message, const std::string &tin = "",
+                 const std::string &trrc = "", const std::string &source = "");
 
     void setSourcePrefix(const std::string &prefix) { source_prefix_ = prefix; }
     void setReprocessDelay(int seconds) { reprocess_delay_seconds_ = seconds; }

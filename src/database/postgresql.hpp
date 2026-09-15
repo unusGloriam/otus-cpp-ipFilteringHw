@@ -101,6 +101,9 @@ namespace database
             const std::string &number,
             const std::vector<OrderItem> &items);
 
+        // Проверка существования заказа
+        bool orderExists(const std::string &number, const std::string &client_id);
+
         // ============================================================
         // Запись в регистр сведений
         // ============================================================

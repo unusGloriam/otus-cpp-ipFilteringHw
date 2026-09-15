@@ -1,5 +1,7 @@
 #include "producer.hpp"
 #include <iostream>
+#include "../utils/logger.hpp"
+#include <filesystem>
 
 // ============================================================
 // DeliveryReportCb - реализация
@@ -10,22 +12,69 @@ KafkaProducer::DeliveryReportCb::DeliveryReportCb(KafkaProducer *producer)
 
 void KafkaProducer::DeliveryReportCb::dr_cb(RdKafka::Message &msg) // 10.Callback доставки
 {
+    std::string key = msg.key() ? *msg.key() : "";
     if (msg.err())
     {
         // Ошибка доставки
         producer_->failed_count_.fetch_add(1);
+        Logger::warning("[Producer] Delivery failed: " + key + " (error: " + msg.errstr() + ")");
+
+        // Достаём cache_id (файл не удаляем — останется в input/ для повторной обработки)
+        int64_t cache_id = -1;
+        {
+            std::lock_guard<std::mutex> lock(producer_->pending_mutex_);
+            auto it = producer_->pending_files_.find(key);
+            if (it != producer_->pending_files_.end())
+            {
+                cache_id = it->second.cache_id;
+                // НЕ удаляем из pending_files_ — может быть повторная доставка
+                // или файл останется в input/
+            }
+        }
+
         if (producer_->callback_)
         {
-            producer_->callback_(msg.key() ? *msg.key() : "", msg.err(), msg.offset());
+            producer_->callback_(key, msg.err(), msg.offset(), cache_id);
         }
     }
     else
     {
         // Успешная доставка
         producer_->sent_count_.fetch_add(1);
+        Logger::debug("[Producer] Delivered: " + key + " (offset: " + std::to_string(msg.offset()) + ")");
+        // Достаём filename и cache_id
+        std::string filename;
+        int64_t cache_id = -1;
+        {
+            std::lock_guard<std::mutex> lock(producer_->pending_mutex_);
+            auto it = producer_->pending_files_.find(key);
+            if (it != producer_->pending_files_.end())
+            {
+                filename = it->second.filename;
+                cache_id = it->second.cache_id;
+                producer_->pending_files_.erase(it);
+            }
+        }
+
+        // Удаляем файл только после подтверждённой доставки
+        if (!filename.empty())
+        {
+            try
+            {
+                std::filesystem::remove(filename);
+                Logger::debug("[Producer] File deleted after delivery: " + filename);
+            }
+            catch (const std::exception &e)
+            {
+                Logger::warning("[Producer] Failed to delete file: " + filename + " - " + e.what());
+            }
+        }
+
+        // Обновляем статус в кэше — но об этом позже, т.к. cache_ недоступен в producer
+        // Можно вызвать callback_ и там сделать markSent
         if (producer_->callback_)
         {
-            producer_->callback_(msg.key() ? *msg.key() : "", 0, msg.offset());
+            producer_->callback_(key, 0, msg.offset(), cache_id);
         }
     }
 }
@@ -141,4 +190,31 @@ void KafkaProducer::flush(int timeout_ms)
 void KafkaProducer::setDeliveryCallback(DeliveryCallback cb)
 {
     callback_ = std::move(cb);
+}
+
+void KafkaProducer::registerFileForDeletion(const std::string &key,
+                                            const std::string &filename,
+                                            int64_t cache_id)
+{
+    std::lock_guard<std::mutex> lock(pending_mutex_);
+    pending_files_[key] = {filename, cache_id};
+}
+
+bool KafkaProducer::isFilePending(const std::string &filename)
+{
+    std::lock_guard<std::mutex> lock(pending_mutex_);
+    for (const auto &[key, pf] : pending_files_)
+    {
+        if (pf.filename == filename)
+            return true;
+    }
+    return false;
+}
+
+void KafkaProducer::poll(int timeout_ms)
+{
+    if (producer_)
+    {
+        producer_->poll(timeout_ms);
+    }
 }

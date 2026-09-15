@@ -83,7 +83,7 @@ void processFiles(const std::string &directory,
         {
             Logger::debug("[Producer] Processing: " + filepath);
 
-            auto order = JsonParser::parseOrder(filepath); // 2. Начало чтения файла
+            auto order = JsonParser::parseOrder(filepath);
             if (!JsonParser::validate(order))
             {
                 Logger::error("[Producer] Invalid order: " + filepath);
@@ -91,35 +91,40 @@ void processFiles(const std::string &directory,
                 continue;
             }
 
+            // Проверяем: файл уже в обработке? из-за быстрых скоростей файл может считаться еще раз
+            if (producer.isFilePending(filepath))
+            {
+                Logger::debug("[Producer] File already pending delivery, skipping: " + filepath);
+                continue;
+            }
+
             std::string json_message = order.toJson();
             std::string key = order.tin + "-" + order.number;
             std::string source_type = "producer";
 
-            if (!cache.save(filepath, topic, json_message, order.tin, order.trrc, source_type)) // 5. Сохранение в SQLite (Producer)
+            int64_t cache_id = cache.save(filepath, topic, json_message, order.tin, order.trrc, "producer");
+            if (cache_id < 0)
             {
                 Logger::error("[Producer] Failed to cache: " + filepath);
                 error_count.fetch_add(1);
                 continue;
             }
 
-            if (producer.send(key, json_message)) // 8.Отправка в Kafka
+            if (producer.send(key, json_message))
             {
                 producer_count.fetch_add(1);
-                Logger::info("[Producer] Sent: " + key + " (" + std::to_string(producer_count.load()) + ")");
+                Logger::info("[Producer] Sent to buffer: " + key + " (" + std::to_string(producer_count.load()) + ")");
 
-                try
-                {
-                    fs::remove(filepath);
-                    Logger::debug("[Producer] Deleted: " + filepath);
-                }
-                catch (const std::exception &e)
-                {
-                    Logger::warning("[Producer] Failed to delete: " + filepath + " - " + e.what());
-                }
+                // Регистрируем файл для удаления после доставки
+                // Файл будет удалён в dr_cb() после подтверждения от брокера
+                producer.registerFileForDeletion(key, filepath, cache_id);
+
+                // markSent не вызываем здесь — сделаем в callback после доставки
             }
             else
             {
                 Logger::error("[Producer] Failed to send: " + key);
+                cache.markError(cache_id, "Send failed");
                 error_count.fetch_add(1);
             }
         }
@@ -142,14 +147,27 @@ void runProducer(AppConfig &config, KafkaProducer &producer, MessageCache &cache
     const int MAX_WORKERS = config.processing.max_workers;
     std::vector<std::thread> workers;
 
+    size_t last_file_count = 0;
+
     while (running)
     {
+        // Обрабатываем события доставки
+        producer.poll(0);
         for (const auto &group : config.groups)
         {
             if (!group.enabled)
                 continue;
 
             auto files = getJsonFiles(group.input_directory);
+
+            // Логируем только при изменении
+            if (files.size() != last_file_count)
+            {
+                Logger::info("[Producer] Found " + std::to_string(files.size()) +
+                             " files in " + group.input_directory);
+                last_file_count = files.size();
+            }
+
             if (files.empty())
             {
                 std::this_thread::sleep_for(std::chrono::milliseconds(100));
@@ -313,12 +331,21 @@ int main(int argc, char *argv[])
         }
 
         // 7. Устанавливаем callback для подтверждения доставки
-        producer.setDeliveryCallback([](const std::string &key, int error, int64_t offset)
+        // markSent вызывается ПОСЛЕ доставки
+        producer.setDeliveryCallback([&cache](const std::string &key, int error, int64_t offset, int64_t cache_id)
                                      {
             if (error == 0) {
                 Logger::debug("[Producer] Delivered: " + key + " (offset: " + std::to_string(offset) + ")");
+                // Обновляем статус в кэше после реальной доставки
+                if (cache_id >= 0) {
+                    cache.markSent(cache_id);
+                }
             } else {
                 Logger::warning("[Producer] Delivery failed: " + key + " (error: " + std::to_string(error) + ")");
+                // Помечаем как ошибку, файл останется в input
+                if (cache_id >= 0) {
+                    cache.markError(cache_id, "Kafka delivery failed");
+                }
             } });
 
         // 8. Определяем режим работы

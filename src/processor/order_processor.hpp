@@ -33,5 +33,5 @@ private:
     bool createOrder(const OrderData &order, const std::string &client_id,
                      const std::vector<database::OrderItem> &items);
     void logToRegister(const OrderData &order, const std::string &json_str);
-    bool isOrderAlreadyProcessed(const std::string &key);
+    // bool isOrderAlreadyProcessed(const std::string &key);
 };

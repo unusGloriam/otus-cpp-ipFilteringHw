@@ -193,9 +193,11 @@ namespace database
 
     std::string PostgreSQL::generateUUID()
     {
-        std::random_device rd;
-        std::mt19937_64 gen(rd());
-        std::uniform_int_distribution<int> dist(0, 15);
+        // Статический генератор инициализированный временем  и счетчиком
+        // static = создаётся один раз, потом продолжает последовательность
+        static std::mt19937_64 gen(
+            std::chrono::steady_clock::now().time_since_epoch().count());
+        static std::uniform_int_distribution<int> dist(0, 15);
 
         std::stringstream ss;
         ss << std::hex << std::setfill('0');
@@ -587,6 +589,32 @@ namespace database
         catch (const std::exception &e)
         {
             Logger::error("logKafkaMessage error: " + std::string(e.what()));
+        }
+    }
+
+    bool PostgreSQL::orderExists(const std::string &number, const std::string &client_id)
+    {
+        try
+        {
+            std::string sql = R"(
+                SELECT COUNT(*) FROM _Document49 
+                WHERE _Number = ')" +
+                              escape(number) + R"(' 
+                AND _Fld53RRef = ')" +
+                              escape(client_id) + R"('
+            )";
+            pqxx::result result = query(sql);
+            if (!result.empty())
+            {
+                int count = result[0][0].as<int>();
+                return count > 0;
+            }
+            return false;
+        }
+        catch (const std::exception &e)
+        {
+            Logger::error("orderExists error: " + std::string(e.what()));
+            return false;
         }
     }
 

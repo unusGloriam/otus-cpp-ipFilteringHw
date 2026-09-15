@@ -69,9 +69,9 @@ bool MessageCache::init()
 // ============================================================
 // Сохранение сообщения в кэш
 // ============================================================
-bool MessageCache::save(const std::string &filename, const std::string &topic,
-                        const std::string &message, const std::string &tin,
-                        const std::string &trrc, const std::string &source)
+int64_t MessageCache::save(const std::string &filename, const std::string &topic,
+                           const std::string &message, const std::string &tin,
+                           const std::string &trrc, const std::string &source)
 {
     std::lock_guard<std::mutex> lock(mutex_);
 
@@ -110,7 +110,7 @@ bool MessageCache::save(const std::string &filename, const std::string &topic,
         return false;
     }
 
-    return true;
+    return sqlite3_last_insert_rowid(db_);
 }
 
 // ============================================================
@@ -192,7 +192,9 @@ MessageCache::getPendingMessages(int limit)
         return result;
     }
 
-    sqlite3_bind_text(stmt, 1, source_prefix_.c_str(), -1, SQLITE_TRANSIENT);
+    // sqlite3_bind_text(stmt, 1, source_prefix_.c_str(), -1, SQLITE_TRANSIENT);
+    std::string producer_prefix = source_prefix_ + "|producer";
+    sqlite3_bind_text(stmt, 1, producer_prefix.c_str(), -1, SQLITE_TRANSIENT);
     sqlite3_bind_int(stmt, 2, reprocess_delay_seconds_);
     sqlite3_bind_int(stmt, 3, limit);
 

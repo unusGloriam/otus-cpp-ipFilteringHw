@@ -111,12 +111,17 @@ void KafkaConsumer::consumeLoop()
             {
                 callback_(key, value, timestamp); // 12. Вызов колбэка
             }
-            // АСИНХРОННЫЙ КОММИТ (не блокирует)
+            // Асинхронный коммит (не блокирует)
             consumer_->commitAsync(msg);
         }
         else if (msg->err() == RdKafka::ERR__PARTITION_EOF)
         {
             // Конец партиции — нормально
+        }
+        else if (msg->err() == RdKafka::ERR__TIMED_OUT)
+        {
+            // ★ Таймаут ожидания — это НЕ ошибка, просто нет новых сообщений ★
+            // Ничего не логируем, чтобы не спамить
         }
         else
         {

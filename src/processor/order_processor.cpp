@@ -63,26 +63,26 @@ void OrderProcessor::sendError(const std::string &error_type, // 28. Отпра�
     }
 }
 
-bool OrderProcessor::isOrderAlreadyProcessed(const std::string &key)
-{
-    // Проверяем в SQLite, есть ли уже обработанное сообщение с таким ключом
-    auto pending = cache_.getPendingMessages(1000);
-    for (const auto &[id, topic, message, filename] : pending)
-    {
-        // Проверяем, содержит ли сообщение этот ключ
-        if (message.find(key) != std::string::npos)
-        {
-            // Нашли сообщение с таким ключом - значит уже обрабатывали
-            Logger::warning("Order already in cache: " + key);
-            return true;
-        }
-    }
+// bool OrderProcessor::isOrderAlreadyProcessed(const std::string &key)
+// {
+//     // Проверяем в SQLite, есть ли уже обработанное сообщение с таким ключом
+//     auto pending = cache_.getPendingMessages(1000);
+//     for (const auto &[id, topic, message, filename] : pending)
+//     {
+//         // Проверяем, содержит ли сообщение этот ключ
+//         if (message.find(key) != std::string::npos)
+//         {
+//             // Нашли сообщение с таким ключом - значит уже обрабатывали
+//             Logger::warning("Order already in cache: " + key);
+//             return true;
+//         }
+//     }
 
-    // Также можно проверить в PostgreSQL (по номеру заказа и ИНН)
-    // Но это отдельный запрос, который может замедлить работу
+//     // Также можно проверить в PostgreSQL (по номеру заказа и ИНН)
+//     // Но это отдельный запрос, который может замедлить работу
 
-    return false;
-}
+//     return false;
+// }
 
 // ============================================================
 // Обработка одного сообщения из Kafka
@@ -90,17 +90,20 @@ bool OrderProcessor::isOrderAlreadyProcessed(const std::string &key)
 bool OrderProcessor::processMessage(const std::string &key, // 13. Вход в обработку
                                     const std::string &value,
                                     int64_t timestamp)
+
 {
     Logger::debug("Processing message: " + key);
 
+    int64_t cache_id = -1; // ★ ОБЪЯВЛЯЕМ ДО TRY ★
+
     try
     {
-        // 1. Проверяем не обработан ли уже заказ
-        if (isOrderAlreadyProcessed(key))
-        {
-            Logger::warning("Order already processed, skipping: " + key);
-            return true; // Возвращаем true, чтобы не считать ошибкой
-        }
+        // // 1. Проверяем не обработан ли уже заказ
+        // if (isOrderAlreadyProcessed(key))
+        // {
+        //     Logger::warning("Order already processed, skipping: " + key);
+        //     return true;
+        // }
 
         // 2. Проверяем, что это JSON
         if (value.empty() || (value[0] != '{' && value[0] != '['))
@@ -112,7 +115,7 @@ bool OrderProcessor::processMessage(const std::string &key, // 13. Вход в �
         }
 
         // 3. Парсим JSON
-        OrderData order = OrderData::fromJson(value); // 14. Парсинг JSON
+        OrderData order = OrderData::fromJson(value);
         if (!JsonParser::validate(order))
         {
             std::string error_msg = "Invalid order structure: missing TIN, TRRC or goods";
@@ -121,46 +124,56 @@ bool OrderProcessor::processMessage(const std::string &key, // 13. Вход в �
             return false;
         }
 
-        // 4. Сохраняем в SQLite кэш (на случай сбоя БД)
+        // 4. Сохраняем в SQLite кэш
         std::string cache_key = "order_" + order.tin + "_" + order.number;
         std::string source_type = "consumer";
-        if (!cache_.save(cache_key, "processing", value, order.tin, order.trrc, source_type)) // 15. Сохранение в SQLite (Consumer)
+        cache_id = cache_.save(cache_key, "processing", value, order.tin, order.trrc, source_type);
+        if (cache_id < 0)
         {
             Logger::warning("Failed to save to cache, continuing...");
         }
 
         // 5. Логируем в регистр сведений
-        logToRegister(order, value); // 16. Запись в регистр сведений
+        logToRegister(order, value);
 
         // 6. Обрабатываем контрагента
-        auto client_id = processClient(order); // 18. Поиск контрагента
+        auto client_id = processClient(order);
         if (!client_id)
         {
             std::string error_msg = "Client not found and could not be created: TIN=" + order.tin;
             Logger::error(error_msg);
+            if (cache_id >= 0)
+                cache_.markError(cache_id, error_msg);
             sendError("PostgreSQL write error", error_msg, value);
             return false;
         }
 
         // 7. Обрабатываем товары
-        auto items = processProducts(order); // 21. Поиск товаров
+        auto items = processProducts(order);
         if (items.empty())
         {
             std::string error_msg = "No valid products found in order";
             Logger::error(error_msg);
+            if (cache_id >= 0)
+                cache_.markError(cache_id, error_msg);
             sendError("PostgreSQL write error", error_msg, value);
             return false;
         }
 
         // 8. Создаем заказ
-        if (!createOrder(order, *client_id, items)) // 23. Создание заказа
+        if (!createOrder(order, *client_id, items))
         {
             std::string error_msg = "Failed to create order in PostgreSQL";
             Logger::error(error_msg);
+            if (cache_id >= 0)
+                cache_.markError(cache_id, error_msg);
             sendError("PostgreSQL write error", error_msg, value);
             return false;
         }
 
+        // Корректно
+        if (cache_id >= 0)
+            cache_.markSent(cache_id);
         Logger::info("Order processed successfully: " + order.number);
         return true;
     }
@@ -168,6 +181,11 @@ bool OrderProcessor::processMessage(const std::string &key, // 13. Вход в �
     {
         std::string error_msg = "Exception: " + std::string(e.what());
         Logger::error("processMessage error: " + error_msg);
+
+        // markError доступен, т.к. cache_id объявлен до попытки
+        if (cache_id >= 0)
+            cache_.markError(cache_id, error_msg);
+
         sendError("Kafka read error", error_msg, value);
         return false;
     }
@@ -321,6 +339,13 @@ bool OrderProcessor::createOrder(const OrderData &order,
         auto now = std::chrono::system_clock::now();
         auto time_t = std::chrono::system_clock::to_time_t(now);
         order_number = "AUTO-" + std::to_string(time_t); // Генерация номера
+    }
+
+    // Проверим не создан ли уже такой закза
+    if (db_.orderExists(order_number, client_id))
+    {
+        Logger::warning("Order already exists, skipping: " + order_number);
+        return true; // Считаем успехом, но не создаём дубль
     }
 
     std::string order_id = db_.createOrder( // Создание в БД
